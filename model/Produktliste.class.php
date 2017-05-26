@@ -32,5 +32,28 @@ class Produktliste {
                 
                 return $ProduktListe; #### notwendig???
     }
+                
+    function produktListenAnzeige($Produktliste){
+        
+            echo '<div id="ProduktListenAnzeige">';
+
+        foreach ($Produkteliste ->PL as $Produkt){ 
+            ## Row management oder Kategorien hier. Css wäre hilfreich hier. dragable ändern.
+            echo '  <div class="ProdTile" id="prod'.$Produkt->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
+            echo '    <div class="thumbnail">';
+            echo '      <img src="res/img/prod'.$Produkt->pid.'.jpg".pid alt="'.$Produkt->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <h4>'.$Produkt->bezeichnung.'</h4>';
+            echo '        <p>'.number_format($Produkt->preis ,"2",",",".").'€<br>';
+            echo '        '.$Produkt->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick=ProduktZuWarenkorb()></p>';
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+            
+                    
+    }
     //put your code here
 }

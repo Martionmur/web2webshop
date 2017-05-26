@@ -129,8 +129,9 @@ class DB {
                                    
                   return $ProduktListe; ##über das $this in fillProduktliste braucht ma das ja oder nein?
 
-		}else{
-			return "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
+		}
+                else{
+			alert "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
 		}
     }
     
