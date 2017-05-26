@@ -6,9 +6,9 @@
 
 if (!isset($_SESSION[$user])){ 
     header('Location: nav/anonym.php'); 
-} elseif ($_SESSION[$user->rolle] = "kunde") {
+} elseif ($_SESSION[$user]->rolle == "kunde") {
     header('Location: nav/kunde.php'); 
-} elseif ($_SESSION[$user->rolle] = "admin") {
+} elseif ($_SESSION[$user]->rolle == "admin") {
     header('Location: nav/admin.php'); 
 }
 

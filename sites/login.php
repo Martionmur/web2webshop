@@ -29,7 +29,7 @@
 
             } else { 
                 $user = $db->makeUser($logUsername, $logPasswort) ;
-                ## $_SESSION['user'] = $user; Wie zuweisen   
+                $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
                 
                 if ($logRemember){
                     ## Set cookie
