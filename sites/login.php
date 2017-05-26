@@ -11,8 +11,8 @@
 ## Validate form values from form - form 'action = ""' so data is send to site itself again
 
 
-    if(    !isset($_POST['logUsername'])    || $_POST['logUsername'] = ""
-        || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] = ""){
+    if(    !isset($_POST['logUsername'])    || $_POST['logUsername'] == ""
+        || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] == ""){
             alert("Bitte beide Felder ausfüllen.");
         } else {
             
@@ -34,7 +34,7 @@
                 if ($logRemember){
                     ## Set cookie
                 }
-
+                ## Wenn Erfolgreich   -> Hallo User
             }
         }
         

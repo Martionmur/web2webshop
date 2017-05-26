@@ -98,6 +98,7 @@ class DB {
 			return "fehler beim Passwort vergleichen: ".$query;	
 		}    
     }
+    
     function makeUser($logUsername, $logPW){
         ## User mit passwort bauen - könnte die Funktion auch separat aufgerufen werden
 		$query = "SELECT `uid`, `username`, `rolle` FROM `user` WHERE `username` = '".$logUsername."' AND `passwort` = '".$logPW."');";		
@@ -114,7 +115,44 @@ class DB {
 			return "fehler bei Userdaten holen: ".$query;	
 		}
     }
+
+        function getProduktListe(){
+        ## User mit passwort bauen - könnte die Funktion auch separat aufgerufen werden
+		$query = "SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung`, `bildref` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`);";		
+		//echo $query;
+		$result = mysqli_query($this->con, $query);		
+		
+		if(isset($result)){
+                    
+                    $Produktliste = new Produktliste();
+                    $Produktliste->fillProduktliste($result); ################## Wohin füllte den die Liste jetzt genau?
+                                   
+                  return $ProduktListe; ##über das $this in fillProduktliste braucht ma das ja oder nein?
+
+		}else{
+			return "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
+		}
+    }
     
+    function getProduktListeByKat($prodKat){
+        ## User mit passwort bauen - könnte die Funktion auch separat aufgerufen werden
+		$query = "SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung`, `bildref` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `kategorie` = '".$prodKat."' ORDER BY `bezeichnung`);";		
+		//echo $query;
+		$result = mysqli_query($this->con, $query);		
+		
+		if(isset($result)){
+                    
+                    $Produktliste = new Produktliste();
+                    $Produktliste->fillProduktliste($result); ################## Wohin füllte den die Liste jetzt genau?
+                    ##                  
+                                   
+                 return $ProduktListe; ##über das $this in fillProduktliste braucht ma das ja oder nein?
+
+		}else{
+			return "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
+		}
+    }
     
-    
+    ##    function getProduktListeByLIKE($search){
+    ##    function getProduktListeByPIDs($warenkorb){
 }

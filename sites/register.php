@@ -3,18 +3,18 @@
 ## Validate form values from form <- form 'action = ""' so data is send to site itself again
     $valid = true;
 
-    if(    $_POST['formAnrede'] = "invalid"
-        || !isset($_POST['formVorname'])     || $_POST['formVorname'] = "" 
-        || !isset($_POST['formNachname'])    || $_POST['formNachname'] = ""
-        || !isset($_POST['formAdresse'])     || $_POST['formNachname'] = "" 
-        || !isset($_POST['formPLZ'])         || $_POST['formPLZ'] = ""
-        || !isset($_POST['formOrt'])         || $_POST['formOrt'] = ""
-        || !isset($_POST['formEmail'])       || $_POST['formEmail'] = ""
-        || !isset($_POST['formUsername'])    || $_POST['formUsername'] = ""
-        || !isset($_POST['formPasswort1'])   || $_POST['formPasswort1'] = ""
-        || !isset($_POST['formPasswort2'])   || $_POST['formPasswort2'] = ""
-        || $_POST['formZahlungsArt'] = "invalid"
-        || !isset($_POST['formZahlungsDet']) || $_POST['formZahlungsDet'] = ""){
+    if(    $_POST['formAnrede'] == "invalid"
+        || !isset($_POST['formVorname'])     || $_POST['formVorname'] == "" 
+        || !isset($_POST['formNachname'])    || $_POST['formNachname'] == ""
+        || !isset($_POST['formAdresse'])     || $_POST['formNachname'] == "" 
+        || !isset($_POST['formPLZ'])         || $_POST['formPLZ'] == ""
+        || !isset($_POST['formOrt'])         || $_POST['formOrt'] == ""
+        || !isset($_POST['formEmail'])       || $_POST['formEmail'] == ""
+        || !isset($_POST['formUsername'])    || $_POST['formUsername'] == ""
+        || !isset($_POST['formPasswort1'])   || $_POST['formPasswort1'] == ""
+        || !isset($_POST['formPasswort2'])   || $_POST['formPasswort2'] == ""
+        || $_POST['formZahlungsArt'] == "invalid"
+        || !isset($_POST['formZahlungsDet']) || $_POST['formZahlungsDet'] == ""){
             $valid = false;
             alert("Bitte alle Felder ausfüllen.");
         }
@@ -44,12 +44,12 @@
         ### DisconnectDB
     }
 
-    ## get input
+## get input
 
 ## check input:
 ### fields not empty + no leerzeichen
 ### PW 2x ident
-### adresse contains hausnumber? not nessesary
+### adresse contains hausnumber? check not nessesary
 
 ### Username nicht bereits vorhanden - checkt DB.insertUser()
 
