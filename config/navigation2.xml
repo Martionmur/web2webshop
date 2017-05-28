@@ -17,4 +17,28 @@
             <title>Warenkorb</title>
             <link_to>warenkorb.php</link_to>
         </eintrag>
+                <side_eintrag>
+            <title>
+                Login Status
+            </title>
+            <link_to>
+                To_be_defined
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Warenkorb
+            </title>
+            <link_to>
+                warenkorb.php
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Suche
+            </title>
+            <link_to>
+                to_be_definded
+            </link_to>
+        </side_eintrag>
 </navigation>

@@ -13,4 +13,28 @@
 		<title>Warenkorb</title>
 		<link_to>warenkorb.php</link_to>
 	</eintrag>
+        <side_eintrag>
+            <title>
+                Registrieren
+            </title>
+            <link_to>
+                register.php
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Login
+            </title>
+            <link_to>
+                login.php
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Warenkorb
+            </title>
+            <link_to>
+                warenkorb.php
+            </link_to>
+        </side_eintrag>
 </navigation>

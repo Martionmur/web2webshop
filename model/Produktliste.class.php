@@ -1,5 +1,5 @@
 <?php
-
+include("Produkt.class.php");
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,29 +15,26 @@ class Produktliste {
     
     public $PL = array(); 
     
-    function fillProduktliste($result){ 
-                      
-                    foreach ($result as $row){ 
-			
-                        prod.$row['pid'] = new Produkt(); ## der objektname soll sich aus prod und pid zusammensetzen
-                        prod.$row['pid']->pid = $row['pid'];
-                        prod.$row['pid']->bezeichnung = $row['bezeichnung'];
-                        prod.$row['pid']->preis = $row['preis'];
-                        prod.$row['pid']->bewertung = $row['bewertung'];
-                        prod.$row['pid']->kategorie = $row['katbezeichnung'];
-                        prod.$row['pid']->bildref = $row['bildref']; ## oder Bildref errechnen aus pid
+    function fillProduktliste($row){ 
+                        $prod.$row['pid'] = new Produkt($row['pid'],$row['bezeichnung'],$row['preis'],$row['bewertung'],$row['katbezeichnung'],$row['bildref']); ## der objektname soll sich aus prod und pid zusammensetzen @Matthias: wird hier überhaupt eine Variable deklariert?
+                        #$prod.$row['pid']->pid = $row['pid'];
+                        #$prod.$row['pid']->bezeichnung = $row['bezeichnung'];
+                        #$prod.$row['pid']->preis = $row['preis'];
+                        #$prod.$row['pid']->bewertung = $row['bewertung'];
+                        #$prod.$row['pid']->kategorie = $row['katbezeichnung'];
+                        #$prod.$row['pid']->bildref = $row['bildref']; ## oder Bildref errechnen aus pid
                         
                         array_push($this->PL, prod.$row['pid']);       ## Now Put into Array
-                    }  
+                    
                 
-                return $ProduktListe; #### notwendig???
+                #return $ProduktListe; #### notwendig??? @Matthias: glaube nicht, weil array_push($this->PL...) schon die Einträge speichert
     }
                 
-    function produktListenAnzeige($Produktliste){
+    function produktListenAnzeige(){
         
             echo '<div id="ProduktListenAnzeige">';
 
-        foreach ($Produkteliste ->PL as $Produkt){ 
+        foreach ($this->PL as $Produkt){ 
             ## Row management oder Kategorien hier. Css wäre hilfreich hier. dragable ändern.
             echo '  <div class="ProdTile" id="prod'.$Produkt->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
             echo '    <div class="thumbnail">';

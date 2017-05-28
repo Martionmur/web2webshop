@@ -1,8 +1,7 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+    
+?>
+<h1>
+    Nichts neues im Homebereich
+</h1>
+<p>Mal schauen ob demnächst hier ein Webshop entstehen wird.</p>

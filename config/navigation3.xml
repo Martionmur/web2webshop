@@ -17,4 +17,20 @@
             <title>Gutschein verwalten</title>
             <link_to>Gutschein verwalten</link_to>
         </eintrag>
+                <side_eintrag>
+            <title>
+                Loggout
+            </title>
+            <link_to>
+                home.php
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Suche
+            </title>
+            <link_to>
+                to_be_defined
+            </link_to>
+        </side_eintrag>
 </navigation>
