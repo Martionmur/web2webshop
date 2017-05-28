@@ -1,5 +1,4 @@
 <?php
-
 ## Validate form values from form <- form 'action = ""' so data is send to site itself again
     $valid = true;
 
@@ -16,7 +15,8 @@
         || $_POST['formZahlungsArt'] == "invalid"
         || !isset($_POST['formZahlungsDet']) || $_POST['formZahlungsDet'] == ""){
             $valid = false;
-            alert("Bitte alle Felder ausfüllen.");
+            alert("Bitte alle Felder ausfüllen."); #alert != php-funktion
+            
         }
     
     if($_POST['formPasswort1'] != $_POST['formPasswort2'])

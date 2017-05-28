@@ -1,10 +1,11 @@
 <?php
+        include("model/Produktliste.class.php");
         $db = new DB();
         $db->doConnect();
-        $ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
+        #$ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
         #$ProdukteKonkret = $db->getProduktListe();
-        $ProdukteKonkret.
-        produktListenAnzeige($Produktliste)
+        #$ProdukteKonkret.fillProduktliste();
+        #produktListenAnzeige($ProdukteKonkret)
             
             
         
@@ -34,9 +35,10 @@
         $db = new DB();
         $db->doConnect();
         $ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
-        #$ProdukteKonkret = $db->getProduktListe();
-        $ProdukteKonkret.fillProduktliste();
-        produktListenAnzeige($ProdukteKonkret.fillProduktliste())
+        $ProdukteKonkret = $db->getProduktListe();
+        #$ProdukteKonkret.fillProduktliste();
+        #produktListenAnzeige($ProdukteKonkret.fillProduktliste())
+        $ProdukteKonkret.produktListenAnzeige();
             
             
         

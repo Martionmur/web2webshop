@@ -1,12 +1,15 @@
 <?php
+include("model/Produktliste.class.php");
 
 class DB {
     private $con = null;
-	
+    
+    #passt
     function doConnect(){
 		$this->con = mysqli_connect("localhost","root","","web2webshop"); 		
     }
     
+    #gibt zurück, wie viele user des aufgerufenen namen existieren
     function countUserCheck($regUsername){
                 $query = "SELECT `count(username)` FROM `user` WHERE `username` = '".$regUsername."';";		
 		//echo $query;
@@ -15,10 +18,11 @@ class DB {
                 return $uidCount;
     }
     
+    #legt neuen User in DB an
     function insertUser($regUsername, $regPasswort){
         ## count User on Usermail
                 if (countUserCheck($regUsername)!= 0) {
-                    alert("Username bereits vergeben");
+                    echo "<script type='text/javascript'>alert('Username bereits vergeben')</script>";
                 }
         ## User einfügen
 		$query = "INSERT INTO `web2webshop`.`user` ( `username`, `passwort`) VALUES (".$regUsername."', '".$regPasswort."');";		
@@ -31,7 +35,8 @@ class DB {
 			return "fehler beim User anlegen: ".$query;	
 		}
     }
-                
+    
+    #gibt User_ID zurück
     function getUserID($regUsername){
         ## UserID von usernamen bekommen
 		$query = "SELECT `uid` FROM `user` WHERE `username` = '".$regUsername."');";		
@@ -44,7 +49,8 @@ class DB {
 			return "fehler beim Userid suchen: ".$query;	
 		}    
     }
-
+    
+    #legt Kunden in DB an -> return string sinnvoll? -> wie einbinden?
     function insertKunde($regUID, $regAnrede, $regVorname, $regNachname, $regAdresse, $regPLZ, $regOrt, $regEmail){
         ## Kunde einfügen
 		$query = "INSERT INTO `web2webshop`.`kunde` ( ´uid´, ´anrede´, ´vorname´, ´nachname´, ´adresse, ´plz´, ´ort´, ´email´) "
@@ -59,6 +65,7 @@ class DB {
 		}
     }
     
+    #gibt Kundenid zurück 
     function getKundenID($regUID){
         ## KundenID von UserID bekommen
 		$query = "SELECT `kid` FROM `kunde` WHERE `uid` = '".$regUID."');";		
@@ -72,6 +79,7 @@ class DB {
 		}    
     }
    
+    #legt Zahlungsinfo in DB an
     function insertZahlungsinfo($regKID, $regArt, $regNummer){
 		$query = "INSERT INTO `web2webshop`.`zahlungsinfo` (`kid`, `art`, `nummer`) VALUES ('".$regKID."', '".$regArt."', '".$regNummer."');";		
 		//echo $query;
@@ -86,6 +94,8 @@ class DB {
 		}
 	
     }
+    
+    #md5 verschlüsselung? wie?
     function checkPW($logUsername, $logPW){
         ## KundenID von UserID bekommen
 		$query = "SELECT `passwort` FROM `user` WHERE `username` = '".$logUsername."');";		
@@ -99,6 +109,7 @@ class DB {
 		}    
     }
     
+    #instanziert ein Objekt der Klasse "user" -> daten gleich hier in Session speichern?
     function makeUser($logUsername, $logPW){
         ## User mit passwort bauen - könnte die Funktion auch separat aufgerufen werden
 		$query = "SELECT `uid`, `username`, `rolle` FROM `user` WHERE `username` = '".$logUsername."' AND `passwort` = '".$logPW."');";		
@@ -116,23 +127,27 @@ class DB {
 		}
     }
 
-        function getProduktListe(){
-        ## User mit passwort bauen - könnte die Funktion auch separat aufgerufen werden
-		$query = "SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung`, `bildref` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`);";		
-		//echo $query;
-		$result = mysqli_query($this->con, $query);		
+    
+    function getProduktListe(){
+        $query = "SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung`, `bildref` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`);";		
+	//echo $query;
+	$result = mysqli_query($this->con, $query);		
 		
-		if(isset($result)){
-                    
-                    $Produktliste = new Produktliste();
-                    $Produktliste->fillProduktliste($result); ################## Wohin füllte den die Liste jetzt genau?
-                                   
-                  return $ProduktListe; ##über das $this in fillProduktliste braucht ma das ja oder nein?
-
-		}
-                else{
-			alert "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
-		}
+	if(isset($result)){
+            $Produktliste = new Produktliste();
+            
+            while($row = $result->fetch_object()){
+            $Produktliste->fillProduktliste($row); ################## Wohin füllte den die Liste jetzt genau?  @Matthias: fillProduktliste($result) funktioniert nicht, weil $result=boolean -> fillProduktliste(true), deswegen wird jede row in einer schleife übergeben       
+            ##sehe hier den Knackpunkt, warum es nicht funktioniert - bin auch nicht sicher, ob das übergeben der Werte richtig ist. 
+            }
+        return $ProduktListe;
+        }
+         ##über das $this in fillProduktliste braucht ma das ja oder nein?
+        else{
+                echo ("<script type='text/javascript'>;alert('Username bereits vergeben';");
+                echo ("</script>");
+                # alert "fehler bei Produktliste nach Kat aus DB holen: ".$query;	
+	}
     }
     
     function getProduktListeByKat($prodKat){
@@ -144,7 +159,7 @@ class DB {
 		if(isset($result)){
                     
                     $Produktliste = new Produktliste();
-                    $Produktliste->fillProduktliste($result); ################## Wohin füllte den die Liste jetzt genau?
+                    $Produktliste->fillProduktliste($result); ################## Wohin füllte den die Liste jetzt genau? @Matthias: fillProduktliste funktioniert nicht, weil $result=boolean -> fillProduktliste(true)        
                     ##                  
                                    
                  return $ProduktListe; ##über das $this in fillProduktliste braucht ma das ja oder nein?

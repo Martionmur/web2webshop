@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigation>
+	<eintrag id="1">
+		<title>Home</title>
+		<link_to>index.php</link_to>
+	</eintrag>
+	
+	<eintrag id="2">
+		<title>Produkte bearbeiten</title>
+		<link_to>produkte_bearbeiten.php</link_to>
+	</eintrag>
+	<eintrag id="3">
+		<title>Kunden bearbeiten</title>
+		<link_to>kunden-bearbeiten.php</link_to>
+	</eintrag>
+        <eintrag id="4">
+            <title>Gutschein verwalten</title>
+            <link_to>Gutschein verwalten</link_to>
+        </eintrag>
+                <side_eintrag>
+            <title>
+                Loggout
+            </title>
+            <link_to>
+                home.php
+            </link_to>
+        </side_eintrag>
+        <side_eintrag>
+            <title>
+                Suche
+            </title>
+            <link_to>
+                to_be_defined
+            </link_to>
+        </side_eintrag>
+</navigation>
