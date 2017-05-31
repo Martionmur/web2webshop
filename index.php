@@ -24,7 +24,7 @@
 
         <div id="content">
             <?php
-                include ("sites/produkte.php");
+                include ("sites/register_new.php");
             ?>
         </div>
         

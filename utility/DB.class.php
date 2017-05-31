@@ -63,6 +63,22 @@ class newDB {
         else return false;
     }
     
+    function insertUser($regUsername, $regPasswort){
+        ## User einfügen
+		$query = "INSERT INTO `web2webshop`.`user` ( `username`, `passwort`) VALUES ('".$regUsername."', '".$regPasswort."');";		
+		//echo $query;
+		$res = mysqli_query($this->con, $query);		
+		
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}
+    }
 
+#ENDE
 }
+    
+
+
 
