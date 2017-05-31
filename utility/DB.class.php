@@ -54,6 +54,14 @@ class newDB {
             echo '  </div>';
     }
         
+    function countUserCheck($regUsername){
+        $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."';";		
+	//echo $query;
+        $res = mysqli_query($this->con, $query); 
+        
+        if(mysqli_num_rows($res) > 0) return true;
+        else return false;
+    }
     
 
 }
