@@ -1,8 +1,20 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
+//
+//
+//<Script>
+//($_Document).ready[function
+//    
+//    Button classe (DOM) .unbind()
+//    
+//    
+//   
+//    foreach
+//this ist auf classe und mit foreach auf alle classen
+//    $this.parent['td'].data('id');
+//this->db->set_charset('UTF-8');
+//Bildref:   Localhost...\res\img\prod14.jpg
+//        
+//        
+//

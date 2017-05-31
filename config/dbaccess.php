@@ -1,3 +1,6 @@
 <?php
-## wie übergeb ich hier den Login richtig an db.class?
-dblogin = ("localhost", "root", "", "web2webshop");
+$host="localhost";
+$user="root"; 
+$Password =""; 
+$DB = "web2webshop";
+## NOT IN USE - See ustility/DB.class

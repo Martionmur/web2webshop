@@ -1,4 +1,5 @@
 <?php
+    include ("utility/DB.class.php");
 ## get input
 
 ## check input
@@ -13,22 +14,21 @@
 
     if(    !isset($_POST['logUsername'])    || $_POST['logUsername'] == ""
         || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] == ""){
-            alert("Bitte beide Felder ausfüllen.");
+            echo "<script type='text/javascript'>alert('Bitte Username und Passwort ausfüllen.')</script>";
         } else {
             
         $db = new DB();
         $db->doConnect();
         
-        if ($db->countUserCheck($logUsername) != 1){
-            return "bad username"; 
-            alert ("Bitte überprüfen Sie den Username");
-            if (!$db->checkPW($logUsername, $logPasswort)){
+        if ($db->countUserCheck($_POST['logUsername']) != 1){
+            echo "<script type='text/javascript'>alert('Bitte überprüfen Sie den Username')</script>";
+            if (!$db->checkPW($_POST['logUsername'], $_POST['logPasswort'])){
                 ## check PW returned True oder irgendwas FEHLERSUCHE!
-                return "bad password"; 
+            echo "<script type='text/javascript'>alert('Falsches Passwort!')</script>";
                 alert ("Falsches Passwort");
 
             } else { 
-                $user = $db->makeUser($logUsername, $logPasswort) ;
+                $user = $db->makeUser($_POST['logUsername'], $_POST['logPasswort']) ;
                 $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
                 
                 if ($logRemember){

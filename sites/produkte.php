@@ -1,7 +1,6 @@
 <?php
-        include("model/Produktliste.class.php");
-        $db = new DB();
-        $db->doConnect();
+        #include("utility/newDB.class.php");
+        #include("model/Produktliste.class.php");
         #$ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
         #$ProdukteKonkret = $db->getProduktListe();
         #$ProdukteKonkret.fillProduktliste();
@@ -9,43 +8,27 @@
             
             
         
-  ?>      
-<!-- DRAGGABLE IN HEAD -->
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <title>jQuery UI Draggable - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
-  <script>
-  $( function() {
-    $( ".ProdTile" ).draggable(); 
-  } );
-  </script>
- <!-- right kind of dragable?-->
-</head>
-<body>
-    
+  ?>          
    <?php
-        $db = new DB();
+        #$db = new mysqli('localhost','root', '', 'web2webshop');
+        $db = new newDB();
         $db->doConnect();
-        $ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
-        $ProdukteKonkret = $db->getProduktListe();
+        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
+        $db->printProduktliste($query);
+        #var_dump($Produktliste);
+        
+
+        
+        #$ProdukteKonkret = $db->getProduktListe();
+        #var_dump($ProdukteKonkret);
         #$ProdukteKonkret.fillProduktliste();
         #produktListenAnzeige($ProdukteKonkret.fillProduktliste())
-        $ProdukteKonkret.produktListenAnzeige();
+        #$ProdukteKonkret->produktListenAnzeige();
             
             
         
   ?>  
-    
-</body>
-    
+       
     
  
 

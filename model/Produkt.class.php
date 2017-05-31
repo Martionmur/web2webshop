@@ -8,13 +8,13 @@ class Produkt {
     public $bildref;
     
     
-    function __construct($pid,$bez,$preis,$bew,$kat,$bref){
-		$this->pid = $id;
-		$this->bezeichnung = $bez;
-		$this->preis = $dpreis;	
-		$this->bewertung = $bew;
-		$this->kategorie = $kat;
-		$this->bildref = $bref;			
+    function __construct($pid,$bezeichnung,$preis,$bewertung,$kategorie,$bildref){
+		$this->pid = $pid;
+		$this->bezeichnung = $bezeichnung;
+		$this->preis = $preis;	
+		$this->bewertung = $bewertung;
+		$this->kategorie = $kategorie;
+		$this->bildref = $bildref;			
 	}
          
 }
