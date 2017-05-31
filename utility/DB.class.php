@@ -75,6 +75,34 @@ class newDB {
 			return false;	
 		}
     }
+    
+    function getUserID($regUsername){
+        ## UserID von usernamen bekommen
+		$query = "SELECT `uid` FROM `user` WHERE `username` = '".$regUsername."'";		
+		
+                $res = mysqli_query($this->con, $query);		
+                while($x = mysqli_fetch_object($res)){
+                $uid=$x->uid;
+                }
+                return $uid;
+    }
+
+        
+    
+    function insertKunde($regUID, $regAnrede, $regVorname, $regNachname, $regAdresse, $regPLZ, $regOrt, $land, $regEmail){
+		$query = "INSERT INTO `web2webshop`.`kunde` ( `uid`, `anrede`, `vorname`, `nachname`, `adresse`, `plz`, `ort`, `land`, `email`) "
+                        . "VALUES ('".$regUID."', '".$regAnrede."', '".$regVorname."', '".$regNachname."', '".$regAdresse."', '".$regPLZ."', '".$regOrt."', '".$land."', '".$regEmail."');";		
+		$res = mysqli_query($this->con, $query);		
+		
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}        
+    }
+                
+               
+ 
 
 #ENDE
 }
