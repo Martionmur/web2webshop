@@ -1,6 +1,6 @@
 <?php
 
-/* 
+        /*
         $db = new newDB();
         $db->doConnect();
         $wahr = false;
@@ -10,24 +10,26 @@
         }
         else {
             
-        if($db->insertUser("Testibus", "Testibuspw")) echo "hat gepasst";
-        else echo"hat nicht gepasst";
-        }
+        #if($db->insertUser("Testibus", "Testibuspw")) echo "hat gepasst";
+        #else echo"hat nicht gepasst";
+        #}
         
-        $testUID=$db->getUserID("Testibus");
+        $testUID=$db->getUserID("Testus");
         echo"TestUID:";
         var_dump($testUID);
         
         
-        if($db->insertKunde("$testUID", "Herr", "Matthias", "Pfandler", "Testadresse", "1180", "Wien", "Österreich", "mpfandler@lalal.at")) echo "kunde angelegt";
-        else echo "Kunde wurde nicht angelegt";
-    * 
-    */
+        #if($db->insertKunde("$testUID", "Herr", "Matthias", "Pfandler", "Testadresse", "1180", "Wien", "Österreich", "mpfandler@lalal.at")) echo "kunde angelegt";
+        #else echo "Kunde wurde nicht angelegt";
+        $teskID = $db->getKundenID($testUID);
+        echo"TestKID:";
+        var_dump($teskID);
+        */
 
 ## Validate form values from form <- form 'action = ""' so data is send to site itself again
     $valid = true;
     #sind alle Daten eingegeben?
-    if(!empty($_POST)){
+   if(!empty($_POST)){
     if(    $_POST['formAnrede'] == "invalid"
         || !isset($_POST['formVorname'])     || $_POST['formVorname'] == "" 
         || !isset($_POST['formNachname'])    || $_POST['formNachname'] == ""
@@ -45,33 +47,38 @@
             
         }
     #passwort validieren
-    if(isset($_POST['formPasswort1']) && (isset($_POST['formPasswort2']))){
-        if($_POST['formPasswort1'] != $_POST['formPasswort2'])
+        if(isset($_POST['formPasswort1']) && (isset($_POST['formPasswort2']))){
+            if($_POST['formPasswort1'] != $_POST['formPasswort2'])
             {
                 $valid = false;
                 echo "<script type='text/javascript'>alert('Passwörter nicht gleich')</script>";
             }
-    }
+        }
     
-    if ($valid == true) {
-        $db = new newDB();
-        $db->doConnect();
+        if ($valid == true) {
+            $db = new newDB();
+            $db->doConnect();
         
-        if($db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']))) echo "User wurde angelegt";
-        else echo "User konnte nicht angelegt werdden";
+            if($db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']))) echo "User wurde angelegt";
+            else echo "User konnte nicht angelegt werdden";
         
-        $uid =$db->getUserID($_POST['formUsername']);       
-        if($db->insertKunde("$uid", $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],"Österreich", $_POST['formEmail'])) echo "kunde angelegt";
-        else echo "Kunde wurde nicht angelegt";
+            $uid =$db->getUserID($_POST['formUsername']);       
+            echo"GetUserID: ";
+            var_dump($uid);
+            if($db->insertKunde("$uid", $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],"Österreich", $_POST['formEmail'])) echo "kunde angelegt";
+            else echo "Kunde wurde nicht angelegt";
         
-        $kid =$db->getKundenID($uid);       
-       # $zval=$db->insertZahlungsinfo($kid, $_POST['formZahlungsArt'], $_POST['formZahlungsDet']);
-       # if($zval === FALSE){return "bad zahlungsinfo insert";} 
+            $kid =$db->getKundenID($uid);       
+            echo "GEt KundenID: ";
+            var_dump($kid);
+            if($db->insertZahlungsinfo($kid, $_POST['formZahlungsart'], $_POST['formZahlungsdet'])) echo "Zahlungsinfo angelegt" ;
+            else echo "Zahlungsinfo nicht angelegt.";
         
-        ### Erfolg! Go to LogIn after Registration
-        ### DisconnectDB
-    }
+            ### Erfolg! Go to LogIn after Registration
+            ### DisconnectDB
+        }
 }
+
 
 ?>
 
