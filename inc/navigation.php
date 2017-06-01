@@ -27,10 +27,10 @@
 <?php
 
 
-if ($_SESSION['user']->rolle == "kunde") {
+if ((!empty($_SESSION['user'])) && $_SESSION['user']->rolle == "kunde") {
     $xmlnav = simplexml_load_file("config/navigation2.xml");
 } 
-elseif ($_SESSION['user']->rolle == "admin") {
+elseif ((!empty($_SESSION['user'])) && $_SESSION['user']->rolle == "admin") {
     $xmlnav = simplexml_load_file("config/navigation3.xml");
 }
 else {
