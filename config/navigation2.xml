@@ -2,7 +2,7 @@
 <navigation>
 	<eintrag id="1">
 		<title>Home</title>
-		<link_to>index.php</link_to>
+		<link_to>home.php</link_to>
 	</eintrag>
 	
 	<eintrag id="2">
@@ -17,12 +17,13 @@
             <title>Warenkorb</title>
             <link_to>warenkorb.php</link_to>
         </eintrag>
-                <side_eintrag>
+        
+        <side_eintrag>
             <title>
                 Login Status
             </title>
             <link_to>
-                To_be_defined
+                logout.php
             </link_to>
         </side_eintrag>
         <side_eintrag>

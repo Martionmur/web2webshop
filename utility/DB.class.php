@@ -1,5 +1,6 @@
 <?php
-include("model/Produkt.class.php");
+#include("model/Produkt.class.php");
+#include("model/User.class.php");
 
 class newDB {
     private $con = null;
@@ -34,6 +35,39 @@ class newDB {
         echo "</ul></table>";
     }
     
+    function printWarenkorb($query){
+        $res = mysqli_query($this->con, $query);
+        $sum = 0.00;
+        echo "<table class='table-striped'> 
+                <thead> 
+                  <tr>
+                    <th></th>
+                    <th>  Bezeichnung  </th>
+                    <th>  Preis  </th>
+                    <th>  Anzahl  </th>
+                    <th>  Gesamt  </th>
+                  </tr>
+                </thead>
+                <tbody>";
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            echo '<tr>'
+                    . '<td><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px; padding:2px;" class="img-thumbnail"></td>'
+                    . '<td>'.$tempProd->bezeichnung.'</td>'
+                    . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
+                    . '<td align="right"> ?1 </td>'
+                    . '<td align="right">' .number_format($tempProd->preis*1 ,"2",",",".").'€</td>'
+            .    '</tr>';
+            $sum += $tempProd->preis;
+        }
+        echo '</tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" align="right" > Summe </td>
+                  <td align="right">'.number_format($sum ,"2",",",".").'€<td>';
+        return $sum;
+    }
+    
     function printProduktliste($query){
         $res = mysqli_query($this->con, $query);
         
@@ -62,6 +96,32 @@ class newDB {
         if(mysqli_num_rows($res) > 0) return true;
         else return false;
     }
+    
+    function checkPW($regUsername, $regPW){
+        $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."' AND `passwort` = '".md5($regPW)."';";		
+	//echo $query;
+        $res = mysqli_query($this->con, $query); 
+        
+        if(mysqli_num_rows($res) > 0) return true;
+        else return false;
+    }
+    
+    function makeUser($regUsername, $regPW){
+        $query = "SELECT `uid`, `username`, `rolle` FROM `user` WHERE `username` = '".$regUsername."' AND `passwort` = '".md5($regPW)."';";
+        $res = mysqli_query($this->con, $query);  
+                
+        $userarray = mysqli_fetch_array($res);
+        echo var_dump($userarray);
+        $user = new User();
+        $user->uid = $userarray['uid'];
+        $user->username = $userarray['username'];
+        $user->rolle = $userarray['rolle'];
+        
+        echo "<br>". var_dump($user);
+        return $user;
+        
+    }
+    
     
     function insertUser($regUsername, $regPasswort){
         ## User einfügen

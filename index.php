@@ -1,7 +1,15 @@
 <?php
-    session_start();
-    $_SESSION["user"]= "kunde";
     include ("utility/DB.class.php");
+    include("model/Produkt.class.php");
+    include("model/User.class.php");
+
+    
+    session_start();
+    if (!isset($_SESSION['user'])){
+    $u = new User;
+    $u->rolle="kun";
+    $_SESSION['user']= $u;
+    }
 ?>
 <!DOCTYPE html>
 
@@ -16,16 +24,54 @@
         <meta charset="UTF-8">
         <?php
             include("inc/navigation.php");
+
         ?>
         
 
     </head>
     <body>
-
+        <div style ="float:right;">
+            <a href=index.php?tab='logout.php'>TEST LOGOUT</a>
+        </div>
+        
+        
         <div id="content">
-            <?php
-                include ("sites/register_new.php");
-            ?>
+        <?php
+        if(!isset($_GET['tab'])){
+            $_GET['tab']= 'home.php';
+        }
+            switch($_GET['tab']) {
+            case 'login.php':
+                include ("sites/login.php");
+                break;
+            case 'logout.php':
+                include ("sites/logout.php");
+                break;
+            case 'register.php':
+                include  ("sites/register.php");
+                break;
+            case 'produkte.php':
+                include  ("sites/produkte.php");
+                break;
+            case 'warenkorb.php':
+                include  ("sites/warenkorb.php");
+                break;
+            case 'produkte_bearbeiten.php':
+                include  ("sites/produkte_bearbeiten.php");
+                break;
+            case 'kunden_bearbeiten.php':
+                include  ("sites/kunde_bearbeiten.php");
+                break;
+            case 'gutschein_verwalten.php':
+                include  ("sites/gutschein_verwalten.php");
+                break;
+            case 'meinkonto.php':
+                include  ("sites/meinkonto.php");
+                break;
+            default:
+                include  ("sites/home.php");
+            }
+        ?>
         </div>
         
     </body>
