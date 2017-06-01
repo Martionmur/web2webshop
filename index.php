@@ -10,10 +10,10 @@
     $u->rolle="kun";
     $_SESSION['user']= $u;
     }
-    
     if (!isset($_SESSION['cart'])){
         $_SESSION['cart'] = [];    
     }
+    
     # Dummy Warenkorb
         $_SESSION['cart'] =  [
         ["pid"=>1, "anz" => 2 ],
@@ -40,14 +40,7 @@
 
     </head>
     <body>
-
-        <div style ="float:right;">
-            <?php
-                    include 'inc/logstatus.inc.php';
-            ?>
-            
-        </div>
-        
+     
         
         
         <div id="content">

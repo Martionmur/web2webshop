@@ -27,16 +27,16 @@
 <?php
 
 
-if ($_SESSION['user']->rolle == "kunde") {
-    $xmlnav = simplexml_load_file("config/navigation2.xml");
-} 
-elseif ($_SESSION['user']->rolle == "admin") {
-    $xmlnav = simplexml_load_file("config/navigation3.xml");
-}
-else {
-    $xmlnav = simplexml_load_file("config/navigation1.xml");
-}    
-    $cnt = 0;
+    if ($_SESSION['user']->rolle == "kunde") {
+        $xmlnav = simplexml_load_file("config/navigation2.xml");
+    } 
+    elseif ($_SESSION['user']->rolle == "admin") {
+        $xmlnav = simplexml_load_file("config/navigation3.xml");
+    }
+    else {
+        $xmlnav = simplexml_load_file("config/navigation1.xml");
+    }    
+        $cnt = 0;
     
 //    foreach($xmlnav->eintrag as $eintrag){
 //        if ($cnt==0) echo "<li class='active'><a href = 'index.php?tab=".$eintrag->link_to."'>".$eintrag->title."</a></li>";
@@ -54,42 +54,31 @@ else {
             echo "<li class='active' ";
         } else {echo "<li ";}
         echo "> <a href = 'index.php?tab=".$eintrag->link_to."'>".$eintrag->title."</a></li>";
-        
-        $cnt = $cnt +1;
-        ##link_to wird noch nicht angesprochen -> muss zuerst definiert werden, wie z.B. "Home" geladen werden soll
-    }
+        }
     
     #Suche: insert der jquery-funktion hier?
-    echo "      <form class='navbar-form navbar-left'>
-        <div class='form-group'>
-        <input type='text' class='form-control' placeholder='Search'>
-        </div>
-        <button type='submit' class='btn btn-default'>Submit</button>
-        </form>
-        <ul class ='nav navbar-nav navbar-right'>
-        ";
+    echo "  <form class='navbar-form navbar-left'>
+                <div class='form-group'>
+                    <input type='text' class='form-control' placeholder='Search'>
+                </div>
+                <button type='submit' class='btn btn-default'>Submit</button>
+            </form>
+        <ul class ='nav navbar-nav navbar-right'>";
     
-    foreach($xmlnav->side_eintrag as $s_eintrag){
-        if ($cnt==0) echo "<li class='active'><a>$eintrag->title</a></li>";
-        else echo "<li><a>$s_eintrag->title</a></li>";
-        $cnt = $cnt +1;
-        ##link_to wird noch nicht angesprochen -> muss zuerst definiert werden, wie z.B. "Home" geladen werden soll
-    }
-    
-#Martin:   
-## ich überleg hier in dem Block wie man den User in der Session ansprechen könnte. 
-### Ob man über header() macht ist nicht die intention. 
-### xml flexibel in der navigation auslesen je nach rolle  ist sicher auch hübsch  
-/*    
-if (!isset($_SESSION[$user])){ 
-    header('Location: nav/anonym.php'); 
-} elseif ($_SESSION[$user]->rolle == "kunde") {
-    header('Location: nav/kunde.php'); 
-} elseif ($_SESSION[$user]->rolle == "admin") {
-    header('Location: nav/admin.php'); 
-}
-*/
+//    foreach($xmlnav->side_eintrag as $s_eintrag){
+//        if ($cnt==0) echo "<li class='active'><a>$eintrag->title</a></li>";
+//        else echo "<li><a>$s_eintrag->title</a></li>";
+//        $cnt = $cnt +1;
+//        ##link_to wird noch nicht angesprochen -> muss zuerst definiert werden, wie z.B. "Home" geladen werden soll
+//    }
+//    
 
+    
+    #LogStatus
+        include 'inc/logstatus.inc.php';
+        
+    #Warenkorb
+        include 'inc/cartstatus.inc.php';
 ?>
 
          

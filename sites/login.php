@@ -16,27 +16,27 @@
         || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] == ""){
             echo "<script type='text/javascript'>alert('Bitte Username und Passwort ausfüllen.')</script>";
         } else {
-        echo "username and PW :".$_POST['logUsername']." + ".$_POST['logPasswort']; 
+        #echo "username and PW :".$_POST['logUsername']." + ".$_POST['logPasswort']; 
         $db = new newDB();
         $db->doConnect();
         #echo "<br> connect: ".var_dump($db);
-        echo "<br> countuser: ".$db->countUserCheck($_POST['logUsername']);
+        #echo "<br> countuser: ".$db->countUserCheck($_POST['logUsername']);
         if ($db->countUserCheck($_POST['logUsername'])!= 1){
             echo "<script type='text/javascript'>alert('Bitte überprüfen Sie den Username')</script>";
         } else {    
-            echo "<br> checkPQ:".$db->checkPW($_POST['logUsername'], $_POST['logPasswort']);
+        #   echo "<br> checkPQ:".$db->checkPW($_POST['logUsername'], $_POST['logPasswort']);
             if ($db->checkPW($_POST['logUsername'], $_POST['logPasswort'])!= 1){
-                ## check PW returned True oder irgendwas FEHLERSUCHE!
+                
             echo "<script type='text/javascript'>alert('Falsches Passwort!')</script>";
                 
             } else { 
-                echo "<script type='text/javascript'>alert('Richtiges Passwort!')</script>";
+        #        echo "<script type='text/javascript'>alert('Richtiges Passwort!')</script>";
             
                 $user = $db->makeUser($_POST['logUsername'], $_POST['logPasswort']) ;
                 $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
-                echo $_SESSION['user']->rolle;
+        #        echo $_SESSION['user']->rolle;
                 
-                echo "<script type='text/javascript'>alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. /n Willkommen!')</script>";
+                echo "<script type='text/javascript'>alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. \n Willkommen!')</script>";
             
                 
                 #if ($logRemember){
