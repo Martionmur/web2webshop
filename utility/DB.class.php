@@ -76,41 +76,32 @@ class newDB {
             </table>';
         return $sum;
         
-//        $res = mysqli_query($this->con, $query);
-//        $sum = 0.00;
-//        
-//        echo "<table class='table-striped'> 
-//                <thead> 
-//                  <tr>
-//                    <th></th>
-//                    <th>  Bezeichnung  </th>
-//                    <th>  Preis  </th>
-//                    <th>  Anzahl  </th>
-//                    <th>  Gesamt  </th>
-//                  </tr>
-//                </thead>
-//                <tbody>";
-//        while($produkt = mysqli_fetch_object($res)){    
-//            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-//            echo '<tr>'
-//                    . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
-//                    . '<td>'.$tempProd->bezeichnung.'</td>'
-//                    . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
-//                    . '<td align="right"> ?1 </td>'
-//                    . '<td align="right">' .number_format($tempProd->preis*1 ,"2",",",".").'€</td>'
-//            .    '</tr>';
-//            $sum += $tempProd->preis;
-//        }
-//        echo '</tbody>
-//              <tfoot>
-//                <tr>
-//                  <td colspan="4" align="right" > Summe </td>
-//                  <td align="right">'.number_format($sum ,"2",",",".").'€<td>
-//                </tr>
-//              </tfoot>
-//            </table>';
-//        return $sum;
     }
+    
+    #$query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
+    function printKundeninfo($query){
+        $kid=-1;
+        $res = mysqli_query($this->con, $query);
+        if($res){       
+            $kunde = mysqli_fetch_array($res);
+            echo '<p>'.$kunde['anrede']. ' ' .$kunde['vorname'] . ' ' .$kunde['nachname'].'</p>'
+                .'<p>'.$kunde['adresse']. ' </p>'
+                .'<p>'.$kunde['plz'].' '.$kunde['ort'] .'</p>'
+                .'<p>'.$kunde['land'].'</p>';    
+                $kid = $kunde['kid'];
+        return $kid;
+        }else echo "<p>Kundeninformation nicht gefunden.</p>";
+    }
+    
+    
+           #$query3 = 'SELECT `zid`,`art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
+    function printZahlungsOption($query3){
+        $res = mysqli_query($this->con, $query3);
+        while ($zinfo = mysqli_fetch_object($res)){
+            echo '<option value="'.$zinfo->zid.'">'.$zinfo->art.': '.$zinfo->nummer.'</option>';
+        }         
+    }
+           
     
     function printProduktliste($query){
         $res = mysqli_query($this->con, $query);
@@ -131,6 +122,7 @@ class newDB {
         }
             echo '  </div>';
     }
+    
         
     function countUserCheck($regUsername){
         $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."';";		
