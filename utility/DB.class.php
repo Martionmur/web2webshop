@@ -8,6 +8,7 @@ class newDB {
     #connection funktioniert
     function doConnect(){
         $this->con = mysqli_connect("localhost","root","","web2webshop");
+#        $this->mysqli_set_charset('UTF-8');
         #add UTF-8 mode!
     }
    
