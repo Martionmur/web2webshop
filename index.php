@@ -10,6 +10,16 @@
     $u->rolle="kun";
     $_SESSION['user']= $u;
     }
+    
+    if (!isset($_SESSION['cart'])){
+        $_SESSION['cart'] = [];    
+    }
+    # Dummy Warenkorb
+        $_SESSION['cart'] =  [
+        ["pid"=>1, "anz" => 2 ],
+        ["pid"=>2, "anz" => 2 ],
+        ["pid"=>3, "anz" => 2 ],
+    ];
 ?>
 <!DOCTYPE html>
 
@@ -30,9 +40,14 @@
 
     </head>
     <body>
+
         <div style ="float:right;">
-            <a href=index.php?tab='logout.php'>TEST LOGOUT</a>
+            <?php
+                    include 'inc/logstatus.inc.php';
+            ?>
+            
         </div>
+        
         
         
         <div id="content">
