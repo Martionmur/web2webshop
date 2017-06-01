@@ -8,6 +8,7 @@ class newDB {
     #connection funktioniert
     function doConnect(){
         $this->con = mysqli_connect("localhost","root","","web2webshop");
+        #add UTF-8 mode!
     }
    
     #query funktioniert
@@ -178,6 +179,55 @@ class newDB {
 			return false;	
 		}
     }
+    
+    function getUserID($regUsername){
+        ## UserID von usernamen bekommen
+		$query = "SELECT `uid` FROM `user` WHERE `username` = '".$regUsername."'";		
+		
+                $res = mysqli_query($this->con, $query);		
+                while($x = mysqli_fetch_object($res)){
+                $uid=$x->uid;
+                }
+                return $uid;
+    }
+
+    function getKundenID($uid){
+        ## KundenID von userID bekommen
+		$query = "SELECT `kid` FROM `kunde` WHERE `uid` = '".$uid."'";		
+		
+                $res = mysqli_query($this->con, $query);		
+                while($x = mysqli_fetch_object($res)){
+                $kid=$x->kid;
+                }
+                return $kid;
+    }        
+    
+    function insertKunde($regUID, $regAnrede, $regVorname, $regNachname, $regAdresse, $regPLZ, $regOrt, $land, $regEmail){
+		$query = "INSERT INTO `web2webshop`.`kunde` ( `uid`, `anrede`, `vorname`, `nachname`, `adresse`, `plz`, `ort`, `land`, `email`) "
+                        . "VALUES ('".$regUID."', '".$regAnrede."', '".$regVorname."', '".$regNachname."', '".$regAdresse."', '".$regPLZ."', '".$regOrt."', '".$land."', '".$regEmail."');";		
+		$res = mysqli_query($this->con, $query);		
+		
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}        
+    }
+    
+    function insertZahlungsinfo($kid, $zahlungsart, $zahlungsdetails){
+        $query = "INSERT INTO `web2webshop`.`zahlungsinfo` (`kid`,`art`, `nummer`) VALUES ('".$kid."', '".$zahlungsart."', '".$zahlungsdetails."');";
+        $res = mysqli_query($this->con, $query);
+        
+        	if($res){
+			return true;
+		}else{
+			return false;	
+		} 
+        
+    }
+                
+               
+ 
 
 #ENDE
 }

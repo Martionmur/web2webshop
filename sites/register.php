@@ -15,22 +15,22 @@
         || $_POST['formZahlungsArt'] == "invalid"
         || !isset($_POST['formZahlungsDet']) || $_POST['formZahlungsDet'] == ""){
             $valid = false;
-            alert("Bitte alle Felder ausfüllen."); #alert != php-funktion
+            echo "<script type='text/javascript'>alert('Bitte alle Felder ausfüllen')</script>";
             
         }
     
     if($_POST['formPasswort1'] != $_POST['formPasswort2'])
         {
             $valid = false;
-            alert("Passwörter gleichen sich nicht.");
+            echo "<script type='text/javascript'>alert('Passwörter nicht gleich')</script>";
         }
         
     if ($valid == true) {
-        $db = new DB();
+        $db = new newDB();
         $db->doConnect();
         
-        $uval=$db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']));
-        if($uval === FALSE){return "bad user insert";}
+        $db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']));
+        if($uval == FALSE){return "bad user insert";}
         
         $uid =$db->getUserID($_POST['formUsername']);       
         $kval=$db->insertKunde($uid, $formAnrede, $formVorname, $formNachname, $formAdresse, $formPLZ, $formOrt, $formEmail);

@@ -27,16 +27,17 @@
 <?php
 
 
-    if ($_SESSION['user']->rolle == "kunde") {
-        $xmlnav = simplexml_load_file("config/navigation2.xml");
-    } 
-    elseif ($_SESSION['user']->rolle == "admin") {
-        $xmlnav = simplexml_load_file("config/navigation3.xml");
-    }
-    else {
-        $xmlnav = simplexml_load_file("config/navigation1.xml");
-    }    
-        $cnt = 0;
+
+if ((!empty($_SESSION['user'])) && $_SESSION['user']->rolle == "kunde") {
+    $xmlnav = simplexml_load_file("config/navigation2.xml");
+} 
+elseif ((!empty($_SESSION['user'])) && $_SESSION['user']->rolle == "admin") {
+    $xmlnav = simplexml_load_file("config/navigation3.xml");
+}
+else {
+    $xmlnav = simplexml_load_file("config/navigation1.xml");
+}    
+    $cnt = 0;
     
 //    foreach($xmlnav->eintrag as $eintrag){
 //        if ($cnt==0) echo "<li class='active'><a href = 'index.php?tab=".$eintrag->link_to."'>".$eintrag->title."</a></li>";
