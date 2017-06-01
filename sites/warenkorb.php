@@ -5,18 +5,30 @@
         
   ?>      
 <div class="container">
-    <div>
+    
    <?php
    
         $db = new newDB();
         $db->doConnect();
+        echo "<div>"
+        . "<div>";
         $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
         $sum = $db->printWarenkorb($query);
         
-        $query = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.SESSION;
-        $kid = $db->printKundeninfo($query);
+        echo "</div> <div style= 'float'>";  
+        echo var_dump($_SESSION['user']);
+        if ($_SESSION['user']->rolle == 'kunde'){
         
-        
+            $query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
+            $kid = $db->printKundeninfo($query2);
+            
+            echo $kid;
+            echo "<input type=button href='index.php?tab=meinkonto.php' value='Kundendaten ändern'> ";
+        } else {
+            echo "<p>Bitte regestrieren Sie sich um mit der Bestellung fortzufahren.</p>"
+                ."<input type=button href='index.php?tab=register.php' value='Als Kunde Registrieren'> ";
+        } 
+        echo '</div>';
         
     ?>  
     </div>
@@ -27,6 +39,10 @@
             <div class="col-sm-8">
               <select name="formAnrede" class="form-control" id="Anrede">
                 <option value="invalid">-</option>
+           <?php
+           $query3 = 'SELECT `art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
+            $db->printZahlungsOption($query3);
+           ?>
         <!--    <option value="Herr">Herr </option> FOREACH ZAHLUNGSMETHODE DES KUNDEN
                 <option value="Frau">Frau </option> -->
               </select>

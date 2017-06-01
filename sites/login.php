@@ -36,7 +36,7 @@
                 $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
         #        echo $_SESSION['user']->rolle;
                 
-                echo "<script type='text/javascript'>alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. \n Willkommen!')</script>";
+                echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
             
                 
                 #if ($logRemember){
