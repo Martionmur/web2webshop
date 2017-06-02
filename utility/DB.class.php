@@ -8,7 +8,7 @@ class newDB {
     #connection funktioniert
     function doConnect(){
         $this->con = mysqli_connect("localhost","root","","web2webshop");
-#        $this->mysqli_set_charset('UTF-8');
+        $this->con->set_charset('UTF-8');
         #add UTF-8 mode!
     }
    
@@ -41,7 +41,7 @@ class newDB {
         $res = mysqli_query($this->con, $query);        
         $sum = 0.00;
         
-        echo "<table class='table-striped'> 
+        echo "<table class='table-striped' style= 'width:100%'> 
                 <thead> 
                   <tr>
                     <th></th>
@@ -102,7 +102,32 @@ class newDB {
             echo '<option value="'.$zinfo->zid.'">'.$zinfo->art.': '.$zinfo->nummer.'</option>';
         }         
     }
-           
+#         $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"'
+    function getGutschein($query4, $gutscheincode){
+        # echo "<br> query".var_dump($query4);   
+        $gutschein = new Gutschein;
+          $gutschein->gid = -1;        
+          $gutschein->wert = -1;
+          
+        $res = mysqli_query($this->con, $query4);
+        if($res && mysqli_num_rows($res) == 1){
+                $gutsch = mysqli_fetch_object($res);
+                # Gutschein validiern        
+                # echo "<br> gutsch".var_dump($gutsch);
+                if($gutsch->valid == 1 && $gutsch->ablaufwert >= 0 ){
+
+                # Gutschein validiern         
+                $gutschein = new Gutschein;
+                $gutschein->gid = $gutsch->gid;        
+                $gutschein->wert = $gutsch->wert;
+                }
+        } else {
+            echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
+   
+        }
+        return $gutschein;
+    }
+
     
     function printProduktliste($query){
         $res = mysqli_query($this->con, $query);
@@ -116,7 +141,7 @@ class newDB {
             echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
             echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
             echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
-            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick=ProduktZuWarenkorb()></p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
             echo '      </div>';
             echo '    </div>';
             echo '  </div>';

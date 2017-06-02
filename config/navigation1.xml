@@ -2,23 +2,23 @@
 <navigation>
 	<eintrag id="1">
 		<title>Home</title>
-		<link_to>index.php</link_to>
+		<link_to>home</link_to>
 	</eintrag>
 	
 	<eintrag id="2">
 		<title>Produkte</title>
-		<link_to>produkte.php</link_to>
+		<link_to>produkte</link_to>
 	</eintrag>
 	<eintrag id="3">
 		<title>Warenkorb</title>
-		<link_to>warenkorb.php</link_to>
+		<link_to>warenkorb</link_to>
 	</eintrag>
         <side_eintrag>
             <title>
                 Registrieren
             </title>
             <link_to>
-                register.php
+                register
             </link_to>
         </side_eintrag>
         <side_eintrag>
@@ -26,7 +26,7 @@
                 Login
             </title>
             <link_to>
-                login.php
+                login
             </link_to>
         </side_eintrag>
         <side_eintrag>
@@ -34,7 +34,7 @@
                 Warenkorb
             </title>
             <link_to>
-                warenkorb.php
+                warenkorb
             </link_to>
         </side_eintrag>
 </navigation>

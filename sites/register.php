@@ -1,7 +1,35 @@
 <?php
+
+        /*
+        $db = new newDB();
+        $db->doConnect();
+        $wahr = false;
+        
+        if ($db->countUserCheck("testuser")) {
+            echo "<script type='text/javascript'>alert('Username bereits vergeben.')</script>";
+        }
+        else {
+            
+        #if($db->insertUser("Testibus", "Testibuspw")) echo "hat gepasst";
+        #else echo"hat nicht gepasst";
+        #}
+        
+        $testUID=$db->getUserID("Testus");
+        echo"TestUID:";
+        var_dump($testUID);
+        
+        
+        #if($db->insertKunde("$testUID", "Herr", "Matthias", "Pfandler", "Testadresse", "1180", "Wien", "Österreich", "mpfandler@lalal.at")) echo "kunde angelegt";
+        #else echo "Kunde wurde nicht angelegt";
+        $teskID = $db->getKundenID($testUID);
+        echo"TestKID:";
+        var_dump($teskID);
+        */
+
 ## Validate form values from form <- form 'action = ""' so data is send to site itself again
     $valid = true;
-
+    #sind alle Daten eingegeben?
+   if(!empty($_POST)){
     if(    $_POST['formAnrede'] == "invalid"
         || !isset($_POST['formVorname'])     || $_POST['formVorname'] == "" 
         || !isset($_POST['formNachname'])    || $_POST['formNachname'] == ""
@@ -12,59 +40,48 @@
         || !isset($_POST['formUsername'])    || $_POST['formUsername'] == ""
         || !isset($_POST['formPasswort1'])   || $_POST['formPasswort1'] == ""
         || !isset($_POST['formPasswort2'])   || $_POST['formPasswort2'] == ""
-        || $_POST['formZahlungsArt'] == "invalid"
-        || !isset($_POST['formZahlungsDet']) || $_POST['formZahlungsDet'] == ""){
+        || $_POST['formZahlungsart'] == "invalid"
+        || !isset($_POST['formZahlungsdet']) || $_POST['formZahlungsdet'] == ""){
             $valid = false;
             echo "<script type='text/javascript'>alert('Bitte alle Felder ausfüllen')</script>";
             
         }
-    
-    if($_POST['formPasswort1'] != $_POST['formPasswort2'])
-        {
-            $valid = false;
-            echo "<script type='text/javascript'>alert('Passwörter nicht gleich')</script>";
+    #passwort validieren
+        if(isset($_POST['formPasswort1']) && (isset($_POST['formPasswort2']))){
+            if($_POST['formPasswort1'] != $_POST['formPasswort2'])
+            {
+                $valid = false;
+                echo "<script type='text/javascript'>alert('Passwörter nicht gleich')</script>";
+            }
         }
+    
+        if ($valid == true) {
+            $db = new newDB();
+            $db->doConnect();
         
-    if ($valid == true) {
-        $db = new newDB();
-        $db->doConnect();
+            if($db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']))) echo "User wurde angelegt";
+            else echo "User konnte nicht angelegt werdden";
         
-        $db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']));
-        if($uval == FALSE){return "bad user insert";}
+            $uid =$db->getUserID($_POST['formUsername']);       
+            echo"GetUserID: ";
+            var_dump($uid);
+            if($db->insertKunde("$uid", $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],"Österreich", $_POST['formEmail'])) echo "kunde angelegt";
+            else echo "Kunde wurde nicht angelegt";
         
-        $uid =$db->getUserID($_POST['formUsername']);       
-        $kval=$db->insertKunde($uid, $formAnrede, $formVorname, $formNachname, $formAdresse, $formPLZ, $formOrt, $formEmail);
-        if($kval === FALSE){return "bad kunde insert";}
+            $kid =$db->getKundenID($uid);       
+            echo "GEt KundenID: ";
+            var_dump($kid);
+            if($db->insertZahlungsinfo($kid, $_POST['formZahlungsart'], $_POST['formZahlungsdet'])) echo "Zahlungsinfo angelegt" ;
+            else echo "Zahlungsinfo nicht angelegt.";
         
-        $kid =$db->getKundenID($uid);       
-        $zval=$db->insertZahlungsinfo($kid, $_POST['formZahlungsArt'], $_POST['formZahlungsDet']);
-        if($zval === FALSE){return "bad zahlungsinfo insert";} 
-        
-        ### Erfolg! Go to LogIn after Registration
-        ### DisconnectDB
-    }
-
-## get input
-
-## check input:
-### fields not empty + no leerzeichen
-### PW 2x ident
-### adresse contains hausnumber? check not nessesary
-
-### Username nicht bereits vorhanden - checkt DB.insertUser()
-
-## DB
-### insert User - 
-### get Userid for Username
-### insert Kunde
-### get Kundenid from Userid
-### insert Zahlungsinformation
-
-###Erfolgsmeldung
-
+            ### Erfolg! Go to LogIn after Registration
+            ### DisconnectDB
+        }
+}
 
 
 ?>
+
 <div class="col-sm-6"id="regArea">
     <h1>Registrieren</h1>
     <p>Bitte registrieren Sie sich im Web2Webshop</p>   
@@ -76,6 +93,7 @@
         <label for="Anrede" class="col-sm-4 control-label">Anrede</label>
         <div class="col-sm-8"> 
           <select name="formAnrede" class="form-control" id="Anrede">
+            <!--check valid values for dropdown-->
             <option value="invalid">-</option>
             <option value="Herr">Herr </option>
             <option value="Frau">Frau </option>
@@ -150,7 +168,7 @@
                 <h4 class="col-sm-offset-4 col-sm-8"> Zahlungsinformationen </h4>
                 
       <div class="form-group">
-        <label for="Art" class="col-sm-4 control-label">Anrede</label>
+        <label for="Art" class="col-sm-4 control-label">Zahlungsart</label>
         <div class="col-sm-8"> 
           <select name="formZahlungsart" class="form-control" id="Art">
             <option value="invalid">-</option>
@@ -165,7 +183,7 @@
       <div class="form-group">
         <label for="Zahlungsdet" class="col-sm-4 control-label">Zahlungsdetails</label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" id="Zahlungsdet" name="formZahlungsDet" placeholder="IBAN, Kreditkartennummer, etc.">
+          <input type="text" class="form-control" id="Zahlungsdet" name="formZahlungsdet" placeholder="IBAN, Kreditkartennummer, etc.">
         </div>
       </div>
 

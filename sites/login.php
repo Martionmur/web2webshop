@@ -11,7 +11,7 @@
 
 ## Validate form values from form - form 'action = ""' so data is send to site itself again
 
-
+if(!empty($_POST)){
     if(    !isset($_POST['logUsername'])    || $_POST['logUsername'] == ""
         || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] == ""){
             echo "<script type='text/javascript'>alert('Bitte Username und Passwort ausfüllen.')</script>";
@@ -48,7 +48,7 @@
         
         
     }
-
+}
 
 
 ?>

@@ -2,27 +2,27 @@
 <navigation>
 	<eintrag id="1">
 		<title>Home</title>
-		<link_to>index.php</link_to>
+		<link_to>home</link_to>
 	</eintrag>
 	
 	<eintrag id="2">
 		<title>Produkte bearbeiten</title>
-		<link_to>produkte_bearbeiten.php</link_to>
+		<link_to>produkte_bearbeiten</link_to>
 	</eintrag>
 	<eintrag id="3">
 		<title>Kunden bearbeiten</title>
-		<link_to>kunden_bearbeiten.php</link_to>
+		<link_to>kunden_bearbeiten</link_to>
 	</eintrag>
         <eintrag id="4">
             <title>Gutschein verwalten</title>
-            <link_to>gutschein_verwalten.php</link_to>
+            <link_to>gutschein_verwalten</link_to>
         </eintrag>
                 <side_eintrag>
             <title>
                 Loggout
             </title>
             <link_to>
-                home.php
+                home
             </link_to>
         </side_eintrag>
         <side_eintrag>

@@ -2,7 +2,7 @@
     include ("utility/DB.class.php");
     include("model/Produkt.class.php");
     include("model/User.class.php");
-
+    include("model/Gutschein.class.php");
     
     session_start();
     if (!isset($_SESSION['user'])){
@@ -20,6 +20,11 @@
         ["pid"=>2, "anz" => 2 ],
         ["pid"=>3, "anz" => 2 ],
     ];
+        
+# Über navigation login und logout
+# 
+#                if get ['tab'] = logout user->logout
+        
 ?>
 <!DOCTYPE html>
 
@@ -32,48 +37,48 @@
         <!-- BOOTSRAP Latest compiled and minified JavaScript -->
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <meta charset="UTF-8">
-        <?php
-            include("inc/navigation.php");
 
-        ?>
         
 
     </head>
     <body>
      
-        
+        <?php
+            include("inc/navigation.php");
+
+        ?>    
         
         <div id="content">
         <?php
         if(!isset($_GET['tab'])){
-            $_GET['tab']= 'home.php';
+            $_GET['tab']= 'home';
         }
             switch($_GET['tab']) {
-            case 'login.php':
+            case 'login':
                 include ("sites/login.php");
                 break;
-            case 'logout.php':
+            case 'logout':
                 include ("sites/logout.php");
                 break;
-            case 'register.php':
+            case 'register':
                 include  ("sites/register.php");
                 break;
-            case 'produkte.php':
+            case 'produkte':
                 include  ("sites/produkte.php");
                 break;
-            case 'warenkorb.php':
+            case 'warenkorb':
                 include  ("sites/warenkorb.php");
                 break;
-            case 'produkte_bearbeiten.php':
+            case 'produkte_bearbeiten':
                 include  ("sites/produkte_bearbeiten.php");
                 break;
-            case 'kunden_bearbeiten.php':
+            case 'kunden_bearbeiten':
                 include  ("sites/kunde_bearbeiten.php");
                 break;
-            case 'gutschein_verwalten.php':
+            case 'gutschein_verwalten':
                 include  ("sites/gutschein_verwalten.php");
                 break;
-            case 'meinkonto.php':
+            case 'meinkonto':
                 include  ("sites/meinkonto.php");
                 break;
             default:

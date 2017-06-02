@@ -1,5 +1,8 @@
 <?php
 
+JS function ProduktZuWarenkorb($pid){
+    
+}
 
 //
 //
