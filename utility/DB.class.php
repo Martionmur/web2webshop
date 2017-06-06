@@ -15,6 +15,8 @@ class newDB {
     #query funktioniert
     #->Übergabe der Abfrage per ($query) -> universell einsetzbar zB. abfragen mit Kategorien...
     #Klasse Produktliste weg -> nur ein array von Produkten, ausgabe über db-class
+
+#PRODUKTE
     function giveProduktlist($query){
         $PL = array();
         $res = mysqli_query($this->con, $query);
@@ -37,98 +39,6 @@ class newDB {
         echo "</ul></table>";
     }
     
-    function printWarenkorb($query){
-        $res = mysqli_query($this->con, $query);        
-        $sum = 0.00;
-        
-        echo "<table class='table-striped' style= 'width:100%'> 
-                <thead> 
-                  <tr>
-                    <th></th>
-                    <th>  Bezeichnung  </th>
-                    <th>  Preis  </th>
-                    <th>  Anzahl  </th>
-                    <th>  Gesamt  </th>
-                  </tr>
-                </thead>
-                <tbody>";
-        while($produkt = mysqli_fetch_object($res)){    
-            foreach ($_SESSION['cart'] as $cart){
-                if ($cart['pid'] == $produkt->pid){
-                    $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-                    echo '<tr>'
-                            . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
-                            . '<td>'.$tempProd->bezeichnung.'</td>'
-                            . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
-                            . '<td align="right">'.$cart['anz'].' </td>'
-                            . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
-                    .    '</tr>';
-                    $sum += $tempProd->preis*$cart['anz'];
-                }
-            }
-        }
-        echo '</tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="4" align="right" > Summe </td>
-                  <td align="right">'.number_format($sum ,"2",",",".").'€<td>
-                </tr>
-              </tfoot>
-            </table>';
-        return $sum;
-        
-    }
-    
-    #$query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
-    function printKundeninfo($query){
-        $kid=-1;
-        $res = mysqli_query($this->con, $query);
-        if($res){       
-            $kunde = mysqli_fetch_array($res);
-            echo '<p>'.$kunde['anrede']. ' ' .$kunde['vorname'] . ' ' .$kunde['nachname'].'</p>'
-                .'<p>'.$kunde['adresse']. ' </p>'
-                .'<p>'.$kunde['plz'].' '.$kunde['ort'] .'</p>'
-                .'<p>'.$kunde['land'].'</p>';    
-                $kid = $kunde['kid'];
-        return $kid;
-        }else echo "<p>Kundeninformation nicht gefunden.</p>";
-    }
-    
-    
-           #$query3 = 'SELECT `zid`,`art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
-    function printZahlungsOption($query3){
-        $res = mysqli_query($this->con, $query3);
-        while ($zinfo = mysqli_fetch_object($res)){
-            echo '<option value="'.$zinfo->zid.'">'.$zinfo->art.': '.$zinfo->nummer.'</option>';
-        }         
-    }
-#         $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"'
-    function getGutschein($query4, $gutscheincode){
-        # echo "<br> query".var_dump($query4);   
-        $gutschein = new Gutschein;
-          $gutschein->gid = -1;        
-          $gutschein->wert = -1;
-          
-        $res = mysqli_query($this->con, $query4);
-        if($res && mysqli_num_rows($res) == 1){
-                $gutsch = mysqli_fetch_object($res);
-                # Gutschein validiern        
-                # echo "<br> gutsch".var_dump($gutsch);
-                if($gutsch->valid == 1 && $gutsch->ablaufwert >= 0 ){
-
-                # Gutschein validiern         
-                $gutschein = new Gutschein;
-                $gutschein->gid = $gutsch->gid;        
-                $gutschein->wert = $gutsch->wert;
-                }
-        } else {
-            echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
-   
-        }
-        return $gutschein;
-    }
-
-    
     function printProduktliste($query){
         $res = mysqli_query($this->con, $query);
         
@@ -149,6 +59,179 @@ class newDB {
             echo '  </div>';
     }
     
+    
+#WARENKORB   
+    function printWarenkorb($query){
+        $res = mysqli_query($this->con, $query);        
+        $sum = 0.00;
+        
+        echo "<table class='table-striped' style= 'width:100%'> 
+                <thead> 
+                  <tr>
+                    <th></th>
+                    <th>  Bezeichnung  </th>
+                    <th>  Preis  </th>
+                    <th>  Anzahl  </th>
+                    <th>  Gesamt  </th>
+                    <th>  Optionen  </th>
+                  </tr>
+                </thead>
+                <tbody>";
+        while($produkt = mysqli_fetch_object($res)){    
+            foreach ($_SESSION['cart'] as $cart){
+                if ($cart['pid'] == $produkt->pid){
+                    $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+                    echo '<tr>'
+                            . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
+                            . '<td>'.$tempProd->bezeichnung.'</td>'
+                            . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
+                            . '<td align="right">'.$cart['anz'].' </td>'
+                            . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
+                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="ProduktZuWarenkorb('.$tempProd->pid.')">  '
+                            . '<input class="btn btn-default" type="button" value="-" onclick="ProduktAusWarenkorb('.$tempProd->pid.')">'
+                            . '</td>'
+                    .    '</tr>';
+                    $sum += $tempProd->preis*$cart['anz'];
+                }
+            }
+        }
+        echo '</tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" align="right" > Summe </td>
+                  <td align="right">'.number_format($sum ,"2",",",".").'€</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>';
+        return $sum;
+        
+    }
+    
+    #$query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
+    function printKundeninfo($uid){
+        $kid=-1;
+        $query = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$uid;
+        $res = mysqli_query($this->con, $query);
+        if($res){       
+            $kunde = mysqli_fetch_array($res);
+            echo '<p>'.$kunde['anrede']. ' ' .$kunde['vorname'] . ' ' .$kunde['nachname'].'</p>'
+                .'<p>'.$kunde['adresse']. ' </p>'
+                .'<p>'.$kunde['plz'].' '.$kunde['ort'] .'</p>'
+                .'<p>'.$kunde['land'].'</p>';    
+                $kid = $kunde['kid'];
+        return $kid;
+        }else echo "<p>Kundeninformation nicht gefunden.</p>";
+    }
+    
+    
+           #$query3 = 'SELECT `zid`,`art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
+    function printZahlungsOption($query3){
+        $res = mysqli_query($this->con, $query3);
+        while ($zinfo = mysqli_fetch_object($res)){
+            # var_dump($zinfo);
+            echo '<option value="'.$zinfo->zid.'">'.$zinfo->art.': '.$zinfo->nummer.'</option>';
+        }         
+    }
+#         $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"'
+    function getGutschein($query4, $gutscheincode){
+        # echo "<br> query".var_dump($query4);   
+        $gutschein = new Gutschein;
+          $gutschein->gid = -1;        
+          $gutschein->wert = 0;
+          
+        $res = mysqli_query($this->con, $query4);
+        if($res && mysqli_num_rows($res) == 1){
+                $gutsch = mysqli_fetch_object($res);
+                # Gutschein validiern        
+                # echo "<br> gutsch".var_dump($gutsch);
+                if($gutsch->valid == 1 && $gutsch->ablaufwert >= 0 ){
+
+                # Gutschein validiern         
+                $gutschein = new Gutschein;
+                $gutschein->gid = $gutsch->gid;        
+                $gutschein->wert = $gutsch->wert;
+                }
+        } else {
+            echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
+   
+        }
+        return $gutschein;
+    }
+
+# BESTELLUNG ABSCHICKEN
+    
+    function insertBestellungOhneGutschein($kid, $zid){
+        
+        $this->insertBestellung($kid, $zid, NULL, NULL);
+        
+    }
+    
+    function insertBestellung($kid, $zid, $gid, $gutscheinentwertung){
+        ## Bestellung einfügen
+                if ($zid== "invalid") $zid=-1;
+		$query = "INSERT INTO `bestellung` ( `kid`, `datum` ,`zid`, `gid`,`gutscheinentwertung`) VALUES ('".$kid."', sysdate(), '".$zid."', '".$gid."', '".$gutscheinentwertung."');";		
+		//echo $query;
+		$res = mysqli_query($this->con, $query);		
+		echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}
+                
+    }
+    
+    function getLastBestellungsID(){
+        ## Letzt eingefügte BestellID  bekommen
+		$query = "SELECT `bid` FROM `bestellung` ORDER BY `datum` DESC LIMIT 1";
+                $res = mysqli_query($this->con, $query);		
+                $x = mysqli_fetch_object($res);
+                return $x->bid;
+    }
+        
+    function updateGutschein($gid, $restguthaben){
+        ## Bestellung einfügen
+                if ($restguthaben == 0) {
+                    $query = "UPDATE `gutschein` SET `valid`= 'FALSE' WHERE `gid`= '".$gid."');";		
+                    $res = mysqli_query($this->con, $query);
+                } else {
+                    $query = "UPDATE `gutschein` SET `wert`= '".$restguthaben."' WHERE `gid`= '".$gid."');";		
+                    $res = mysqli_query($this->con, $query);
+                }
+		echo "</br> DBUpdateGutschein: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}           
+    }
+    function insertCart($cart, $bid){
+                $query = "INSERT INTO `b_has_p` ( `pid`, `menge` ,`bid`) VALUES "; 
+                $count = 0;
+                foreach ($cart as $prod) {
+                    if ($count == 0){
+                    $query .= "(".$prod['pid'].",".$prod['anz'].",".$bid.")";
+                    } else {
+                    $query .= ", (".$prod['pid'].",".$prod['anz'].",".$bid.")";    
+                    }
+                    $count ++;
+                }
+                echo $query;
+                
+		$res = mysqli_query($this->con, $query);		
+		echo "</br> B_has_P insert bestellung: ". var_dump($res)."<br>" ;
+                
+                if($res){
+			return true;
+		}else{
+			return false;	
+		}     
+}
+    
+
+
+# LOGIN & REGSITRATION
         
     function countUserCheck($regUsername){
         $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."';";		
@@ -183,7 +266,6 @@ class newDB {
         return $user;
         
     }
-    
     
     function insertUser($regUsername, $regPasswort){
         ## User einfügen
