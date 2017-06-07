@@ -171,7 +171,7 @@ class newDB {
         ## Bestellung einfügen
                 if ($zid== "invalid") $zid=-1;
 		$query = "INSERT INTO `bestellung` ( `kid`, `datum` ,`zid`, `gid`,`gutscheinentwertung`) VALUES ('".$kid."', sysdate(), '".$zid."', '".$gid."', '".$gutscheinentwertung."');";		
-		//echo $query;
+		echo $query;
 		$res = mysqli_query($this->con, $query);		
 		echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
 		if($res){
@@ -193,7 +193,7 @@ class newDB {
     function updateGutschein($gid, $restguthaben){
         ## Bestellung einfügen
                 if ($restguthaben == 0) {
-                    $query = "UPDATE `gutschein` SET `valid`= 'FALSE' WHERE `gid`= '".$gid."');";		
+                    $query = "UPDATE `gutschein` SET `valid`= '0' WHERE `gid`= '".$gid."');";		
                     $res = mysqli_query($this->con, $query);
                 } else {
                     $query = "UPDATE `gutschein` SET `wert`= '".$restguthaben."' WHERE `gid`= '".$gid."');";		
