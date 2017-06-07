@@ -59,6 +59,24 @@ class newDB {
             echo '  </div>';
     }
     
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
+            echo '    <div class="thumbnail ui-widget-content">';
+            echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
+            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
+            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+    }
+  
+  
     
 #WARENKORB   
     function printWarenkorb($query){
@@ -162,7 +180,7 @@ class newDB {
 # BESTELLUNG ABSCHICKEN
     
     function insertBestellungOhneGutschein($kid, $zid){
-        
+       
         $this->insertBestellung($kid, $zid, NULL, NULL);
         
     }
