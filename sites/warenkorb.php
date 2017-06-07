@@ -94,7 +94,7 @@ $db->doConnect();
         </div>
     </div>
 <?php
-# Bestellungeinfügen        
+# Bestellung einfügen        
 if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahlen
     if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
         echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
@@ -116,13 +116,16 @@ if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahle
         }
 
         
-        if(!empty($bid))
-            $bvalid =$db->insertCart($_SESSION['cart'], $bid);          
-            echo "</br> GutscheinUpdate:". $bvalid ."<br>";
-            
-            $bvalid =$db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
-            echo "</br> GutscheinUpdate:". $bvalid ."<br>";
-            # WHYYYYYYYYYYY NOT?????????????????????????????????????????????????
+        if(!empty($bid)){
+            $bvalid = $db->insertCart($_SESSION['cart'], $bid);          
+            echo "</br> insert cart:". $bvalid ."<br>";
+        
+            if (!empty($_SESSION['gutschein'])){    
+                $bvalid = $db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
+                echo "</br> GutscheinUpdate:". $bvalid ."<br>";
+                # WHYYYYYYYYYYY NOT?????????????????????????????????????????????????
+            }
+        }
                  
         
 
@@ -177,8 +180,8 @@ if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahle
         
         
         
-    echo "<br> Bestellung :". var_dump($_POST['zahlung']);    
-    echo "<br> Gutschein :". var_dump($_SESSION['gutschein']->gid);
+    #echo "<br> Bestellung :". var_dump($_POST['zahlung']);    
+    #echo "<br> Gutschein :". var_dump($_SESSION['gutschein']->gid);
 
         
         
