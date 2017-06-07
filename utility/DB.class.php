@@ -15,6 +15,8 @@ class newDB {
     #query funktioniert
     #->Übergabe der Abfrage per ($query) -> universell einsetzbar zB. abfragen mit Kategorien...
     #Klasse Produktliste weg -> nur ein array von Produkten, ausgabe über db-class
+
+#PRODUKTE
     function giveProduktlist($query){
         $PL = array();
         $res = mysqli_query($this->con, $query);
@@ -37,6 +39,46 @@ class newDB {
         echo "</ul></table>";
     }
     
+    function printProduktliste($query){
+        $res = mysqli_query($this->con, $query);
+        
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
+            echo '    <div class="thumbnail">';
+            echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
+            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
+            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+    }
+    
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
+            echo '    <div class="thumbnail ui-widget-content">';
+            echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
+            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
+            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+    }
+  
+  
+    
+#WARENKORB   
     function printWarenkorb($query){
         $res = mysqli_query($this->con, $query);        
         $sum = 0.00;
@@ -49,6 +91,7 @@ class newDB {
                     <th>  Preis  </th>
                     <th>  Anzahl  </th>
                     <th>  Gesamt  </th>
+                    <th>  Optionen  </th>
                   </tr>
                 </thead>
                 <tbody>";
@@ -62,6 +105,9 @@ class newDB {
                             . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
                             . '<td align="right">'.$cart['anz'].' </td>'
                             . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
+                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="ProduktZuWarenkorb('.$tempProd->pid.')">  '
+                            . '<input class="btn btn-default" type="button" value="-" onclick="ProduktAusWarenkorb('.$tempProd->pid.')">'
+                            . '</td>'
                     .    '</tr>';
                     $sum += $tempProd->preis*$cart['anz'];
                 }
@@ -71,7 +117,8 @@ class newDB {
               <tfoot>
                 <tr>
                   <td colspan="4" align="right" > Summe </td>
-                  <td align="right">'.number_format($sum ,"2",",",".").'€<td>
+                  <td align="right">'.number_format($sum ,"2",",",".").'€</td>
+                  <td></td>
                 </tr>
               </tfoot>
             </table>';
@@ -80,8 +127,9 @@ class newDB {
     }
     
     #$query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
-    function printKundeninfo($query){
+    function printKundeninfo($uid){
         $kid=-1;
+        $query = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$uid;
         $res = mysqli_query($this->con, $query);
         if($res){       
             $kunde = mysqli_fetch_array($res);
@@ -99,6 +147,7 @@ class newDB {
     function printZahlungsOption($query3){
         $res = mysqli_query($this->con, $query3);
         while ($zinfo = mysqli_fetch_object($res)){
+            # var_dump($zinfo);
             echo '<option value="'.$zinfo->zid.'">'.$zinfo->art.': '.$zinfo->nummer.'</option>';
         }         
     }
@@ -107,7 +156,7 @@ class newDB {
         # echo "<br> query".var_dump($query4);   
         $gutschein = new Gutschein;
           $gutschein->gid = -1;        
-          $gutschein->wert = -1;
+          $gutschein->wert = 0;
           
         $res = mysqli_query($this->con, $query4);
         if($res && mysqli_num_rows($res) == 1){
@@ -128,27 +177,79 @@ class newDB {
         return $gutschein;
     }
 
+# BESTELLUNG ABSCHICKEN
     
-    function printProduktliste($query){
-        $res = mysqli_query($this->con, $query);
+    function insertBestellungOhneGutschein($kid, $zid){
+       
+        $this->insertBestellung($kid, $zid, NULL, NULL);
         
-        while($produkt = mysqli_fetch_object($res)){
-            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
-            echo '    <div class="thumbnail ui-widget-content">';
-            echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
-            echo '      <div class="caption">';
-            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
-            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
-            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
-            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
-            echo '      </div>';
-            echo '    </div>';
-            echo '  </div>';
-        }
-            echo '  </div>';
     }
     
+    function insertBestellung($kid, $zid, $gid, $gutscheinentwertung){
+        ## Bestellung einfügen
+                if ($zid== "invalid") $zid=-1;
+		$query = "INSERT INTO `bestellung` ( `kid`, `datum` ,`zid`, `gid`,`gutscheinentwertung`) VALUES ('".$kid."', sysdate(), '".$zid."', '".$gid."', '".$gutscheinentwertung."');";		
+		echo $query;
+		$res = mysqli_query($this->con, $query);		
+		echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}
+                
+    }
+    
+    function getLastBestellungsID(){
+        ## Letzt eingefügte BestellID  bekommen
+		$query = "SELECT `bid` FROM `bestellung` ORDER BY `datum` DESC LIMIT 1";
+                $res = mysqli_query($this->con, $query);		
+                $x = mysqli_fetch_object($res);
+                return $x->bid;
+    }
+        
+    function updateGutschein($gid, $restguthaben){
+        ## Bestellung einfügen
+                if ($restguthaben == 0) {
+                    $query = "UPDATE `gutschein` SET `valid`= '0' WHERE `gid`= '".$gid."');";		
+                    $res = mysqli_query($this->con, $query);
+                } else {
+                    $query = "UPDATE `gutschein` SET `wert`= '".$restguthaben."' WHERE `gid`= '".$gid."');";		
+                    $res = mysqli_query($this->con, $query);
+                }
+		echo "</br> DBUpdateGutschein: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}           
+    }
+    function insertCart($cart, $bid){
+                $query = "INSERT INTO `b_has_p` ( `pid`, `menge` ,`bid`) VALUES "; 
+                $count = 0;
+                foreach ($cart as $prod) {
+                    if ($count == 0){
+                    $query .= "(".$prod['pid'].",".$prod['anz'].",".$bid.")";
+                    } else {
+                    $query .= ", (".$prod['pid'].",".$prod['anz'].",".$bid.")";    
+                    }
+                    $count ++;
+                }
+                echo $query;
+                
+		$res = mysqli_query($this->con, $query);		
+		echo "</br> B_has_P insert bestellung: ". var_dump($res)."<br>" ;
+                
+                if($res){
+			return true;
+		}else{
+			return false;	
+		}     
+}
+    
+
+
+# LOGIN & REGSITRATION
         
     function countUserCheck($regUsername){
         $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."';";		
@@ -183,7 +284,6 @@ class newDB {
         return $user;
         
     }
-    
     
     function insertUser($regUsername, $regPasswort){
         ## User einfügen

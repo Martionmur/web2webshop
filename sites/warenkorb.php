@@ -1,22 +1,20 @@
 <?php
 
-        $db = new newDB();
-        $db->doConnect(); 
-        
-        
-  ?>      
+$db = new newDB();
+$db->doConnect(); 
+           
+?>      
 
 <div class="container">
     <div>
         <h1>Warenkorb</h1>
-        <div id= 'kundeninfo' class='col-md-6' style= 'float'>  
+        <div id= 'kundeninfo' class='col-md-6'>  
 
             <?php        
                  # echo var_dump($_SESSION['user']);
                  if ($_SESSION['user']->rolle == 'kunde'){
                      echo "<p><b>Lieferadresse</p></b>";
-                     $query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
-                     $kid = $db->printKundeninfo($query2);
+                     $kid = $db->printKundeninfo($_SESSION['user']->uid);
 
                      #echo $kid;
                      echo "<input type=button href='index.php?tab=meinkonto.php' value='Kundendaten ändern'> ";
@@ -28,7 +26,7 @@
                  } 
              ?> 
         </div>
-        <div id= 'warenkorb' class='col-md-6'>    
+        <div id= 'warenkorb' class='col-md-6' style= 'float'>    
             <?php
                  $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
                  $sum = $db->printWarenkorb($query);
@@ -40,18 +38,19 @@
         <div id="Gutschein" class="col-md-6">
         
             <?php
-            if(!empty($_POST)) {
-                # echo var_dump($_POST);
-                if(isset($_POST['gutscheincode'])    || !$_POST['gutscheincode'] == ""){
-
+            
+            if(!empty($_POST['gutscheincode'])) {
                     $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"';
                     $gutschein = $db->getGutschein($query4, $_POST['gutscheincode']);
                     if ($gutschein->gid != -1){
-                        echo "Der Gutschein ist gültig (EUR" . $gutschein->wert. ")";
+                        $_SESSION['gutschein'] = $gutschein;                        
                     }
-                }
+            }
+            
+            if (!empty($_SESSION['gutschein'])){
+                echo "Der Gutschein ist gültig (EUR" . $_SESSION['gutschein']->wert. ")";
             } else {
-            echo '<form class="form-horizontal" action="" method="post" name="gutschein" id="zahlung"> 
+            echo '<form class="form-horizontal" action="" method="post" name="gutschein" id="gutschein"> 
                     <div class="form-group">
                       <label for="gutschein" class="col-sm-4 control-label">Gutscheincode</label>
                       <div class="col-sm-8">
@@ -69,22 +68,22 @@
 
             ?>   
         </div>
-        <div id="rechnungsbetrag" class="col-md-6">
+        <div id="rechnungsbetrag" class="col-md-6" style= 'float'>
             <?php
             $gesamt;
             $restguthaben=0;
-            if (isset($gutschein)) {
-                $gesamt = $sum-$gutschein->wert;
+            if (isset($_SESSION['gutschein'])) {
+                $gesamt = $sum - $_SESSION['gutschein']->wert;
                 if($gesamt < 0){
                     $gesamt = 0;
-                    $restguthaben = -$sum+$gutschein->wert;
+                    $restguthaben = $_SESSION['gutschein']->wert - $sum;
                 }
             
                 echo"<p>  Zwischensumme: ".   number_format($sum,"2",",",".") ."€ </p>"
-                . "<p>    Gutschrift: ".      number_format(-$gutschein->wert,"2",",",".") . "€ </p>"
+                . "<p>    Gutschrift: ".      number_format(-$_SESSION['gutschein']->wert,"2",",",".") . "€ </p>"
                 . "<p><b> Rechnungsbetrag: ". number_format($gesamt,"2",",",".") . "€ </b></p>";
                 if($restguthaben != 0) {
-                    echo "<p> Restguthaben: ". $restguthaben . "€</p>";
+                    echo "<p> Restgutschrift: ".number_format($restguthaben,"2",",",".") . "€</p>";
                 }
                 
             } else {
@@ -94,39 +93,79 @@
             ?>    
         </div>
     </div>
-    <?php
-    if(!empty($_POST)){
-        # echo var_dump($_POST);
-            if(!isset($_POST['gutscheincode'])    || $_POST['gutscheincode'] == ""){
-                         } else {
-                $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"';
-                $gutschein = $db->getGutschein($query4, $_POST['gutscheincode']);
+<?php
+# Bestellung einfügen        
+if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahlen
+    if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
+        echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
+    } else {
+
+        # insert Bestellung ohne Gutschein
+        if (empty($_SESSION['gutschein'])){
+            $bvalid = $db->insertBestellungOhneGutschein($kid, $_POST['zahlung']);
+        } else {
+
+            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;
+            
+            $bvalid = $db->insertBestellung($kid, $_POST['zahlung'], $_SESSION['gutschein']->gid, $g_entwertung);       
+        }
+        # Bestellid:
+        if($bvalid){ 
+            $bid = $db->getLastBestellungsID();
+            echo "</br> Bid:". $bid ."<br>";
+        }
+
+        
+        if(!empty($bid)){
+            $bvalid = $db->insertCart($_SESSION['cart'], $bid);          
+            echo "</br> insert cart:". $bvalid ."<br>";
+        
+            if (!empty($_SESSION['gutschein'])){    
+                $bvalid = $db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
+                echo "</br> GutscheinUpdate:". $bvalid ."<br>";
+                # WHYYYYYYYYYYY NOT?????????????????????????????????????????????????
             }
-            # echo var_dump($gutschein);
-    }  
-    ?>      
+        }
+                 
+        
+
+                  
+# bestellung abschicken
+# check Zahlungsinfo if Rechnungsbetrag != 0;
+    # SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
+    # get bid
+    # SQL Data: Gutschein - gid, wert = restbetrag, validieren
+    # SQL Data: b_has_p - bid, for each cart
+    # SQL Data: produkte - lagerbestand -1
+    # if all works COMMIT - how?
+
+#? Kunden rabattgruppe für FST?
+    }
+}        
+        
+  ?> 
+    
 
 
-    <div id="Zahlung" class="col-md-6">
+    <div id="Zahlung" class="col-md-12">
        <form class="form-horizontal" action="" method="post" name="zahlung" id="zahlung"> 
-          <div class="form-group">
+          <div class="form-group" class="col-md-6">
             <label for="zahlungsmethode" class="col-sm-4 control-label">Bitte Zahlungsmethode auswählen</label>
             <div class="col-sm-8">
-              <select name="formAnrede" class="form-control" id="Anrede">
+              <select name="zahlung" class="form-control" id="zahlungsinfo">
                 <option value="invalid">-</option>
            <?php
-           $query3 = 'SELECT `art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
+           $query3 = 'SELECT `zid`,`art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid; 
             $db->printZahlungsOption($query3);
            ?>
-        <!--    <option value="Herr">Herr </option> FOREACH ZAHLUNGSMETHODE DES KUNDEN
-                <option value="Frau">Frau </option> -->
+
               </select>
             </div>
           </div>
 
 
           <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
+            <div class="col-md-6">
                 <button type="submit" class="btn btn-default" name="fromSubmit" value="Zahlung">Zahlung bestätigen</button>
             </div>
           </div>
@@ -134,6 +173,19 @@
     </div>
   </div>
           
+<?php
+
+        
+
+        
+        
+        
+    #echo "<br> Bestellung :". var_dump($_POST['zahlung']);    
+    #echo "<br> Gutschein :". var_dump($_SESSION['gutschein']->gid);
+
+        
+        
+        
 
     
  

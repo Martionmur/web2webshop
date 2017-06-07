@@ -4,7 +4,10 @@
     include("model/User.class.php");
     include("model/Gutschein.class.php");
     
+
     session_start();
+    #session_destroy();
+    #session_start();
     if (!isset($_SESSION['user'])){
     $u = new User;
     $u->rolle="kun";
@@ -16,9 +19,12 @@
     
     # Dummy Warenkorb
         $_SESSION['cart'] =  [
+
         ["pid"=>1, "anz" => 2 ],
         ["pid"=>2, "anz" => 1 ],
         ["pid"=>3, "anz" => 7 ],
+
+
     ];
         
 # Über navigation login und logout
