@@ -7,7 +7,7 @@ class newDB {
     
     #connection funktioniert
     function doConnect(){
-        $this->con = mysqli_connect("localhost","root","","web2webshop");
+        $this->con = mysqli_connect("localhost","root","","web2webshop3");
         $this->con->set_charset('UTF-8');
         #add UTF-8 mode!
     }
@@ -153,7 +153,9 @@ class newDB {
                 $gutschein = new Gutschein;
                 $gutschein->gid = $gutsch->gid;        
                 $gutschein->wert = $gutsch->wert;
-                }
+                }else {
+                echo "<script type='text/javascript'>alert('Der Gutschein ist nicht mehr gültig.')</script>";
+                } 
         } else {
             echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
    
@@ -164,8 +166,17 @@ class newDB {
 # BESTELLUNG ABSCHICKEN
     
     function insertBestellungOhneGutschein($kid, $zid){
-       
-        $this->insertBestellung($kid, $zid, NULL, NULL);
+        
+        if ($zid== "invalid") $zid=-1;
+		$query = "INSERT INTO `bestellung` ( `kid`, `datum` ,`zid`) VALUES ('".$kid."', sysdate(), '".$zid."');";		
+		#echo $query;
+		$res = mysqli_query($this->con, $query);		
+		#echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}
         
     }
     
@@ -173,9 +184,9 @@ class newDB {
         ## Bestellung einfügen
                 if ($zid== "invalid") $zid=-1;
 		$query = "INSERT INTO `bestellung` ( `kid`, `datum` ,`zid`, `gid`,`gutscheinentwertung`) VALUES ('".$kid."', sysdate(), '".$zid."', '".$gid."', '".$gutscheinentwertung."');";		
-		echo $query;
+		#echo $query;
 		$res = mysqli_query($this->con, $query);		
-		echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
+		#echo "</br> DB insert bestellung: ". var_dump($res)."<br>" ;
 		if($res){
 			return true;
 		}else{
@@ -195,13 +206,13 @@ class newDB {
     function updateGutschein($gid, $restguthaben){
         ## Bestellung einfügen
                 if ($restguthaben == 0) {
-                    $query = "UPDATE `gutschein` SET `valid`= '0' WHERE `gid`= '".$gid."');";		
+                    $query = "UPDATE `gutschein` SET `valid`= '0' WHERE `gid`= '".$gid."';";		
                     $res = mysqli_query($this->con, $query);
                 } else {
-                    $query = "UPDATE `gutschein` SET `wert`= '".$restguthaben."' WHERE `gid`= '".$gid."');";		
+                    $query = "UPDATE `gutschein` SET `wert`= '".$restguthaben."' WHERE `gid`= '".$gid."';";		
                     $res = mysqli_query($this->con, $query);
                 }
-		echo "</br> DBUpdateGutschein: ". var_dump($res)."<br>" ;
+		#echo "</br> DBUpdateGutschein: ". var_dump($res)."<br>" ;
 		if($res){
 			return true;
 		}else{
@@ -219,25 +230,39 @@ class newDB {
                     }
                     $count ++;
                 }
-                echo $query;
+                #echo $query;
                 
 		$res = mysqli_query($this->con, $query);		
-		echo "</br> B_has_P insert bestellung: ". var_dump($res)."<br>" ;
+		#echo "</br> B_has_P insert bestellung: ". var_dump($res)."<br>" ;
                 
                 if($res){
 			return true;
 		}else{
 			return false;	
 		}     
-}
+    }
     
+    function commitBestellung(){
+            mysqli_commit($this->con);
+            echo "<script type='text/javascript'>alert('Bestellung erfolgreich abgeschickt!')</script>";
+            unset($_SESSION['cart']);
+            unset($_SESSION['gutschein']);
+    }
+    
+    function startBestellung(){
+        mysqli_autocommit($this->con, FALSE);
+    }
+    
+    function endBestellung(){
+        mysqli_autocommit($this->con, TRUE);
+    }
 
 
 # LOGIN & REGSITRATION
         
     function countUserCheck($regUsername){
-        $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."';";		
-	//echo $query;
+        $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."' AND `aktiv` = '1';";		
+	#echo $query;
         $res = mysqli_query($this->con, $query); 
         
         if(mysqli_num_rows($res) > 0) return true;
@@ -246,7 +271,7 @@ class newDB {
     
     function checkPW($regUsername, $regPW){
         $query = "SELECT * FROM `user` WHERE `username` = '".$regUsername."' AND `passwort` = '".md5($regPW)."';";		
-	//echo $query;
+	#echo $query;
         $res = mysqli_query($this->con, $query); 
         
         if(mysqli_num_rows($res) > 0) return true;

@@ -99,49 +99,53 @@ if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahle
     if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
         echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
     } else {
-
+        # $db->autocommit(FALSE);    
+        $db->startBestellung();
         # insert Bestellung ohne Gutschein
         if (empty($_SESSION['gutschein'])){
             $bvalid = $db->insertBestellungOhneGutschein($kid, $_POST['zahlung']);
         } else {
-
-            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;
-            
+            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;        
             $bvalid = $db->insertBestellung($kid, $_POST['zahlung'], $_SESSION['gutschein']->gid, $g_entwertung);       
         }
+        
         # Bestellid:
         if($bvalid){ 
             $bid = $db->getLastBestellungsID();
-            echo "</br> Bid:". $bid ."<br>";
+            #echo "</br> Bid:". $bid ."<br>";
         }
-
         
+        # insert cart into b_has_p & validate Gutschein
         if(!empty($bid)){
             $bvalid = $db->insertCart($_SESSION['cart'], $bid);          
-            echo "</br> insert cart:". $bvalid ."<br>";
+            #echo "</br> insert cart:". $bvalid ."<br>";
         
             if (!empty($_SESSION['gutschein'])){    
                 $bvalid = $db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
-                echo "</br> GutscheinUpdate:". $bvalid ."<br>";
-                # WHYYYYYYYYYYY NOT?????????????????????????????????????????????????
+                #echo "</br> GutscheinUpdate:". $bvalid ."<br>";
             }
         }
-                 
         
-
-                  
+        # Abschluss: Commit und Erfolgs-Alert
+        if($bvalid){
+            $db->commitBestellung();           
+            
+        }
+        
+        $db->endBestellung();
+    }
+}                       
 # bestellung abschicken
 # check Zahlungsinfo if Rechnungsbetrag != 0;
-    # SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
-    # get bid
-    # SQL Data: Gutschein - gid, wert = restbetrag, validieren
-    # SQL Data: b_has_p - bid, for each cart
-    # SQL Data: produkte - lagerbestand -1
+    # OK SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
+    # OK get bid
+    # OK SQL Data: Gutschein - gid, wert = restbetrag, validieren
+    # OK SQL Data: b_has_p - bid, for each cart
+    # ?SQL Data: produkte - lagerbestand -1
     # if all works COMMIT - how?
 
 #? Kunden rabattgruppe für FST?
-    }
-}        
+         
         
   ?> 
     
