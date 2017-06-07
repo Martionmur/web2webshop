@@ -45,7 +45,7 @@ class newDB {
         while($produkt = mysqli_fetch_object($res)){
             $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
             echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
-            echo '    <div class="thumbnail">';
+            echo '    <div class="thumbnail ui-widget-content">';
             echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
             echo '      <div class="caption">';
             echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
