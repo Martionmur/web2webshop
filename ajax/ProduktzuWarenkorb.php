@@ -13,7 +13,8 @@ if(!empty($_POST['id'])) {
 if(!empty($_SESSION['cart'][$id])){
     $_SESSION['cart'][$id] ++;
     } else {
-    $_SESSION['cart']=['pid'=>$id, 'anz'=>1];
+    $tmparray=['pid'=>$id, 'anz'=>1];
+    array_push($_SESSION['array'], $tmparray);
     
     
 }
