@@ -13,7 +13,7 @@ if(!empty($_POST['id'])) {
 if(!empty($_SESSION['cart'][$id])){
     $_SESSION['cart'][$id] ++;
     } else {
-    $_SESSION['cart'][$id] = 1;
+    $_SESSION['cart']=['pid'=>$id, 'anz'=>1];
     
     
 }
