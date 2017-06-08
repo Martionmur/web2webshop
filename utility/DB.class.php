@@ -51,7 +51,7 @@ class newDB {
             echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
             echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
             echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
-            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="add_to_cart('.$tempProd->pid.')"></p>';  #ProduktZuWarenkorb ist keine js-function
             echo '      </div>';
             echo '    </div>';
             echo '  </div>';
