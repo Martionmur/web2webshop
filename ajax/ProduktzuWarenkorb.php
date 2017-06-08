@@ -11,7 +11,6 @@ if(!empty($_POST['id'])) {
 }
     
 if(!empty($_SESSION['cart'][$id])){
-    echo"session ist nicht leer";
     $_SESSION['cart'][$id] ++;
     } else {
     $_SESSION['cart'][$id] = 1;
