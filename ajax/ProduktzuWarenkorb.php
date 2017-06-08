@@ -1,23 +1,22 @@
-<?php
-
-JS function ProduktZuWarenkorb($pid){
-    
+<?php   
+    include("../index.php");
+    if(!isset($_SESSION['cart'])){
+    $_SESSION['cart'] = array();
 }
 
-//
-//
-//<Script>
-//($_Document).ready[function
-//    
-//    Button classe (DOM) .unbind()
-//    
-//    
-//   
-//    foreach
-//this ist auf classe und mit foreach auf alle classen
-//    $this.parent['td'].data('id');
-//this->db->set_charset('UTF-8');
-//Bildref:   Localhost...\res\img\prod14.jpg
-//        
-//        
-//
+if(!empty($_POST['id'])) {
+    $id = $_POST['id'];
+    echo"post ist nicht leer";
+}
+    
+#if(!empty($_SESSION['cart'][$id])){
+#    echo"session ist nicht leer";
+#    $_SESSION['cart'][$id] ++;
+#} else {
+#    $_SESSION['cart'][$id] = 1;
+    var_dump("$_SESSION");
+    
+#}
+    
+
+?>
