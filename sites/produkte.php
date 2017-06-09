@@ -1,8 +1,8 @@
 <?php
         $db = new newDB();
-        $db->doConnect();           
-        
-  ?>    
+        $db->doConnect();
+        var_dump($_SESSION);      
+ ?>    
 <div id="Katauswahl" class="col-md-1 thumbnail">
     <h4> Kategorie </h4>
     <form class="form-horizontal" action="" method="post" name="Katradio" id="Katradio">
