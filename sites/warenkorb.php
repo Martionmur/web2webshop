@@ -40,11 +40,16 @@ $db->doConnect();
             <?php
             
             if(!empty($_POST['gutscheincode'])) {
-                    $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"';
-                    $gutschein = $db->getGutschein($query4, $_POST['gutscheincode']);
-                    if ($gutschein->gid != -1){
+                    $gutschein = $db->getGutschein($_POST['gutscheincode']);
+                    #var_dump($gutschein);
+                    if ($gutschein->gid > 0){
                         $_SESSION['gutschein'] = $gutschein;                        
-                    }
+                    } elseif ($gutschein->gid == -1) {
+                        echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
+                    } elseif ($gutschein->gid == -2) {
+                        echo "<script type='text/javascript'>alert('Der Gutschein ist nicht mehr gültig.')</script>";
+        
+    }
             }
             
             if (!empty($_SESSION['gutschein'])){

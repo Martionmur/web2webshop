@@ -14,4 +14,6 @@
 class Gutschein {
     public $gid;
     public $wert;
+    
+
 }

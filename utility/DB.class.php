@@ -12,43 +12,41 @@ class newDB {
         #add UTF-8 mode!
     }
    
-    #query funktioniert
-    #->Übergabe der Abfrage per ($query) -> universell einsetzbar zB. abfragen mit Kategorien...
-    #Klasse Produktliste weg -> nur ein array von Produkten, ausgabe über db-class
-
 #PRODUKTE
-    function giveProduktlist($query){
-        $PL = array();
+    function printKatlist(){
+        $query = 'SELECT `katbezeichnung` FROM `kategorie` ORDER BY `katbezeichnung` DESC';		
         $res = mysqli_query($this->con, $query);
-        $cnt=0;
-        while($produkt = mysqli_fetch_object($res)){
-            $prod=new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-            array_push($PL,$prod);
-            $cnt = $cnt+1;
+        while($kat = mysqli_fetch_object($res)){
+        echo '<input type="radio" name="kat" value="'.$kat->katbezeichnung.'">'.$kat->katbezeichnung.'<br>';
         }
-        return $PL;
     }
     
     
-    function printProducts($query){
+    function printProduktliste($katb){
+        if ($katb == 'Alles'){
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } elseif ($katb == 'Gem�se') {
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `katid` = "2" ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } else {
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `katbezeichnung` = "'.$katb .'" ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } 
+        #var_dump($query);
         $res = mysqli_query($this->con, $query);
-        echo "<table><ul>";
-        while($produkt = mysqli_fetch_object($res)){
-            echo "<li>$produkt->pid$produkt->bezeichnung$produkt->preis</li></ul>";					
-        }
-        echo "</ul></table>";
-    }
-    
-    function printProduktliste($query){
-        $res = mysqli_query($this->con, $query);
-        
+        $kat = "x";
         while($produkt = mysqli_fetch_object($res)){
             $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            
+            if ($kat != $produkt->katbezeichnung){
+                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail'>"
+                     . "<h3>".$produkt->katbezeichnung."</h3>" ;
+            }
+            $kat = $produkt->katbezeichnung;
+                     
             echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
             echo '    <div class="thumbnail ui-widget-content">';
             echo '      <img src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
             echo '      <div class="caption">';
-            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
+            echo '        <p><b>'.$tempProd->bezeichnung.'<p></b>';
             echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
             echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
             echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="ProduktZuWarenkorb('.$tempProd->pid.')"></p>';
@@ -56,6 +54,7 @@ class newDB {
             echo '    </div>';
             echo '  </div>';
         }
+            echo '  </div>';
             echo '  </div>';
     }
      function printProduktliste_admin($query){
@@ -166,8 +165,10 @@ class newDB {
         }         
     }
 #         $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"'
-    function getGutschein($query4, $gutscheincode){
-        # echo "<br> query".var_dump($query4);   
+    function getGutschein($gutscheincode){
+        # echo "<br> query".var_dump($query4);
+        $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$gutscheincode.'"';
+                    
         $gutschein = new Gutschein;
           $gutschein->gid = -1;        
           $gutschein->wert = 0;
@@ -177,21 +178,33 @@ class newDB {
                 $gutsch = mysqli_fetch_object($res);
                 # Gutschein validiern        
                 # echo "<br> gutsch".var_dump($gutsch);
-                if($gutsch->valid == 1 && $gutsch->ablaufwert >= 0 ){
-
-                # Gutschein validiern         
-                $gutschein = new Gutschein;
+                if($gutsch->valid == 1 && $gutsch->ablaufwert >= 0 ){   
                 $gutschein->gid = $gutsch->gid;        
                 $gutschein->wert = $gutsch->wert;
                 }else {
-                echo "<script type='text/javascript'>alert('Der Gutschein ist nicht mehr gültig.')</script>";
+                $gutschein->gid = -2;
                 } 
-        } else {
-            echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
-   
-        }
+        } 
+
         return $gutschein;
     }
+    
+    function insertGutschein($code, $wert, $ablaufdatum){
+            $query = "INSERT INTO `gutschein` ( `code` ,`wert`, `ablaufdatum`) VALUES ('".$code."','".$wert."','".$ablaufdatum."');";		
+		#echo $query;
+		$res = mysqli_query($this->con, $query);		
+		#echo "</br> DB insert gutschein: ". var_dump($res)."<br>" ;
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}    
+    }
+        
+        
+    
+            
+        
 
 # BESTELLUNG ABSCHICKEN
     

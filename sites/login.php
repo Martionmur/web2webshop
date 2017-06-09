@@ -39,10 +39,9 @@ if(!empty($_POST)){
                 echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
             
                 
-                #if ($logRemember){
-                    ## Set cookie
-               # }
-                ## Wenn Erfolgreich   -> Hallo User
+                if (!empty($_SESSION['logRemember'])){
+                     setcookie('user' ,$_SESSION['user'], time()+6000);
+                }
             }
         }
         
