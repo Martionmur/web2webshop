@@ -3,13 +3,13 @@
         $db->doConnect();           
         
   ?>    
-<div id="Katauswahl" class="col-md-2 thumbnail">
-    <h4> Kategorienauswahl </h4>
+<div id="Katauswahl" class="col-md-1 thumbnail">
+    <h4> Kategorie </h4>
     <form class="form-horizontal" action="" method="post" name="Katradio" id="Katradio">
         <div>
             <input type="radio" name="kat" value="Alles" checked> Alles<br>
             <?php
-                $db->printKatlist();
+                $db->printKatlist("");
             
             ?>
         </div>

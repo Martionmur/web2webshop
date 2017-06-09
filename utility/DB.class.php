@@ -13,11 +13,16 @@ class newDB {
     }
    
 #PRODUKTE
-    function printKatlist(){
+    function printKatlist($checkkat){
+        
         $query = 'SELECT `katbezeichnung` FROM `kategorie` ORDER BY `katbezeichnung` DESC';		
         $res = mysqli_query($this->con, $query);
         while($kat = mysqli_fetch_object($res)){
-        echo '<input type="radio" name="kat" value="'.$kat->katbezeichnung.'">'.$kat->katbezeichnung.'<br>';
+        echo '<input type="radio" name="kat" value="'.$kat->katbezeichnung.'"';
+                if ($kat->katbezeichnung == $checkkat){
+                    echo "checked";
+                }
+        echo '>'.$kat->katbezeichnung.'<br>';
         }
     }
     
@@ -57,7 +62,8 @@ class newDB {
             echo '  </div>';
             echo '  </div>';
     }
-     function printProduktliste_admin($query){
+     function printProduktliste_admin(){
+        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
         $res = mysqli_query($this->con, $query);
             echo '  <div class="ProdTile" id="newprod" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
             echo '    <div class="thumbnail ui-widget-content">';
@@ -65,8 +71,8 @@ class newDB {
             echo '      <div class="caption">';
             echo '        <h4>neues Produkt</h4>';
             echo '        <p><br>';
-            echo '        ?/10 Sternchen</p>';
-            echo '        <p><input class="btn btn-default" type="button" value="Produkt erstellen" onclick="????????"></p>';
+            echo '        </p>';
+            echo '        <p><form action="" method="post" name="changeprod"><button type="submit" class="btn btn-default" name="changeprod" value ="-1">Produkt erstellen</button></form></p>';
             echo '      </div>';
             echo '    </div>';
             echo '  </div>';
@@ -80,8 +86,12 @@ class newDB {
             echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
             echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
             echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
-            echo '        <p> <input class="btn btn-default" type="button" value="Details" onclick="????????('.$tempProd->pid.')">'
-                           . '<input class="btn btn-default" type="button" value="Delete" onclick="????????('.$tempProd->pid.')"></p>';
+            echo '        <p>'
+                            . '<form action="" method="post" name="changeprod">'
+                                . '<button type="submit" class="btn btn-default" name="changeprod" value = "'.$tempProd->pid.'">Details</button>'
+                                . '<button type="submit" class="btn btn-default" name="deleteprod" value = "'.$tempProd->pid.'">Delete</button>'
+                            . '</form>'
+                       . '</p>';
             echo '      </div>';
             echo '    </div>';
             echo '  </div>';
@@ -480,13 +490,50 @@ class newDB {
         }
     }
     
+    function getproduktinfo($pid){
+    $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) where `pid` = "'.$pid.'" LIMIT 1';		
+        $res = mysqli_query($this->con, $query);
+        $produkt = mysqli_fetch_object($res);
+        $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+        return $tempProd;
+    }
     
     
+    function insertupdateProdukt($pid, $bezeichnung, $preis, $bewertung, $katbez){
+        #Get Katid
+        $query = 'SELECT `katid` FROM `kategorie` where `katbezeichnung` = "'.$katbez.'" LIMIT 1';		
+        $res = mysqli_query($this->con, $query);
+        $kat = mysqli_fetch_object($res);
+        #var_dump($query); 
+        # Insert/update Produkt
+        if ($pid == -1){
+            $query = 'INSERT INTO `produkte`( `bezeichnung`, `preis`, `bewertung`, `katid`) VALUES ("'.$bezeichnung.'","'.$preis.'","'.$bewertung.'","'.$kat->katid.'")';
+        } else {
+            $query = 'UPDATE `produkte` SET `bezeichnung`="'.$bezeichnung.'",`preis`="'.$preis.'",`bewertung`="'.$bewertung.'",`katid`="'.$kat->katid.'" WHERE `pid`="'.$pid.'"';
+            
+        }
+        #var_dump($query);            
+        $res = mysqli_query($this->con, $query);
+        if($res){
+            echo "<script type='text/javascript'>alert('Das Produkt ".$bezeichnung." wurde erfolgreich abgeschickt!')</script>";
+        } else {
+            echo "<script type='text/javascript'>alert('Das Produkt ".$bezeichnung." wurde nicht abgeschickt!')</script>"; 
+        }
+    }
     
-    
-    
- 
+         
+function deleteProdukt($pid){
 
+            $query = 'DELETE FROM `produkte` WHERE `pid`="'.$pid.'"';
+            
+        
+        #var_dump($query);            
+        $res = mysqli_query($this->con, $query);
+        if($res){
+            echo "<script type='text/javascript'>alert('Das Produkt ".$bezeichnung." wurde erfolgreich geslöscht!')</script>";;
+        }
+        
+    }
 #ENDE
 }
     
