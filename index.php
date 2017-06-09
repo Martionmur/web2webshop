@@ -1,4 +1,5 @@
 <?php
+    #include ("config/dbaccess.php");
     include ("utility/DB.class.php");
     include("model/Produkt.class.php");
     include("model/User.class.php");
@@ -67,6 +68,7 @@
     <body>
      
         <?php
+        
             include("inc/navigation.php");
 
         ?>    
