@@ -30,7 +30,7 @@ class newDB {
         } else {
             $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `katbezeichnung` = "'.$katb .'" ORDER BY `katbezeichnung` DESC,`bezeichnung`';
         } 
-        #var_dump($query);
+        # var_dump($query);
         $res = mysqli_query($this->con, $query);
         $kat = "x";
         while($produkt = mysqli_fetch_object($res)){
