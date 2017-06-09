@@ -10,14 +10,23 @@ if(!empty($_POST['id'])) {
     echo"post ist nicht leer";
 }
     
-if(!empty($_SESSION['cart'][$id])){
-    $_SESSION['cart'][$id] ++;
-    } else {
-    $tmparray=['pid'=>$id, 'anz'=>1];
-    array_push($_SESSION['array'], $tmparray);
-    
-    
+if(!empty($_SESSION['cart'])){
+    #if(in_array([$id,'%'],$_SESSION['cart'])){
+    foreach($_SESSION['cart'] as $k => $v) {
+	if($id == $k){
+        $tmpanz = $_SESSION['cart'][$k]['anz'];
+        $tmpanz = $tmpanz+1;
+	$_SESSION['cart'][$k]['anz'] = $tmpanz;	
+        #echo"pid was here -> +1";
+        }
+    }
 }
-    var_dump($_SESSION);
+else{
+    $tmpprod=['pid'=>$id, 'anz'=>1];
+    array_push($_SESSION['cart'], $tmpprod);  
+    #echo"pid was NOT here -> new pid in cart";
+}
+
+var_dump($_SESSION);
 
 ?>
