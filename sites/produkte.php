@@ -28,8 +28,9 @@
     #var_dump($_POST);
     if(!isset($_POST['kat'])){
         $db->printProduktliste('Alles');
-    }
+    } else {
         $db->printProduktliste($_POST['kat']);
+    }
     ?>  
 </div>
 
