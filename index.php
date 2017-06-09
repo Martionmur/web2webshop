@@ -17,14 +17,14 @@
     }
     
     # Dummy Warenkorb
-        $_SESSION['cart'] =  [
+        #$_SESSION['cart'] =  [
 
-       ["pid"=>1, "anz" => 2 ],
-       ["pid"=>2, "anz" => 1 ],
-       ["pid"=>3, "anz" => 7 ],
+       #["pid"=>1, "anz" => 2 ],
+       #["pid"=>2, "anz" => 1 ],
+       #["pid"=>3, "anz" => 7 ],
 
 
-    ];
+    #];
         
 # Über navigation login und logout
 # 

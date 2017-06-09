@@ -24,26 +24,17 @@ if(!empty($_SESSION['cart'])){
         }
         
      if(!$success){
-        $tmpprod=['pid'=>$id, 'anz'=>1];
-        array_push($_SESSION['cart'], $tmpprod); 
+        $tmpprod=['pid'=>(int)$id, 'anz'=>1];
+        array_push($_SESSION['cart'], $tmpprod);
+        #initializes $id as a string
         var_dump($_SESSION);
     }    
-
-#if(in_array([$id,'%'],$_SESSION['cart'])){
-#    foreach($_SESSION['cart'] as $k => $v) {
-#	if($id == $v->pid){
-#       var_dump($_SESSION['cart'][$k]);
-        #$tmpanz = $_SESSION['cart'][$k]['anz'];
-        #$tmpanz = $tmpanz+1;
-	#$_SESSION['cart'][$k]['anz'] = $tmpanz;	
-        #echo"pid was here -> +1";
 }
-
-#else{
- #   $tmpprod=['pid'=>$id, 'anz'=>1];
-  #  array_push($_SESSION['cart'], $tmpprod);  
-    #echo"pid was NOT here -> new pid in cart";
-#}
+else{
+  $tmpprod=['pid'=>(int)$id, 'anz'=>1];
+  array_push($_SESSION['cart'], $tmpprod);  
+  echo"pid was NOT here -> new pid in cart";
+}
 
 #var_dump($_SESSION);
 
