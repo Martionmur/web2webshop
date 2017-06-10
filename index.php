@@ -1,9 +1,9 @@
 <?php
+    #include ("config/dbaccess.php");
     include ("utility/DB.class.php");
     include("model/Produkt.class.php");
     include("model/User.class.php");
     include("model/Gutschein.class.php");
-
     session_start();
     #session_destroy();
     #session_start();
@@ -18,12 +18,9 @@
     
     # Dummy Warenkorb
         #$_SESSION['cart'] =  [
-
        #["pid"=>1, "anz" => 2 ],
        #["pid"=>2, "anz" => 1 ],
        #["pid"=>3, "anz" => 7 ],
-
-
     #];
         
 # Über navigation login und logout
@@ -32,6 +29,8 @@
         
 ?>
 <!DOCTYPE html>
+
+
 
 
 <html>

@@ -1,36 +1,35 @@
 <?php
-        #include("utility/newDB.class.php");
-        #include("model/Produktliste.class.php");
-        #$ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
-        #$ProdukteKonkret = $db->getProduktListe();
-        #$ProdukteKonkret.fillProduktliste();
-        #produktListenAnzeige($ProdukteKonkret)
-            
-            
-        
-  ?>          
-   <?php
-        #$db = new mysqli('localhost','root', '', 'web2webshop');
         $db = new newDB();
         $db->doConnect();
-        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
-        $db->printProduktliste($query);
-        var_dump($_SESSION);
+        #var_dump($_SESSION);      
+ ?>    
+<div id="Katauswahl" class="col-md-1 thumbnail">
+    <h4> Kategorie </h4>
+    <form class="form-horizontal" action="" method="post" name="Katradio" id="Katradio">
+        <div>
+            <input type="radio" name="kat" value="Alles" checked> Alles<br>
+            <?php
+                $db->printKatlist("");
+            
+            ?>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-default" name="Katsubmit">Filtern</button>
+        </div>
 
-        
-        #$ProdukteKonkret = $db->getProduktListe();
-        #var_dump($ProdukteKonkret);
-        #$ProdukteKonkret.fillProduktliste();
-        #produktListenAnzeige($ProdukteKonkret.fillProduktliste())
-        #$ProdukteKonkret->produktListenAnzeige();
-            
-            
-        
-  ?>  
-       
+    </form>
     
- 
+</div>
 
 
 
-
+<div id="Produktanzeige" class="col-md-10">
+    <?php
+    #var_dump($_POST);
+    if(!isset($_POST['kat'])){
+        $db->printProduktliste('Alles');
+    } else {
+        $db->printProduktliste($_POST['kat']);
+    }
+    ?>  
+</div>
