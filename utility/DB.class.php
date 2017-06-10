@@ -87,10 +87,10 @@ class newDB {
                             . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
                             . '<td>'.$tempProd->bezeichnung.'</td>'
                             . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
-                            . '<td align="right">'.$cart['anz'].' </td>'
+                            . '<td id="cart'.$tempProd->pid.'" align="right">'.$cart['anz'].' </td>'
                             . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
-                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="ProduktZuWarenkorb('.$tempProd->pid.')">  '
-                            . '<input class="btn btn-default" type="button" value="-" onclick="ProduktAusWarenkorb('.$tempProd->pid.')">'
+                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="add_to_cart('.$tempProd->pid.')">  '
+                            . '<input class="btn btn-default" type="button" value="-" onclick="take_from_cart('.$tempProd->pid.')">'
                             . '</td>'
                     .    '</tr>';
                     $sum += $tempProd->preis*$cart['anz'];

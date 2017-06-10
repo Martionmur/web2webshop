@@ -3,7 +3,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user']->rolle != "admin")) {
     # Waenkorb zählen
     $count=0;
     foreach ($_SESSION['cart'] as $produkt){
-        echo $produkt['pid'].":".$produkt['anz'];
+        #echo $produkt['pid'].":".$produkt['anz'];
         $count += $produkt['anz'];        
     }        
     
