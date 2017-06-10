@@ -83,7 +83,7 @@ class newDB {
             foreach ($_SESSION['cart'] as $cart){
                 if ($cart['pid'] == $produkt->pid){
                     $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-                    echo '<tr>'
+                    echo '<tr id="rowid'.$tempProd->pid.'">'
                             . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
                             . '<td>'.$tempProd->bezeichnung.'</td>'
                             . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
