@@ -50,8 +50,9 @@
                    $(".thumbnail img").draggable({helper:"clone"}); 
                    $("#cart").droppable({
                        tolerance:"pointer",
-                       drop: function(){
-                           alert("Something got dropped!");
+                       drop: function(event,ui){
+                        x = ui.draggable.attr('value');   
+                        add_to_cart(x);
                        }
                    });
                 });
