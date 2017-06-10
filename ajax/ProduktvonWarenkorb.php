@@ -7,12 +7,10 @@
 
 if(!empty($_POST['id'])) {
     $id = $_POST['id'];
-    echo"post ist nicht leer";
 }
     
 if(!empty($_SESSION['cart'])){
     $index=0;
-    $success = false;   
     foreach($_SESSION['cart'] as $cart) {  
         if($cart['pid']==$id){
             #wenn 'anz' >1 muss Anzahl nur um 1 verringert werden

@@ -63,6 +63,7 @@ class newDB {
   
     
 #WARENKORB   
+    #erweitern -> sollte Session leer sein...
     function printWarenkorb($query){
         $res = mysqli_query($this->con, $query);        
         $sum = 0.00;
@@ -79,6 +80,7 @@ class newDB {
                   </tr>
                 </thead>
                 <tbody>";
+        if(!empty($_SESSION['cart'])){
         while($produkt = mysqli_fetch_object($res)){    
             foreach ($_SESSION['cart'] as $cart){
                 if ($cart['pid'] == $produkt->pid){
@@ -107,6 +109,7 @@ class newDB {
               </tfoot>
             </table>';
         return $sum;
+        }
         
     }
     

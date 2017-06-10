@@ -31,16 +31,14 @@ function take_from_cart(id){
         success: function(){
             cnt=document.getElementById('cart'+id).innerHTML;
             
-            if(cnt>1){
+            if(cnt<=1){
+                var element = document.getElementById('rowid'+id);
+                element.parentNode.removeChild(element);
+            }
+            else{
                 x=cnt;
                 x--;
                 document.getElementById('cart'+id).innerHTML=x;
-            }
-            else{
-                //DOM ganzes Element (<tr>) entfernen
-                var element = document.getElementById('rowid'+id);
-                element.parentNode.removeChild(element);
-                
             }
         }
             //Aktualisiert die Anzahl der Produkte ohne Neuladen der Seite

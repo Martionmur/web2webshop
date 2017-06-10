@@ -7,7 +7,6 @@
 
 if(!empty($_POST['id'])) {
     $id = $_POST['id'];
-    echo"post ist nicht leer";
 }
     
 if(!empty($_SESSION['cart'])){
