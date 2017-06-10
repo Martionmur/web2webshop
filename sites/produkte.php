@@ -15,7 +15,6 @@
         $db->doConnect();
         $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
         $db->printProduktliste($query);
-        var_dump($_SESSION);
         
 
         
