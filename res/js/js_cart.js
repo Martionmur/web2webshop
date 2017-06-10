@@ -14,13 +14,12 @@ function add_to_cart(id){
             
             document.getElementById('cart'+id).innerHTML=y;
             
-        }
-                   //warenkorb anzeige ändern
-                 
+            //summe aktualisieren
+            
+        }               
+    })
         
-        })
-        
-    }
+}
     
     
 function take_from_cart(id){
@@ -40,21 +39,12 @@ function take_from_cart(id){
                 x--;
                 document.getElementById('cart'+id).innerHTML=x;
             }
-        }
-            //Aktualisiert die Anzahl der Produkte ohne Neuladen der Seite
-            //x=document.getElementById('cart_cnt').innerHTML;
-            //x++;
-            //document.getElementById('cart_cnt').innerHTML = x;
             
-            //y=document.getElementById('cart'+id).innerHTML; 
-            //y++;
-            
-            //document.getElementById('cart'+id).innerHTML=y;
-            
-       // }
-                   //warenkorb anzeige ändern
-                 
-        
-        })
-        
-    }
+            //summe aktualisieren
+            //Cart Status aktualisieren
+            z=document.getElementById('cart_cnt').innerHTML;
+            z--;
+            document.getElementById('cart_cnt').innerHTML = x;
+        }    
+    })
+}
