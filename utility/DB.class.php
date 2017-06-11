@@ -177,11 +177,11 @@ class newDB {
                 </thead>
                 <tbody>";
         if(!empty($_SESSION['cart'])){
-        while($produkt = mysqli_fetch_object($res)){    
-            foreach ($_SESSION['cart'] as $cart){
-                if ($cart['pid'] == $produkt->pid){
-                    $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-                    echo '<tr id="rowid'.$tempProd->pid.'">'
+            while($produkt = mysqli_fetch_object($res)){    
+                foreach ($_SESSION['cart'] as $cart){
+                    if ($cart['pid'] == $produkt->pid){
+                        $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+                        echo '<tr id="rowid'.$tempProd->pid.'">'
                             . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
                             . '<td>'.$tempProd->bezeichnung.'</td>'
                             . '<td id="price'.$tempProd->pid.'" value="'.$tempProd->preis.'" align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
@@ -190,8 +190,9 @@ class newDB {
                             . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="add_to_cart_w('.$tempProd->pid.')">  '
                             . '<input class="btn btn-default" type="button" value="-" onclick="take_from_cart('.$tempProd->pid.')">'
                             . '</td>'
-                    .    '</tr>';
-                    $sum += $tempProd->preis*$cart['anz'];
+                            .    '</tr>';
+                            $sum += $tempProd->preis*$cart['anz'];
+                    }
                 }
             }
         }
@@ -205,9 +206,9 @@ class newDB {
               </tfoot>
             </table>';
         return $sum;
-        }
-        
     }
+        
+    
     
     #$query2 = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$_SESSION['user']->uid;
     function printKundeninfo($uid){
