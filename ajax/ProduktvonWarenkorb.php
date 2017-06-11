@@ -20,7 +20,10 @@ if(!empty($_SESSION['cart'])){
             var_dump($_SESSION);
             }
             #ist 'anz' = 1 muss der Eintrag der Session unset werden
-            else unset($_SESSION['cart'][$index]);
+            else{
+                $_SESSION['cart'][$index]=null;
+            }
+            
         }
         $index = $index+1;
         }
