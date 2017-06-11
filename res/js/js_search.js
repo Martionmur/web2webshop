@@ -4,11 +4,10 @@ function searchProd(text){
     for(i=0, len=liste.length;i<len;i++){
         element = liste[i];
         if(element.getAttribute("alt").indexOf(text)>-1){
-            //styleattribute auf visible none stellen...wieauchimmer
             element.parentNode.parentNode.setAttribute("display", "");
         }
         else{
-            element.parentNode.parentNode.setAttribute("display", "none");
+            element.parentNode.parentNode.style("display", "none");
         }
     }
 }
