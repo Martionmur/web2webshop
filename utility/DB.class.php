@@ -27,7 +27,7 @@ class newDB {
     }
     
     
-    function printProduktliste($katb){
+    function printProduktlisteOLD($katb){
         if ($katb == 'Alles'){
             $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `katbezeichnung` DESC,`bezeichnung`';
         } elseif ($katb == 'Gem�se') {
@@ -62,6 +62,44 @@ class newDB {
             echo '  </div>';
             echo '  </div>';
     }
+
+   ### Matthias
+        function printProduktliste($katb) {
+        if ($katb == 'Alles'){
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } elseif ($katb == 'Gem�se') {
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `katid` = "2" ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } else {
+            $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) WHERE `katbezeichnung` = "'.$katb .'" ORDER BY `katbezeichnung` DESC,`bezeichnung`';
+        } 
+        # var_dump($query);
+        $res = mysqli_query($this->con, $query);
+        $kat = "x";
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            
+            if ($kat != $produkt->katbezeichnung){
+                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail'>"
+                     . "<h3>".$produkt->katbezeichnung."</h3>" ;
+            }
+            $kat = $produkt->katbezeichnung;
+                     
+            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">';
+            echo '    <div class="thumbnail ui-widget-content">';
+            echo '      <img value="'.$tempProd->pid.'" src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <p><b>'.$tempProd->bezeichnung.'<p></b>';
+            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
+            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="add_to_cart('.$tempProd->pid.')"></p>';
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+            echo '  </div>';
+    }
+    
      function printProduktliste_admin(){
         $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
         $res = mysqli_query($this->con, $query);
@@ -76,7 +114,6 @@ class newDB {
             echo '      </div>';
             echo '    </div>';
             echo '  </div>';
-        
         while($produkt = mysqli_fetch_object($res)){
             $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
             echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">'; #draggable through Jquery skript via class?';
@@ -98,10 +135,31 @@ class newDB {
         }
             echo '  </div>';
     }
+    ########### ZU löschjen
+    function printProduktliste_old($query){
+        $res = mysqli_query($this->con, $query);
+        
+        while($produkt = mysqli_fetch_object($res)){
+            $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
+            echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">';
+            echo '    <div class="thumbnail ui-widget-content" >';
+            echo '      <img value="'.$tempProd->pid.'" src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <div class="caption">';
+            echo '        <h4>'.$tempProd->bezeichnung.'</h4>';
+            echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';
+            echo '        '.$tempProd->bewertung.'/10 Sternchen</p>';
+            echo '        <p><input class="btn btn-default" type="button" value="in Warenkorb legen" onclick="add_to_cart('.$tempProd->pid.')"></p>';  #ProduktZuWarenkorb ist keine js-function
+            echo '      </div>';
+            echo '    </div>';
+            echo '  </div>';
+        }
+            echo '  </div>';
+    }
   
   
     
 #WARENKORB   
+    #erweitern -> sollte Session leer sein...
     function printWarenkorb($query){
         $res = mysqli_query($this->con, $query);        
         $sum = 0.00;
@@ -111,25 +169,26 @@ class newDB {
                   <tr>
                     <th></th>
                     <th>  Bezeichnung  </th>
-                    <th>  Preis  </th>
+                    <th>  Preis   </th>
                     <th>  Anzahl  </th>
                     <th>  Gesamt  </th>
                     <th>  Optionen  </th>
                   </tr>
                 </thead>
                 <tbody>";
+        if(!empty($_SESSION['cart'])){
         while($produkt = mysqli_fetch_object($res)){    
             foreach ($_SESSION['cart'] as $cart){
                 if ($cart['pid'] == $produkt->pid){
                     $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
-                    echo '<tr>'
+                    echo '<tr id="rowid'.$tempProd->pid.'">'
                             . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
                             . '<td>'.$tempProd->bezeichnung.'</td>'
-                            . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
-                            . '<td align="right">'.$cart['anz'].' </td>'
-                            . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
-                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="add_to_cart('.$tempProd->pid.')">  '
-                            . '<input class="btn btn-default" type="button" value="-" onclick="ProduktAusWarenkorb('.$tempProd->pid.')">'
+                            . '<td id="price'.$tempProd->pid.'" value="'.$tempProd->preis.'" align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
+                            . '<td id="cart'.$tempProd->pid.'" align="right">'.$cart['anz'].' </td>'
+                            . '<td id="sum'.$tempProd->pid.'" value="'.$tempProd->preis*$cart['anz'].'" align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
+                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="add_to_cart_w('.$tempProd->pid.')">  '
+                            . '<input class="btn btn-default" type="button" value="-" onclick="take_from_cart('.$tempProd->pid.')">'
                             . '</td>'
                     .    '</tr>';
                     $sum += $tempProd->preis*$cart['anz'];
@@ -140,12 +199,13 @@ class newDB {
               <tfoot>
                 <tr>
                   <td colspan="4" align="right" > Summe </td>
-                  <td align="right">'.number_format($sum ,"2",",",".").'€</td>
+                  <td id="cart_sum" value="'.$sum.'" align="right">'.number_format($sum ,"2",",",".").'€</td>
                   <td></td>
                 </tr>
               </tfoot>
             </table>';
         return $sum;
+        }
         
     }
     
@@ -210,11 +270,6 @@ class newDB {
 			return false;	
 		}    
     }
-        
-        
-    
-            
-        
 
 # BESTELLUNG ABSCHICKEN
     
@@ -256,7 +311,7 @@ class newDB {
                 return $x->bid;
     }
         
-    function updateGutschein($gid, $restguthaben){
+function updateGutschein($gid, $restguthaben){
         ## Bestellung einfügen
                 if ($restguthaben == 0) {
                     $query = "UPDATE `gutschein` SET `valid`= '0' WHERE `gid`= '".$gid."';";		
@@ -370,7 +425,6 @@ class newDB {
                 }
                 return $uid;
     }
-
     function getKundenID($uid){
         ## KundenID von userID bekommen
 		$query = "SELECT `kid` FROM `kunde` WHERE `uid` = '".$uid."'";		
@@ -393,8 +447,8 @@ class newDB {
 			return false;	
 		}        
     }
-    
-    function insertZahlungsinfo($kid, $zahlungsart, $zahlungsdetails){
+        
+       function insertZahlungsinfo($kid, $zahlungsart, $zahlungsdetails){
         $query = "INSERT INTO `web2webshop`.`zahlungsinfo` (`kid`,`art`, `nummer`) VALUES ('".$kid."', '".$zahlungsart."', '".$zahlungsdetails."');";
         $res = mysqli_query($this->con, $query);
         
@@ -427,13 +481,11 @@ class newDB {
                     </thead>
                     <tbody>";
             while($bestell = mysqli_fetch_object($res)){
-
                     if ($bestell->gutscheinentwertung > 0){
                     $gut = "Gutschein:".$bestell->gid;
                     } else { 
                         $gut = "-";
                     }
-
                     echo '<tr>'
                             . '<td>'.$bestell->bid.'</td>'
                             . '<td>'.$bestell->datum.'</td>'
@@ -449,8 +501,8 @@ class newDB {
         }
     }
     
-    
     function printGutscheinliste() {
+
         $query ="SELECT `gid`, `code`, `ablaufdatum`, `wert`, `valid` FROM `gutschein` ORDER BY `valid` DESC, `gid`  ";
         $res = mysqli_query($this->con, $query);  
         #var_dump($res); 
@@ -469,7 +521,6 @@ class newDB {
                     </thead>
                     <tbody>";
             while($gut = mysqli_fetch_object($res)){
-
                     if ($gut->valid == 0){
                     $vgut = "Entwertet";
                     } else { 
@@ -491,7 +542,7 @@ class newDB {
     }
     
     function getproduktinfo($pid){
-    $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) where `pid` = "'.$pid.'" LIMIT 1';		
+        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) where `pid` = "'.$pid.'" LIMIT 1';		
         $res = mysqli_query($this->con, $query);
         $produkt = mysqli_fetch_object($res);
         $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung, $produkt->katbezeichnung, "bildref");
@@ -523,7 +574,6 @@ class newDB {
     
          
 function deleteProdukt($pid){
-
             $query = 'DELETE FROM `produkte` WHERE `pid`="'.$pid.'"';
             
         
@@ -537,6 +587,3 @@ function deleteProdukt($pid){
 #ENDE
 }
     
-
-
-

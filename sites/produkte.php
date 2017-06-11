@@ -1,7 +1,7 @@
 <?php
         $db = new newDB();
         $db->doConnect();
-        var_dump($_SESSION);      
+        #var_dump($_SESSION); 
  ?>    
 <div id="Katauswahl" class="col-md-1 thumbnail">
     <h4> Kategorie </h4>
@@ -23,6 +23,7 @@
 
 
 
+
 <div id="Produktanzeige" class="col-md-10">
     <?php
     #var_dump($_POST);
@@ -33,11 +34,3 @@
     }
     ?>  
 </div>
-
-
-    
- 
-
-
-
-

@@ -1,3 +1,4 @@
+
          
    <?php
         $db = new newDB();
@@ -80,25 +81,9 @@
       
     ?>
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-<?php        
-        $db->printProduktliste_admin();
           
-        
-  ?>  
+<?php        
+        $db->printProduktliste_admin();       
+?>  
        
     
- 
-
-
-
-
