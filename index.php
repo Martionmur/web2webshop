@@ -68,7 +68,7 @@
     <body>
      
         <?php
-        
+            include("inc/logchange.inc.php");        
             include("inc/navigation.php");
 
         ?>    

@@ -100,7 +100,7 @@ $db->doConnect();
     </div>
 <?php
 # Bestellung einfügen        
-if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahlen
+if (!empty($_POST['zahlung']) && $sum > 0 && isset($kid)) { # gibt es überhaupt etwas zu zahlen
     if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
         echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
     } else {
@@ -175,7 +175,7 @@ if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahle
 
           <div class="form-group">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-default" name="fromSubmit" value="Zahlung">Zahlung bestätigen</button>
+                <button type="submit" class="btn btn-default" name="zahlungSubmit" value="Zahlung">Zahlung bestätigen</button>
             </div>
           </div>
        </form>

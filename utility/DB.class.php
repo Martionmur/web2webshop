@@ -128,7 +128,7 @@ class newDB {
                             . '<td align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
                             . '<td align="right">'.$cart['anz'].' </td>'
                             . '<td align="right">'.number_format($tempProd->preis*$cart['anz'] ,"2",",",".").'€</td>'
-                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="ProduktZuWarenkorb('.$tempProd->pid.')">  '
+                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="+" onclick="add_to_cart('.$tempProd->pid.')">  '
                             . '<input class="btn btn-default" type="button" value="-" onclick="ProduktAusWarenkorb('.$tempProd->pid.')">'
                             . '</td>'
                     .    '</tr>';
