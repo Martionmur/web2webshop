@@ -60,7 +60,7 @@ else {
     #Suche: insert der jquery-funktion hier?
     echo "  <form class='navbar-form navbar-left'>
                 <div class='form-group'>
-                    <input type='text' class='form-control' placeholder='Search'>
+                    <input type='text' class='form-control' placeholder='Search' onkeyup=searchProd('Tofu')>
                 </div>
                 <button type='submit' class='btn btn-default'>Submit</button>
             </form>
