@@ -184,7 +184,9 @@ if (!empty($_POST['zahlung']) && $sum > 0 && isset($kid)) { # gibt es überhaupt
     
           
 <?php
-           var_dump($_SESSION['cart']);
+           var_dump($_SESSION['user']);
+           var_dump($_COOKIE);
+           
         
 
         

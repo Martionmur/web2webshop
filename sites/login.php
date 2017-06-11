@@ -4,7 +4,7 @@
 
 ## check input
 ### User vorhanden 
-### PW correct
+### PW corr^ect
 
 ## Login -> Uid, name, rolle into session via class
 ### Checkbox is set send cookie

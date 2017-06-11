@@ -36,7 +36,7 @@ class User {
 
 
                         if (!empty($_SESSION['logRemember'])){
-                             setcookie('user' ,$_SESSION['user'], time()+6000);
+                             setcookie('user' ,$user, time()+86400);
                         }
                         $success= 1;
                     }
@@ -122,6 +122,8 @@ class User {
         unset($_SESSION['user']);
         unset($_SESSION['gutschein']);
         echo "<script type='text/javascript'>alert('Sie sind jetzt abgemeldet')</script>";
+        #Zum Löschen des Cookie wird er neu initialisiert und die Minimale Lebensdauer vergeben
+        setcookie('user',NULL,1);
         return 1;
     }
 
