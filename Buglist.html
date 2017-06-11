@@ -13,31 +13,43 @@ and open the template in the editor.
     <body>
         <h1>BUGLIST</h1>
 Bestehende Bugs:
-        Gutschein Update lösen und richtiges commit und Erfolgsalert setzen.
-        Datenbank UTF8 - uf8_german collation umbauen und daten erhalten        
-        UserStatusänderungen vor incude navigation.php -  also login, logout und register operationen müssen durchgeführt werden bevor der Navbar ladet. evtl als Function of user
-        warenkorb divs richtig setzen mit cols und float
-        Warenkorb registrier links richtig setzen - Warenkorb.php Zeile 27-33
-        queries immer in db class funktionen angeben und query parameter an funktion übergeben
+
+        Warenkorb auch umleiten nach erfolg: If good then ... achtung $sum muss dann auch in die session und was noch?
+        dbaccess.php ändern
+        produkt bearbeiten Datenupload ist nicht in post - WHY?
+        Produkt bearbeiten _ eingabeprüfung
+        CSS einbinden -> pfad
+
         
 
-        "Aktiv" Datenfeld in User einbauen und bei Login mitnehmen 
-        CSS einbinden -> Pfad falsch
+        ~ - queries immer in db class funktionen angeben und query parameter an funktion übergeben
+        ~ -  Datenbank UTF8 - uf8_german collation umbauen und daten erhalten  - Geht nicht, evtl händisch collate aus download.sql löschen und von mysql beim upload nachtragen lassen - Gemuese in kategorien wiedr rückbauen
+                oder alle umlaute raus geräuchert
         
+        OK - Warenkorb bei reiner Gutschein zahlung auch login nötig        
+        OK - "Aktiv" Datenfeld in User einbauen und bei Login mitnehmen 
+        OK - warenkorb divs richtig setzen mit cols und float
         OK - navbar sortieren
-        OK -login alert richtig setzen
-        CSS
+        OK - login alert richtig setzen
+        OK - Warenkorb registrier links richtig setzen - Warenkorb.php Zeile 27-33
+        OK - warenkorb fertig machen
+        OK - Gutschein erstellen ist fertig
+        OK - Produktkategorien mit suche in Produkte.php
+        OK - UserStatusänderungen vor incude navigation.php -  also login und register operationen müssen durchgeführt werden bevor der Navbar ladet. evtl als Function of user
+        
         
         Register: Wo ist die JavaScript-Validierung und was ist in der Angabe überhaupt damit gemeint?
         
         bei zu häufigem Löschen und aktualisiern von Produkten: Notice: Undefined index: pid in /Applications/XAMPP/xamppfiles/htdocs/web2webshop/web2webshop/utility/DB.class.php on line 86
         
 Nächste aufgaben:
-        warenkorb fertig machen
-        cookie setzen
-        Mein konto
+        check cookie setzen und cookie einlesen
+        Mein konto - Kundeninfo und Bestelldetails (JS?)
         Produkt verwalten
-        Datenupload         
+        Datenupload 
+    
+        continuos search
+
         
         
         

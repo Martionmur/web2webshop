@@ -1,32 +1,12 @@
 <?php
-        echo "<h1> Mein Konto </h1>";
-        #include("utility/newDB.class.php");
-        #include("model/Produktliste.class.php");
-        #$ProdukteKonkret = new ProduktListe(); ### Ich blick nicht mehr durch ob ich das brauch       
-        #$ProdukteKonkret = $db->getProduktListe();
-        #$ProdukteKonkret.fillProduktliste();
-        #produktListenAnzeige($ProdukteKonkret)
-            
-            
-        
-  ?>          
-   <?php
+        echo "<h1> Mein Konto </h1>";  
+
         #$db = new mysqli('localhost','root', '', 'web2webshop');
         $db = new newDB();
         $db->doConnect();
-        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
-        $db->printProduktliste($query);
-        #var_dump($Produktliste);
+        $db->printBestellListe($_SESSION['user']->uid);
         
 
-        
-        #$ProdukteKonkret = $db->getProduktListe();
-        #var_dump($ProdukteKonkret);
-        #$ProdukteKonkret.fillProduktliste();
-        #produktListenAnzeige($ProdukteKonkret.fillProduktliste())
-        #$ProdukteKonkret->produktListenAnzeige();
-            
-            
         
   ?>  
        

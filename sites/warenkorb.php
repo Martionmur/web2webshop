@@ -40,11 +40,16 @@ $db->doConnect();
             <?php
             
             if(!empty($_POST['gutscheincode'])) {
-                    $query4 = 'SELECT `gid`, `code`, ablaufdatum-current_date() AS `ablaufwert`, `wert`, `valid` FROM `gutschein` where `code`="'.$_POST['gutscheincode'].'"';
-                    $gutschein = $db->getGutschein($query4, $_POST['gutscheincode']);
-                    if ($gutschein->gid != -1){
+                    $gutschein = $db->getGutschein($_POST['gutscheincode']);
+                    #var_dump($gutschein);
+                    if ($gutschein->gid > 0){
                         $_SESSION['gutschein'] = $gutschein;                        
-                    }
+                    } elseif ($gutschein->gid == -1) {
+                        echo "<script type='text/javascript'>alert('Der Gutscheincode ist nicht gültig.')</script>";
+                    } elseif ($gutschein->gid == -2) {
+                        echo "<script type='text/javascript'>alert('Der Gutschein ist nicht mehr gültig.')</script>";
+        
+    }
             }
             
             if (!empty($_SESSION['gutschein'])){
@@ -95,53 +100,57 @@ $db->doConnect();
     </div>
 <?php
 # Bestellung einfügen        
-if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahlen
+if (!empty($_POST['zahlung']) && $sum > 0 && isset($kid)) { # gibt es überhaupt etwas zu zahlen
     if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
         echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
     } else {
-
+        # $db->autocommit(FALSE);    
+        $db->startBestellung();
         # insert Bestellung ohne Gutschein
         if (empty($_SESSION['gutschein'])){
             $bvalid = $db->insertBestellungOhneGutschein($kid, $_POST['zahlung']);
         } else {
-
-            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;
-            
+            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;        
             $bvalid = $db->insertBestellung($kid, $_POST['zahlung'], $_SESSION['gutschein']->gid, $g_entwertung);       
         }
+        
         # Bestellid:
         if($bvalid){ 
             $bid = $db->getLastBestellungsID();
-            echo "</br> Bid:". $bid ."<br>";
+            #echo "</br> Bid:". $bid ."<br>";
         }
-
         
+        # insert cart into b_has_p & validate Gutschein
         if(!empty($bid)){
             $bvalid = $db->insertCart($_SESSION['cart'], $bid);          
-            echo "</br> insert cart:". $bvalid ."<br>";
+            #echo "</br> insert cart:". $bvalid ."<br>";
         
             if (!empty($_SESSION['gutschein'])){    
                 $bvalid = $db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
-                echo "</br> GutscheinUpdate:". $bvalid ."<br>";
-                # WHYYYYYYYYYYY NOT?????????????????????????????????????????????????
+                #echo "</br> GutscheinUpdate:". $bvalid ."<br>";
             }
         }
-                 
         
-
-                  
+        # Abschluss: Commit und Erfolgs-Alert
+        if($bvalid){
+            $db->commitBestellung();           
+            
+        }
+        
+        $db->endBestellung();
+    }
+}                       
 # bestellung abschicken
 # check Zahlungsinfo if Rechnungsbetrag != 0;
-    # SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
-    # get bid
-    # SQL Data: Gutschein - gid, wert = restbetrag, validieren
-    # SQL Data: b_has_p - bid, for each cart
-    # SQL Data: produkte - lagerbestand -1
+    # OK SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
+    # OK get bid
+    # OK SQL Data: Gutschein - gid, wert = restbetrag, validieren
+    # OK SQL Data: b_has_p - bid, for each cart
+    # ?SQL Data: produkte - lagerbestand -1
     # if all works COMMIT - how?
 
 #? Kunden rabattgruppe für FST?
-    }
-}        
+         
         
   ?> 
     
@@ -166,7 +175,7 @@ if (!empty($_POST['zahlung']) && $sum > 0) { # gibt es überhaupt etwas zu zahle
 
           <div class="form-group">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-default" name="fromSubmit" value="Zahlung">Zahlung bestätigen</button>
+                <button type="submit" class="btn btn-default" name="zahlungSubmit" value="Zahlung">Zahlung bestätigen</button>
             </div>
           </div>
        </form>

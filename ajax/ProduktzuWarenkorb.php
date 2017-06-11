@@ -9,7 +9,7 @@ if(!empty($_POST['id'])) {
     $id = $_POST['id'];
     echo("id ist nicht leer!");
 }
-    
+#### - ab hier in funktion für warenkorb post?
 if(!empty($_SESSION['cart'])){
     $index=0;
     $success = false;

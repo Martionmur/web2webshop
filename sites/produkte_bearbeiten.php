@@ -1,4 +1,6 @@
-<?php
+
+         
+   <?php
         $db = new newDB();
         $db->doConnect();
         var_dump($_POST);
@@ -6,6 +8,7 @@
         if(isset($_POST['deleteprod'])){
             $db-> deleteProdukt($_POST['deleteprod']);
         }
+
         
 #abgeschicktes Produkt einfügen:
         if(isset($_POST['ProdSubmit'])){
@@ -25,8 +28,7 @@
                 $prodinfo = new Produkt("-1","","","","","");
                 $prodinfotag = "Neues Produkt";
             }            
-            
-                   
+        
     #Produktinfo form
     echo '<div class="container">
      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" name="ProduktForm" id="produktForm">
@@ -36,6 +38,7 @@
           <input type="hidden" name="PID" value="'.$prodinfo->pid.'">
         </div>
       </div>
+
       <div class="form-group">
         <label for="Bezeichung" class="col-sm-4 control-label">Bezeichung</label>
         <div class="col-sm-8">
@@ -65,7 +68,8 @@
           <input type="file" accept=".jpg" id="Prodbild" name="Prodbild">
         
       </div>    
-    <div class="form-group">
+
+      <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
             <button type="submit" class="btn btn-default" name="ProdSubmit" value="">Produkt abschicken</button>
         </div>
@@ -77,7 +81,7 @@
       
     ?>
 
-   
+          
 <?php        
         $db->printProduktliste_admin();       
 ?>  
