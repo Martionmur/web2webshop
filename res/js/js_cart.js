@@ -21,19 +21,18 @@ function take_from_cart(id){
         url: "ajax/ProduktvonWarenkorb.php",
         data: {id: id},     
         success: function(){
-            cnt=document.getElementById('cart'+id).innerHTML;
+            //cnt=document.getElementById('cart'+id).innerHTML;
             
-            if(cnt<=1){
-                var element = document.getElementById('rowid'+id);
-                element.parentNode.removeChild(element);
-            }
-            else{
-                x=cnt;
-                x--;
-                document.getElementById('cart'+id).innerHTML=x;
-            }
-            
-            location.reload();
+           // if(cnt<=1){
+            //    var element = document.getElementById('rowid'+id);
+            //    element.parentNode.removeChild(element);
+            //}
+           // else{
+             //   x=cnt;
+             //   x--;
+            //    document.getElementById('cart'+id).innerHTML=x;
+           // }
+           location.reload();
 
             //summe aktualisieren
             //Cart Status aktualisieren
@@ -54,9 +53,9 @@ function add_to_cart_w(id){
         data: {id: id},     
         success: function(){
             //Countern in CartStatus
-            x=document.getElementById('cart_cnt').innerHTML;
-            x++;
-            document.getElementById('cart_cnt').innerHTML = x;
+            //x=document.getElementById('cart_cnt').innerHTML;
+            //x++;
+            //document.getElementById('cart_cnt').innerHTML = x;
             
             location.reload();
             

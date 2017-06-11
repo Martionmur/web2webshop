@@ -182,9 +182,12 @@ if (!empty($_POST['zahlung']) && $sum > 0 && isset($kid)) { # gibt es überhaupt
        </form>
     </div>
   </div>
+    
           
 <?php
-
+           var_dump($_SESSION['user']);
+           var_dump($_COOKIE);
+           
         
 
         
