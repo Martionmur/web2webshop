@@ -1,12 +1,13 @@
 <?php
-#include("model/Produkt.class.php");
-#include("model/User.class.php");
+include("config/dbaccess.php");
 
 class newDB {
     private $con = null;
     
     #connection funktioniert
     function doConnect(){
+        
+        #$this->con = mysqli_connect($host, $user ,$password,$DB);
         $this->con = mysqli_connect("localhost","root","","web2webshop");
         $this->con->set_charset('UTF-8');
         #add UTF-8 mode!
@@ -358,6 +359,11 @@ function updateGutschein($gid, $restguthaben){
             echo "<script type='text/javascript'>alert('Bestellung erfolgreich abgeschickt!')</script>";
             unset($_SESSION['cart']);
             unset($_SESSION['gutschein']);
+            unset($_SESSION['kid']);
+            unset($_SESSION['sum']);
+            unset($_SESSION['gesamt']);
+            unset($_SESSION['restguthaben']);
+            
     }
     
     function startBestellung(){
@@ -490,7 +496,7 @@ function updateGutschein($gid, $restguthaben){
                         $gut = "-";
                     }
                     echo '<tr>'
-                            . '<td>'.$bestell->bid.'</td>'
+                            . '<td><b>'.$bestell->bid.'</b></td>'
                             . '<td>'.$bestell->datum.'</td>'
                             . '<td>'.$bestell->art.' </td>'
                             . '<td>'.$gut.'</td>'
@@ -629,7 +635,7 @@ function printKundenliste(){
                 }    
                 
                     echo '<tr>'
-                            . '<td>'.$kunde->uid.'</td>'
+                            . '<td><b>'.$kunde->uid.'</b></td>'
                             . '<td>'.$kunde->username.'</td>'
                             . '<td>'.$kunde->kid.'</td>'
                             . '<td>'.$kunde->anrede.'</td>'
@@ -731,6 +737,39 @@ function printBestellDetails($bid){
         $res = mysqli_query($this->con, $query); 
         #var_dump($query);
     }
+    
+    function getKundenInfo($uid){
+        $query = 'SELECT `kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` WHERE uid ='.$uid;
+        $res = mysqli_query($this->con, $query);
+        if($res){       
+            $kunde = mysqli_fetch_object($res);
+            return $kunde;
+        }
+    }
+    
+    function updateKunde( $uid, $regAnrede, $regVorname, $regNachname, $regAdresse, $regPLZ, $regOrt, $regEmail){
+		$query = "UPDATE `web2webshop`.`kunde` SET `anrede` = '".$regAnrede."', `vorname`='".$regVorname."', `nachname`='".$regNachname."', "
+                        . "`adresse`='".$regAdresse."', `plz`='".$regPLZ."', `ort`='".$regOrt."', `email`='".$regEmail."' WHERE `uid` = '".$uid."'";
+                #var_dump($query);
+		$res = mysqli_query($this->con, $query);		
+		
+		if($res){
+			return true;
+		}else{
+			return false;	
+		}        
+    }
+    
+    
+    function printZahlungsOption2($kid){
+        $query3 = 'SELECT `zid`,`art`,`nummer` FROM `zahlungsinfo` WHERE `kid`='.$kid;            
+        $res = mysqli_query($this->con, $query3);
+        while ($zinfo = mysqli_fetch_object($res)){
+            # var_dump($zinfo);
+            echo '<li>'.$zinfo->art.': '.substr($zinfo->nummer,0 , 4).'*******</li>';
+        }         
+    }
+    
     
 #ENDE
 }

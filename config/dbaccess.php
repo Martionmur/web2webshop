@@ -1,5 +1,6 @@
 <?php
-$host="localhost";
-$user="root"; 
-$Password =""; 
-$DB = "web2webshop";
+
+$host     ="localhost";
+$user     ="root"; 
+$password =""; 
+$DB       ="web2webshop";

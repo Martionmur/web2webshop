@@ -15,9 +15,6 @@
     $u->rolle="kun";
     $_SESSION['user']= $u;
     }
-    if (!isset($_SESSION['cart'])){
-        $_SESSION['cart'] = [];    
-    }
 
         
 # Über navigation login und logout
@@ -36,10 +33,10 @@
     <head>
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/custom.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="res/css/custom.css" rel="stylesheet" type="text/css" />
         <!-- BOOTSRAP Latest compiled and minified JavaScript -->
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-            <link href="res/css/jquery-ui.css" reil="stylesheet">
+            <link href="res/css/jquery-ui.css" rel="stylesheet">
             <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
             <script type="text/javascript" src="res/js/js_cart.js"></script>

@@ -1,7 +1,7 @@
 <?php
         $db = new newDB();
         $db->doConnect();
-        var_dump($_POST);
+        #var_dump($_POST);
         
 # Bestellung Löschen:
 if(!empty($_POST['bedelete'])){
@@ -53,7 +53,7 @@ if(empty($_SESSION['bdetails'])){
             
   ?>
     </div>
-    <div class="col-md-6" >
+    <div class="col-md-6"  >
         <h1> Bestelldetails </h1>
 
 <?php
