@@ -19,9 +19,10 @@ $db->doConnect();
                      #echo $kid;
                      echo "<input type=button href='index.php?tab=meinkonto.php' value='Kundendaten ändern'> ";
                  } else {
-                     echo "<p>Bitte regestrieren Sie sich um mit der Bestellung fortzufahren.</p>"
+                     echo "<p>Bitte registrieren Sie sich um mit der Bestellung fortzufahren.</p>"
                          ."<form action='' method='get'>"
-                             . "<input type=submit name='tab' value='register'>als Kunde registrieren</input> "
+                             . "<input type=submit name='tab' value='login'></input> "
+                             . "<input type=submit name='tab' value='register'></input> "
                          ."</form>";   
                  } 
              ?> 

@@ -331,12 +331,14 @@ function updateGutschein($gid, $restguthaben){
                 $query = "INSERT INTO `b_has_p` ( `pid`, `menge` ,`bid`) VALUES "; 
                 $count = 0;
                 foreach ($cart as $prod) {
-                    if ($count == 0){
-                    $query .= "(".$prod['pid'].",".$prod['anz'].",".$bid.")";
-                    } else {
-                    $query .= ", (".$prod['pid'].",".$prod['anz'].",".$bid.")";    
+                    if($prod!=NULL){
+                        if ($count == 0){
+                        $query .= "(".$prod['pid'].",".$prod['anz'].",".$bid.")";
+                        } else {
+                        $query .= ", (".$prod['pid'].",".$prod['anz'].",".$bid.")";    
+                        }
+                        $count ++;
                     }
-                    $count ++;
                 }
                 #echo $query;
                 
@@ -472,7 +474,7 @@ function updateGutschein($gid, $restguthaben){
             echo "<table class='table-striped' style= 'width:100%'> 
                     <thead> 
                       <tr>
-                        <th>  Bestellnummer  </th>
+                        <th>  ID  </th>
                         <th>  Datum  </th>
                         <th>  Zahlungsart  </th>
                         <th>  Gutschein  </th>
@@ -491,10 +493,17 @@ function updateGutschein($gid, $restguthaben){
                             . '<td>'.$bestell->datum.'</td>'
                             . '<td>'.$bestell->art.' </td>'
                             . '<td>'.$gut.'</td>'
-                            . '<td style="padding:3px;"><input class="btn btn-default" type="button" value="Details" onclick="?????????">  '
-                            . '<input class="btn btn-default" type="button" value="Rechnung drucken" onclick="?????????">  '
-                            . '</td>'
-                    .    '</tr>';
+                            . '<td style="padding:3px;">'
+                            .   '<form action="" method="post" name="bestelldetails">';
+                    if ($_SESSION['user']->rolle == "admin"){
+                    echo          '<button type="submit" class="btn btn-default" name="wdetails" value = "'.$bestell->bid.'"> Details </button>'
+                                . '<button type="submit" class="btn btn-default" name="bedelete" value = "'.$bestell->bid.'"> Löschen </button>';
+                    } else {
+                    echo          '<button type="submit" class="btn btn-default" name="wdetails" value = "'.$bestell->bid.'"> Details </button>'
+                                . '<button type="submit" class="btn btn-default" name="rechnung" value = "'.$bestell->bid.'"> Rehnung drucken </button>';
+                    }
+                    echo        '</form>'
+                            . '</td>';
             }
             echo '</tbody>
                 </table>';   
@@ -580,10 +589,148 @@ function deleteProdukt($pid){
         #var_dump($query);            
         $res = mysqli_query($this->con, $query);
         if($res){
-            echo "<script type='text/javascript'>alert('Das Produkt ".$bezeichnung." wurde erfolgreich geslöscht!')</script>";;
+            echo "<script type='text/javascript'>alert('Das Produkt wurde erfolgreich geslöscht!')</script>";;
         }
         
     }
+    
+# KUNDEN VERWALTEN
+function printKundenliste(){
+        $query ="SELECT `uid`, `username`,`aktiv`,`kid`,`anrede`,`vorname`,`nachname`,`adresse`,`plz`,`ort`,`land`,`email` FROM `kunde` JOIN `user` USING (`uid`) WHERE `rolle` = 'kunde' ";
+        $res = mysqli_query($this->con, $query);  
+        #var_dump($res); 
+        if(mysqli_num_rows($res)==0){
+            echo "Keine Kunden";
+        } else {
+            echo "<table class='table-striped' style= 'width:100%'> 
+                    <thead> 
+                      <tr>
+                        <th>  UserID  </th>
+                        <th>  Username  </th>
+                        <th>  KundenID  </th>
+                        <th>  Anrede  </th>
+                        <th>  Vorname  </th>
+                        <th>  Nachname  </th>
+                        <th>  Adresse  </th>
+                        <th>  Plz  </th>
+                        <th>  Ort  </th>
+                        <th>  Land  </th>
+                        <th>  Email  </th>
+                        <th>  Options  </th>
+                      </tr>
+                    </thead>
+                    <tbody>";
+            while($kunde = mysqli_fetch_object($res)){
+                if($kunde->aktiv){
+                    $status = 'Deaktivieren';
+                } else {
+                    $status = 'Aktivieren';
+                }    
+                
+                    echo '<tr>'
+                            . '<td>'.$kunde->uid.'</td>'
+                            . '<td>'.$kunde->username.'</td>'
+                            . '<td>'.$kunde->kid.'</td>'
+                            . '<td>'.$kunde->anrede.'</td>'
+                            . '<td>'.$kunde->vorname.'</td>'
+                            . '<td>'.$kunde->nachname.'</td>'
+                            . '<td>'.$kunde->adresse.'</td>'
+                            . '<td>'.$kunde->plz.'</td>'
+                            . '<td>'.$kunde->ort.'</td>'
+                            . '<td>'.$kunde->land.'</td>'
+                            . '<td>'.$kunde->email.' </td>'
+                            
+                             # Checkbox activ, Bestellungdetails.
+                            . '<td style="padding:3px;">'
+                            . '<form action="" method="post" name="changeprod">'
+                                . '<button type="submit" class="btn btn-default" name="bdetails" value = "'.$kunde->uid.'"> Bestellungen</button>'
+                                . '<button type="submit" class="btn btn-default" name="'.$status.'" value = "'.$kunde->uid.'">'.$status.'</button>'
+                            . '</form>'
+                            . '</td>'
+                    .    '</tr>';
+            }
+            echo '</tbody>
+                </table>';   
+        }
+    }
+    
+function activiere_Kunde($uid){
+    $query = 'UPDATE `user` SET `aktiv`= "1" WHERE `uid`="'.$uid.'"';
+    $res = mysqli_query($this->con, $query);
+    # var_dump($res);
+        }
+       
+
+    
+function deactiviere_Kunde($uid){
+    $query = 'UPDATE `user` SET `aktiv`= "0" WHERE `uid`="'.$uid.'"';
+    $res = mysqli_query($this->con, $query);
+    #    var_dump($res);
+        }       
+
+function printBestellDetails($bid){
+        $query= 'SELECT * FROM `b_has_p` JOIN `produkte` USING (`pid`) WHERE `bid` = "'.$bid.'"';
+        $res = mysqli_query($this->con, $query);        
+        $sum = 0.00;
+        
+        echo "<table class='table-striped' style= 'width:100%'> 
+                <thead> 
+                  <tr>
+                    <th></th>
+                    <th>  Bezeichnung  </th>
+                    <th>  Preis   </th>
+                    <th>  Anzahl  </th>
+                    <th>  Gesamt  </th>
+                    <th>  Optionen  </th>
+                  </tr>
+                </thead>
+                <tbody>";
+        
+        while($produkt = mysqli_fetch_object($res)){    
+                    $tempProd = new Produkt($produkt->pid, $produkt->bezeichnung, $produkt->preis, $produkt->bewertung,"" ,"" );
+                    echo '<tr id="rowid'.$tempProd->pid.'">'
+                            . '<td style="padding:3px;"><img src="res/img/prod'.$tempProd->pid.'.jpg" style="width: 40px; height: 40px;" class="img-thumbnail"></td>'
+                            . '<td>'.$tempProd->bezeichnung.'</td>'
+                            . '<td id="price'.$tempProd->pid.'" value="'.$tempProd->preis.'" align="right">'.number_format($tempProd->preis ,"2",",",".").'€</td>'
+                            . '<td id="cart'.$tempProd->pid.'" align="right">'.$produkt->menge.' </td>'
+                            . '<td id="sum'.$tempProd->pid.'" value="'.$tempProd->preis*$produkt->menge.'" align="right">'.number_format($tempProd->preis*$produkt->menge ,"2",",",".").'€</td>'
+                            . '<td style="padding:3px;">';
+                    if ($_SESSION['user']->rolle == "admin"){
+                    echo       '<form action="" method="post" name="produktlöschen">';
+                    echo            '<button type="submit" class="btn btn-default" name="produktdelete" value = "'.$produkt->pid.'"> Löschen </button>';
+                    echo        '</form>';
+                    }
+                    echo      '</td>'
+                    .    '</tr>';
+                    $sum += $tempProd->preis*$produkt->menge;
+                }
+        
+        echo '</tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" align="right" > Summe </td>
+                  <td id="cart_sum" value="'.$sum.'" align="right">'.number_format($sum ,"2",",",".").'€</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>';
+        return $sum;
+    }
+    
+    function deleteBestellung($bid){
+        $query =     "DELETE FROM `b_has_p` WHERE `b_has_p`.`bid` =".$bid;
+        $res = mysqli_query($this->con, $query);             
+        
+        $query =     "DELETE FROM `bestellung` WHERE `bestellung`.`bid` =".$bid;
+        $res = mysqli_query($this->con, $query);             
+    }
+    
+    function deleteProduktInBestellung($bid, $pid){
+        $query =     "DELETE FROM `b_has_p` WHERE `b_has_p`.`bid` =".$bid." AND `b_has_p`.`pid` =".$pid;
+        $res = mysqli_query($this->con, $query); 
+        #var_dump($query);
+    }
+    
 #ENDE
 }
     

@@ -26,6 +26,8 @@
 # Über navigation login und logout
 # 
 #                if get ['tab'] = logout user->logout
+    
+#var_dump($_SESSION)
         
 ?>
 <!DOCTYPE html>

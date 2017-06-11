@@ -77,46 +77,52 @@ class User {
             }
         }
     
+    # wenn alles passt insert Schrittweise
         if ($valid == true) {
             $db = new newDB();
             $db->doConnect();
-        
+    
+    
             if($db->insertUser($_POST['formUsername'], md5($_POST['formPasswort1']))) {
-                echo "User wurde angelegt";
+            #    echo "User wurde angelegt";
                 $success = TRUE;
             } else {
-                echo "User konnte nicht angelegt werden";
+            #    echo "User konnte nicht angelegt werden";
                 $success = FALSE;
             }
         
             $uid =$db->getUserID($_POST['formUsername']);       
-            echo"GetUserID: ";
-            var_dump($uid);
+            #echo"GetUserID: ";
+            #var_dump($uid);
             if($db->insertKunde("$uid", $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],"Österreich", $_POST['formEmail'])){
-                echo "kunde angelegt";
+            #    echo "kunde angelegt";
                 $success = TRUE;
             } else {
-                echo "Kunde wurde nicht angelegt";
+            #    echo "Kunde wurde nicht angelegt";
                 $success = FALSE;
             }
         
             $kid =$db->getKundenID($uid);       
-            echo "GEt KundenID: ";
-            var_dump($kid);
+            #echo "GEt KundenID: ";
+            #var_dump($kid);
+            
             if($db->insertZahlungsinfo($kid, $_POST['formZahlungsart'], $_POST['formZahlungsdet'])) {
-                echo "Zahlungsinfo angelegt" ;
+            #    echo "Zahlungsinfo angelegt" ;
                 $success = TRUE;
                 
             }else{
-                echo "Zahlungsinfo nicht angelegt.";
+            #    echo "Zahlungsinfo nicht angelegt.";
                 $success = FALSE;
             }
-        
+            if($success){
+                echo "<script type='text/javascript'>alert('Registrierung erfolgreich')</script>";
+            }
             return $success;
             ### Erfolg! Go to LogIn after Registration
             ### DisconnectDB
         }
     }
+    
     
     function logout(){
         unset($_SESSION['user']);

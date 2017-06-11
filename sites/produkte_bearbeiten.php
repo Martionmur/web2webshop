@@ -3,7 +3,7 @@
    <?php
         $db = new newDB();
         $db->doConnect();
-        var_dump($_POST);
+         var_dump($_POST);
 #Produkt löschen
         if(isset($_POST['deleteprod'])){
             $db-> deleteProdukt($_POST['deleteprod']);
