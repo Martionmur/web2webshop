@@ -69,12 +69,12 @@
 
     </head>
     <body>
-     
+        <div id="fixed">
         <?php
             include("inc/logchange.inc.php");        
             include("inc/navigation.php");
-
         ?>    
+        </div>
         
         <div id="content">
         <?php
