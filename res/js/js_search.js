@@ -5,7 +5,6 @@ function searchProd(text){
         element = liste[i];
         if(element.getAttribute("alt").indexOf(text)>-1){
             element.parentNode.parentNode.hide();
-            //element.parentNode.parentNode.setAttribute("display", "");
         }
         else{
             element.parentNode.parentNode.show();
