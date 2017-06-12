@@ -7,9 +7,16 @@
     session_start();
     #session_destroy();
     #session_start();
-    if(isset($_COOKIE['user'])){
-        $_SESSION['user']=$_COOKIE['user'];
+    if(isset($_COOKIE['remember'])){
+        if($_COOKIE['remember']=="true"){
+        $u = new User;
+        $u->uid=$_COOKIE['uid'];
+        $u->username=$_COOKIE['username'];
+        $u->rolle=$_COOKIE['rolle'];
+        $_SESSION['user']=$u;
+        }
     }
+    
     if (!isset($_SESSION['user'])){
     $u = new User;
     $u->rolle="kun";

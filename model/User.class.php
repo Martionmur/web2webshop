@@ -41,13 +41,19 @@ class User {
                         $user = $db->makeUser($_POST['logUsername'], $_POST['logPasswort']) ;
                         $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
                 #        echo $_SESSION['user']->rolle;
-
-                        echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
-
-
-                        if (!empty($_SESSION['logRemember'])){
-                             setcookie('user' ,$user, time()+86400);
+                        
+                        #set Cookie funktioniert
+                        if (!empty($_POST['logRemember'])){
+                             setcookie('remember','true',time()+86400,'/');
+                             setcookie('uid' ,$user->uid, time()+86400,'/');
+                             setcookie('username' ,$user->username, time()+86400,'/');
+                             setcookie('rolle' ,$user->rolle, time()+86400,'/');
                         }
+                        echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
+                        
+                        
+
+
                         $success= 1;
                     }
                 }
@@ -137,9 +143,12 @@ class User {
     function logout(){
         unset($_SESSION['user']);
         unset($_SESSION['gutschein']);
+        setcookie('remember' ,"false", time()-86401,'/');
+        #setcookie('uid' ,"", time()-86401,'/');
+        #setcookie('username' ,"", time()-86401,'/');
+        #setcookie('rolle' ,"", time()-86401,'/');
         echo "<script type='text/javascript'>alert('Sie sind jetzt abgemeldet')</script>";
         #Zum Löschen des Cookie wird er neu initialisiert und die Minimale Lebensdauer vergeben
-        setcookie('user',NULL,1);
         return 1;
     }
 
