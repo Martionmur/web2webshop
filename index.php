@@ -1,4 +1,5 @@
 <?php
+    #setcookie('user' ,'x', time()+1,'/');
     #include ("config/dbaccess.php");
     include ("utility/DB.class.php");
     include("model/Produkt.class.php");
@@ -8,8 +9,13 @@
     #session_destroy();
     #session_start();
     if(isset($_COOKIE['user'])){
-        $_SESSION['user']=$_COOKIE['user'];
+        $u = new User;
+        $u->uid=$_COOKIE['uid'];
+        $u->username=$_COOKIE['username'];
+        $u->rolle=$_COOKIE['rolle'];
+        $_SESSION['user']=$u;
     }
+    
     if (!isset($_SESSION['user'])){
     $u = new User;
     $u->rolle="kun";

@@ -31,13 +31,17 @@ class User {
                         $user = $db->makeUser($_POST['logUsername'], $_POST['logPasswort']) ;
                         $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
                 #        echo $_SESSION['user']->rolle;
-
-                        echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
-
-
-                        if (!empty($_SESSION['logRemember'])){
-                             setcookie('user' ,$user, time()+86400);
+                        
+                        if (!empty($_POST['logRemember'])){
+                             setcookie('uid' ,$user->uid, time()+86400,'/');
+                             setcookie('username' ,$user->username, time()+86400,'/');
+                             setcookie('rolle' ,$user->rolle, time()+86400,'/');
                         }
+                        echo "<script type='text/javascript'> alert('Sie sind als ". $_SESSION['user']->username ." angemeldet. Willkommen!')</script>";
+                        
+                        
+
+
                         $success= 1;
                     }
                 }
