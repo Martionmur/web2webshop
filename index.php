@@ -15,14 +15,13 @@
     $u->rolle="kun";
     $_SESSION['user']= $u;
     }
-    if (!isset($_SESSION['cart'])){
-        $_SESSION['cart'] = [];    
-    }
 
         
 # Über navigation login und logout
 # 
 #                if get ['tab'] = logout user->logout
+    
+#var_dump($_SESSION)
         
 ?>
 <!DOCTYPE html>

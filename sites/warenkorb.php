@@ -16,12 +16,13 @@ $db->doConnect();
                      echo "<p><b>Lieferadresse</p></b>";
                      $kid = $db->printKundeninfo($_SESSION['user']->uid);
 
-                     #echo $kid;
+                     $_SESSION['kid']= $kid;
                      echo "<input type=button href='index.php?tab=meinkonto.php' value='Kundendaten ändern'> ";
                  } else {
-                     echo "<p>Bitte regestrieren Sie sich um mit der Bestellung fortzufahren.</p>"
+                     echo "<p>Bitte registrieren Sie sich um mit der Bestellung fortzufahren.</p>"
                          ."<form action='' method='get'>"
-                             . "<input type=submit name='tab' value='register'>als Kunde registrieren</input> "
+                             . "<input type=submit name='tab' value='login'></input> "
+                             . "<input type=submit name='tab' value='register'></input> "
                          ."</form>";   
                  } 
              ?> 
@@ -29,7 +30,7 @@ $db->doConnect();
         <div id= 'warenkorb' class='col-md-6' style= 'float'>    
             <?php
                  $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
-                 $sum = $db->printWarenkorb($query);
+                 $_SESSION['sum'] = $db->printWarenkorb($query);
             ?>
         </div>
         
@@ -72,11 +73,12 @@ $db->doConnect();
                 }
 
             ?>   
-        </div>
+        </div> 
         <div id="rechnungsbetrag" class="col-md-6" style= 'float'>
             <?php
             $gesamt;
             $restguthaben=0;
+            $sum = $_SESSION['sum'];
             if (isset($_SESSION['gutschein'])) {
                 $gesamt = $sum - $_SESSION['gutschein']->wert;
                 if($gesamt < 0){
@@ -94,66 +96,14 @@ $db->doConnect();
             } else {
                 $gesamt = $sum;
                 echo "<p><b> Rechnungsbetrag: ". number_format($gesamt,"2",",",".") . "€ </b></p>";                
-            }    
+            } 
+            
+            $_SESSION['gesamt'] = $gesamt;
+            $_SESSION['restguthaben'] = $restguthaben;
+            
             ?>    
         </div>
     </div>
-<?php
-# Bestellung einfügen        
-if (!empty($_POST['zahlung']) && $sum > 0 && isset($kid)) { # gibt es überhaupt etwas zu zahlen
-    if ($gesamt > 0 && $_POST['zahlung'] == "invalid"){   
-        echo "<script type='text/javascript'>alert('Bitte Zahlungsmethode auswählen!')</script>"; # zahlungs methode nicht ausgewählt oder zuwenig gutschein eingelöst
-    } else {
-        # $db->autocommit(FALSE);    
-        $db->startBestellung();
-        # insert Bestellung ohne Gutschein
-        if (empty($_SESSION['gutschein'])){
-            $bvalid = $db->insertBestellungOhneGutschein($kid, $_POST['zahlung']);
-        } else {
-            $g_entwertung = $_SESSION['gutschein']->wert - $restguthaben;        
-            $bvalid = $db->insertBestellung($kid, $_POST['zahlung'], $_SESSION['gutschein']->gid, $g_entwertung);       
-        }
-        
-        # Bestellid:
-        if($bvalid){ 
-            $bid = $db->getLastBestellungsID();
-            #echo "</br> Bid:". $bid ."<br>";
-        }
-        
-        # insert cart into b_has_p & validate Gutschein
-        if(!empty($bid)){
-            $bvalid = $db->insertCart($_SESSION['cart'], $bid);          
-            #echo "</br> insert cart:". $bvalid ."<br>";
-        
-            if (!empty($_SESSION['gutschein'])){    
-                $bvalid = $db->updateGutschein($_SESSION['gutschein']->gid, $restguthaben);          
-                #echo "</br> GutscheinUpdate:". $bvalid ."<br>";
-            }
-        }
-        
-        # Abschluss: Commit und Erfolgs-Alert
-        if($bvalid){
-            $db->commitBestellung();           
-            
-        }
-        
-        $db->endBestellung();
-    }
-}                       
-# bestellung abschicken
-# check Zahlungsinfo if Rechnungsbetrag != 0;
-    # OK SQL Data: bestellung - kid, zid, gid, gutscheinentwertung
-    # OK get bid
-    # OK SQL Data: Gutschein - gid, wert = restbetrag, validieren
-    # OK SQL Data: b_has_p - bid, for each cart
-    # ?SQL Data: produkte - lagerbestand -1
-    # if all works COMMIT - how?
-
-#? Kunden rabattgruppe für FST?
-         
-        
-  ?> 
-    
 
 
     <div id="Zahlung" class="col-md-12">

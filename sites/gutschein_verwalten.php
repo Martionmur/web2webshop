@@ -4,20 +4,22 @@
 #make Placeholder values for gutschein und code
 $db = new newDB();
 $db->doConnect();
-if(!empty($_POST['gwert']) && (!empty($_POST['ablaufdatum']))){
-    
-    if($db->getGutschein($_POST['gcode'])->gid == -1){
-        $done = $db->insertGutschein($_POST['gcode'], $_POST['gwert'], $_POST['ablaufdatum']);
-        if($done){
-            echo "<script type='text/javascript'>alert('Der Gutschein eingefügt.')</script>";
-        } else{
-            echo "<script type='text/javascript'>alert('Fehler beim Gutschein einfügen.')</script>";
-        }   
+if(!empty($_POST)){
+    if(!empty($_POST['gwert']) && (!empty($_POST['ablaufdatum']))){
+
+        if($db->getGutschein($_POST['gcode'])->gid == -1){
+            $done = $db->insertGutschein($_POST['gcode'], $_POST['gwert'], $_POST['ablaufdatum']);
+            if($done){
+                echo "<script type='text/javascript'>alert('Der Gutschein eingefügt.')</script>";
+            } else{
+                echo "<script type='text/javascript'>alert('Fehler beim Gutschein einfügen.')</script>";
+            }   
+        } else {
+            echo "<script type='text/javascript'>alert('Gutscheincode bereits vorhanden.')</script>";
+        }          
     } else {
-        echo "<script type='text/javascript'>alert('Gutscheincode bereits vorhanden.')</script>";
-    }          
-} else {
-    echo "<script type='text/javascript'>alert('Bitte Felder ausfüllen.')</script>";
+        echo "<script type='text/javascript'>alert('Bitte Felder ausfüllen.')</script>";
+    }
 }
 
 $adate = date("Y-m-d");
