@@ -1,4 +1,5 @@
 <?php
+# Setzt Cart Symbol in Navbar mit Produktanzahl
     if (!isset($_SESSION['cart'])){
         $_SESSION['cart'] = [];    
     }

@@ -84,6 +84,12 @@
   </div>';
             
     }
+//    <form method="post" action="" style="width:130px;" enctype="multipart/form-data">
+//      <input type="hidden" name="MAX_FILE_SIZE" value="1024000">
+//      Neues Bild:<p><input name="userfile" type="file" size="10" style="width:100px;"></p>
+//      <input type="submit" value="Upload">
+//	</form>
+
       
     ?>
 

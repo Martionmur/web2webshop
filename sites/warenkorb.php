@@ -10,14 +10,19 @@ $db->doConnect();
         <h1>Warenkorb</h1>
         <div id= 'kundeninfo' class='col-md-6'>  
 
-            <?php        
+            <?php
+# Kundeninfo prüfen  und Optionen anzeigen
                  # echo var_dump($_SESSION['user']);
                  if ($_SESSION['user']->rolle == 'kunde'){
                      echo "<p><b>Lieferadresse</p></b>";
                      $kid = $db->printKundeninfo($_SESSION['user']->uid);
 
                      $_SESSION['kid']= $kid;
-                     echo "<input type=button href='index.php?tab=meinkonto.php' value='Kundendaten ändern'> ";
+                    echo "<form action='' method='get'>"
+                             . "Kundendaten ändern: "
+                             . "<input type=submit name='tab' value='meinkonto'></input> "
+                          . "</form>";
+
                  } else {
                      echo "<p>Bitte registrieren Sie sich um mit der Bestellung fortzufahren.</p>"
                          ."<form action='' method='get'>"
@@ -29,6 +34,7 @@ $db->doConnect();
         </div>
         <div id= 'warenkorb' class='col-md-6' style= 'float'>    
             <?php
+#warenkorb anzeigen und Summe in Session Speichern 
                  $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) ORDER BY `bezeichnung`';		
                  $_SESSION['sum'] = $db->printWarenkorb($query);
             ?>
@@ -39,7 +45,7 @@ $db->doConnect();
         <div id="Gutschein" class="col-md-6">
         
             <?php
-            
+#Gutschein eingabe prüfen und ergebnis anzeigen
             if(!empty($_POST['gutscheincode'])) {
                     $gutschein = $db->getGutschein($_POST['gutscheincode']);
                     #var_dump($gutschein);
@@ -76,6 +82,7 @@ $db->doConnect();
         </div> 
         <div id="rechnungsbetrag" class="col-md-6" style= 'float'>
             <?php
+# Abrechnen (Summe, Gutschein, Restbetrag, ect.)
             $gesamt;
             $restguthaben=0;
             $sum = $_SESSION['sum'];
@@ -105,7 +112,7 @@ $db->doConnect();
         </div>
     </div>
 
-
+<!-- Zahlungsmethode auswählen und Bestellung abschicken - die Bestellung wird in Logchange.inc verarbeitet.-->
     <div id="Zahlung" class="col-md-12">
        <form class="form-horizontal" action="" method="post" name="zahlung" id="zahlung"> 
           <div class="form-group" class="col-md-6">
@@ -134,8 +141,8 @@ $db->doConnect();
     
           
 <?php
-           var_dump($_SESSION['user']);
-           var_dump($_COOKIE);
+//           var_dump($_SESSION['user']);
+//           var_dump($_COOKIE);
            
         
 

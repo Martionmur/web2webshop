@@ -1,8 +1,9 @@
 <?php
         $db = new newDB();
         $db->doConnect();
-        #var_dump($_POST);
-        
+        #var_dump($_POST
+#OPERATIONEN aus POST abarbeiten
+
 # Bestellung Löschen:
 if(!empty($_POST['bedelete'])){
     $db->deleteBestellung($_POST['bedelete']);
@@ -12,8 +13,6 @@ if(!empty($_POST['produktdelete'])){
     $db->deleteProduktInBestellung($_SESSION['wdetails'] , $_POST['produktdelete']);
     
 }
-
-        
 
 # Kunde aktivieren/deaktivieren aus Form zu DB class
 if(!empty($_POST['Aktivieren'])){
@@ -30,7 +29,9 @@ if(!empty($_POST['Deaktivieren'])){
         <h1> Kunden bearbeiten </h1>
         <div>
             <?php 
+            
                 $db->printKundenliste();  
+
             ?>
         </div>    
     </div>

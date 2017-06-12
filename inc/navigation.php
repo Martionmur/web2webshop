@@ -1,14 +1,4 @@
-<?php
- 
-?>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link href="css/Custom.css" rel="stylesheet" type="text/css" />        
-<!-- BOOTSRAP Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<title>Webshop WET2</title>
-
-
+<!-- Steuert navbar mit xml und fügt Logstatus und Cartstatus an-->
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -38,14 +28,7 @@ else {
     $xmlnav = simplexml_load_file("config/navigation1.xml");
 }    
     $cnt = 0;
-    
-//    foreach($xmlnav->eintrag as $eintrag){
-//        if ($cnt==0) echo "<li class='active'><a href = 'index.php?tab=".$eintrag->link_to."'>".$eintrag->title."</a></li>";
-//        else echo "<li><a href = 'index.php?tab=".$eintrag->link_to."'>".$eintrag->title."</a></li>";
-//        
-//        $cnt = $cnt +1;
-//        ##link_to wird noch nicht angesprochen -> muss zuerst definiert werden, wie z.B. "Home" geladen werden soll
-//    }
+
     if(!isset($_GET['tab'])){
         $_GET['tab']= 'home.php';
     }
@@ -65,14 +48,7 @@ else {
                 <button type='submit' class='btn btn-default'>Submit</button>
             </form>
         <ul class ='nav navbar-nav navbar-right'>";
-    
-//    foreach($xmlnav->side_eintrag as $s_eintrag){
-//        if ($cnt==0) echo "<li class='active'><a>$eintrag->title</a></li>";
-//        else echo "<li><a>$s_eintrag->title</a></li>";
-//        $cnt = $cnt +1;
-//        ##link_to wird noch nicht angesprochen -> muss zuerst definiert werden, wie z.B. "Home" geladen werden soll
-//    }
-//    
+ 
 
     
     #LogStatus

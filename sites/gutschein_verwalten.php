@@ -1,7 +1,7 @@
 <?php
 #check $_POST 
-#           check if code ist already in use (warenkorb) and insert ->alert
-#make Placeholder values for gutschein und code
+#check if gutschein code ist already in use (warenkorb) and insert ->alert
+
 $db = new newDB();
 $db->doConnect();
 if(!empty($_POST)){
@@ -25,7 +25,7 @@ if(!empty($_POST)){
 $adate = date("Y-m-d");
 $adate = date('Y-m-d', strtotime($adate. ' + 1 years'));
 
-
+#make Placeholder values for gutschein und code
 function generateCode() {
     $length = 5;
     $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -37,10 +37,7 @@ function generateCode() {
     return $randomString;
 }
 
-
-
-
-
+# Formularanzeige
 ?> 
 
 
@@ -79,8 +76,7 @@ function generateCode() {
         </div>
         <div id= 'Gutscheinansicht' class='col-md-6'> 
 <?php
-        $db = new newDB();
-        $db->doConnect();
+
         $db->printGutscheinliste();
 ?>  
         </div>       

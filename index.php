@@ -53,7 +53,7 @@
                    });
                 });
             </script>
-            
+        <title>Webshop WET2</title>    
             
         <meta charset="UTF-8">
         
@@ -101,6 +101,9 @@
                 break;
             case 'meinkonto':
                 include  ("sites/meinkonto.php");
+                break;
+            case 'rechnung':
+                include  ("sites/rechnung.php");
                 break;
             default:
                 include  ("sites/home.php");

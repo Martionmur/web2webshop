@@ -1,15 +1,9 @@
 <?php
-#include ("utility/DB.class.php");
+
+#### OPERATIONEN sind in logchange.inc und in der User.class
 ## get input
 
-## check input
-### User vorhanden 
-### PW corr^ect
 
-## Login -> Uid, name, rolle into session via class
-### Checkbox is set send cookie
-
-## Validate form values from form - form 'action = ""' so data is send to site itself again
 
 
 

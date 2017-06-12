@@ -8,6 +8,16 @@ class User {
     function checkLogin(){
         $success= 0;
         #prüft Username und setzt Userstatus
+
+## check input
+### User vorhanden 
+### PW corr^ect
+
+## Login -> Uid, name, rolle into session via class
+### Checkbox is set send cookie
+
+
+        
             if(    !isset($_POST['logUsername'])    || $_POST['logUsername'] == ""
                 || !isset($_POST['logPasswort'])    || $_POST['logPasswort'] == ""){
                     echo "<script type='text/javascript'>alert('Bitte Username und Passwort ausfüllen.')</script>";

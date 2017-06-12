@@ -3,10 +3,14 @@
         $db->doConnect();
         
         
-        # abgeschickte Bearbeitung Kundeninfos
+        # POST aus Kundeninfo bearbeiten Formular bearbeiten
         if(!empty($_POST['ChangeKunde'])){
-            if (!empty($_POST['formVorname']) && !empty($_POST['formNachname']) && !empty($_POST['formAdresse']) && !empty($_POST['formPLZ']) &&!empty($_POST['formOrt']) && !empty($_POST['formEmail']) ){
-                $db->updateKunde($_SESSION['user']->uid, $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],$_POST['formEmail']);
+            if ($db->checkPW($_SESSION['user']->username, $_POST['formPasswort'])!= 1){
+                echo "<script type='text/javascript'>alert('Falsches Passwort!')</script>";
+            } else {
+                if (!empty($_POST['formVorname']) && !empty($_POST['formNachname']) && !empty($_POST['formAdresse']) && !empty($_POST['formPLZ']) &&!empty($_POST['formOrt']) && !empty($_POST['formEmail']) ){
+                    $db->updateKunde($_SESSION['user']->uid, $_POST['formAnrede'], $_POST['formVorname'], $_POST['formNachname'], $_POST['formAdresse'], $_POST['formPLZ'], $_POST['formOrt'],$_POST['formEmail']);
+                }
             }
         }
         
@@ -14,11 +18,14 @@
         $kund = $db->getKundenInfo($_SESSION['user']->uid);
         
         
-        # abgeschickte Bearbeitung Zahlungsinfos
+        # POST aus Zahlung-erstellen-Formular bearbeiten
         if(!empty($_POST['newZahlung'])){
-            if($_POST['formZahlungsart'] != "invalid" && !empty($_POST['formZahlungsdet'])){
-            $db ->insertZahlungsinfo($kund->kid, $_POST['formZahlungsart'], $_POST['formZahlungsdet']);
-                
+            if ($db->checkPW($_SESSION['user']->username, $_POST['formPasswort'])!= 1){
+                echo "<script type='text/javascript'>alert('Falsches Passwort!')</script>";
+            } else {
+                if($_POST['formZahlungsart'] != "invalid" && !empty($_POST['formZahlungsdet'])){
+                $db ->insertZahlungsinfo($kund->kid, $_POST['formZahlungsart'], $_POST['formZahlungsdet']);
+                }
             }
         }
 
@@ -90,6 +97,13 @@
                     <input type="email" class="form-control" id="Email"  name="formEmail" value="<?=$kund->email?>">
                   </div>
                 </div>
+                
+                <div class="form-group">
+                  <label for="passwort1" class="col-sm-4 control-label">Passwortbestätigung</label>
+                  <div class="col-sm-8">
+                    <input type="password" class="form-control" id="passwort1" name="formPasswort">
+                  </div>
+                </div>
 
                 <div class="form-group">
                   <div class="col-sm-offset-4 col-sm-8">
@@ -133,7 +147,14 @@
                     <input type="text" class="form-control" id="Zahlungsdet" name="formZahlungsdet" placeholder="IBAN, Kreditkartennummer, etc.">
                   </div>
                 </div>
-
+                
+                <div class="form-group">
+                  <label for="passwort1" class="col-sm-4 control-label">Passwort</label>
+                  <div class="col-sm-8">
+                    <input type="password" class="form-control" id="passwort1" name="formPasswort">
+                  </div>
+                </div>
+                
                 <div class="form-group">
                   <div class="col-sm-offset-3 col-sm-8">
                       <button type="submit" class="btn btn-default" name="newZahlung" value="newZahlung"> Zahlungsmethode eintragen</button>
@@ -146,7 +167,7 @@
     <div class="col-md-12">
 
     
-    <div class="col-md-6" style="height:100">
+    <div class="col-md-6" >
         <h1> Bestellliste </h1>
 
         <?php  
@@ -155,11 +176,11 @@
 
           ?>
             </div>
-            <div class="col-md-6" style="height:100">
+            <div class="col-md-6" >
                 <h1> Bestelldetails </h1>
 
         <?php    
-
+        # Bestelldetails anzeigen
         if(empty($_POST['wdetails'])){
             echo 'Keine Bestellung ausgewählt';
         } else {
@@ -168,9 +189,7 @@
         }
 
           ?>
-
-
-        
+     
 
     
     </div>
