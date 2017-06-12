@@ -46,8 +46,8 @@ class newDB {
             
             #neues Div für Kategorie erzeugen
             if ($kat != $produkt->katbezeichnung){
-                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail'>"
-                     . "<h3>".$produkt->katbezeichnung."</h3>" ;
+                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail col-md-11'>"
+                     . "<h4>".$produkt->katbezeichnung."</h4>" ;
             }
             $kat = $produkt->katbezeichnung;
             

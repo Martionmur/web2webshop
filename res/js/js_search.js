@@ -6,11 +6,11 @@ function searchProd(text){
         //indexOf returns -1 if text never occurs in "alt" of Thubmnail
         if((element.getAttribute("alt").indexOf(text))==-1){
             id=element.getAttribute("value");
-            document.getElementById("prod"+id).style.display='none';
+            $( "#prod"+id).hide(200);
         }
         else{
             id=element.getAttribute("value");
-            document.getElementById("prod"+id).style.display="";
+            $("#prod"+id).show(200);
         }
     }
 }
