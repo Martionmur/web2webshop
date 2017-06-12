@@ -98,7 +98,6 @@ class newDB {
                             . '<form action="" method="post" name="changeprod">'
                                 . '<button type="submit" class="btn btn-default" name="changeprod" value = "'.$tempProd->pid.'">Details</button>'
                                 . '<button type="submit" class="btn btn-default" name="deleteprod" value = "'.$tempProd->pid.'">Löschen</button>'
-                                . '<button type="submit" class="btn btn-default" name="setPic" value = "'.$tempProd->pid.'">Bild bearbeiten</button>'
                             . '</form>'
                        . '</p>';
             echo '      </div>';
@@ -701,6 +700,14 @@ function printBestellDetails($bid){
         } else {
             echo "<script type='text/javascript'>alert('Das Produkt ".$bezeichnung." wurde nicht abgeschickt!')</script>"; 
         }
+    }
+
+    function getpid($bezeichnung){
+        # gibt Produktinformation um sie in Forms zu legen
+        $query = 'SELECT `pid`, `bezeichnung`, `preis`, `bewertung`, `katbezeichnung` FROM `produkte` JOIN `kategorie` using(`katid`) where `bezeichnung` = "'.$bezeichnung.'" LIMIT 1';		
+        $res = mysqli_query($this->con, $query);
+        $produkt = mysqli_fetch_object($res);
+        return $produkt->pid;
     }
     
          
