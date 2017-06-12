@@ -80,7 +80,7 @@
         
           <input type="file" accept="image/*" id="Prodbild" name="Prodbild">
         
-      </div>    
+      </div>   
 
       <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
@@ -91,8 +91,32 @@
   </div>';
             
     }
+
+
+#Bild bearbeiten
+        if(!empty($_POST['setPic'])){
+    
+        
+    #BildUpload form
+    echo '<div class="container">
+     <form action="" method="post" enctype="multipart/form-data" name="PicForm" id="PicForm">
+            <div class="form-group">
+               <label for="Prodbild" class="col-sm-4 control-label">Produktbild</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="1024000">
+                <input type="file" accept="image/*" id="Prodbild" name="Prodbild">
+            </div>    
+
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                  <button type="submit" class="btn btn-default" name="PicSubmit" value="">Bild hochladen</button>
+              </div>
+            </div>
+    </form>
+  </div>';
+            
+    }
 //    <form method="post" action="" style="width:130px;" enctype="multipart/form-data">
-//      <input type="hidden" name="MAX_FILE_SIZE" value="1024000">
+
 //      Neues Bild:<p><input name="userfile" type="file" size="10" style="width:100px;"></p>
 //      <input type="submit" value="Upload">
 //	</form>
