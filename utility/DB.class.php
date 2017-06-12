@@ -97,7 +97,8 @@ class newDB {
             echo '        <p>'
                             . '<form action="" method="post" name="changeprod">'
                                 . '<button type="submit" class="btn btn-default" name="changeprod" value = "'.$tempProd->pid.'">Details</button>'
-                                . '<button type="submit" class="btn btn-default" name="deleteprod" value = "'.$tempProd->pid.'">Delete</button>'
+                                . '<button type="submit" class="btn btn-default" name="deleteprod" value = "'.$tempProd->pid.'">Löschen</button>'
+                                . '<button type="submit" class="btn btn-default" name="setPic" value = "'.$tempProd->pid.'">Bild bearbeiten</button>'
                             . '</form>'
                        . '</p>';
             echo '      </div>';

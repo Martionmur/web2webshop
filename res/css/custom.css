@@ -12,13 +12,15 @@ and open the template in the editor.
 }*/
 
 .prodTile{
-    width: 400px;
-    padding: 2px
+    width: 190px;
+    padding: 2px;
+    float: left;
+    /*background-color:deeppink;*/
+
 }
 
 .prodTile img{
-    width: 220px;
-    height: 220px;
-    border-radius: 5px
+    width: 180px; 
+    height: 180px;
     
 }

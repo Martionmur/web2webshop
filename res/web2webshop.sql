@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 11. Jun 2017 um 14:34
+-- Erstellungszeit: 12. Jun 2017 um 14:41
 -- Server-Version: 10.1.21-MariaDB
 -- PHP-Version: 7.1.1
 
@@ -42,33 +42,12 @@ CREATE TABLE `bestellung` (
 INSERT INTO `bestellung` (`bid`, `kid`, `datum`, `zid`, `gid`, `gutscheinentwertung`) VALUES
 (2, 1, '2017-06-06 10:50:49', 1, 1, 100),
 (3, 1, '2017-06-06 10:52:56', 1, NULL, NULL),
-(4, 3, '2017-06-06 10:56:03', 2, 1, 0),
-(5, 3, '2017-06-06 10:58:10', 2, 1, 0),
-(6, 3, '2017-06-06 11:01:58', 2, 1, 0),
-(7, 3, '2017-06-06 11:02:39', 2, 1, 0),
-(8, 3, '2017-06-06 11:02:54', 2, 1, 0),
-(9, 3, '2017-06-06 11:18:00', 2, 1, 0),
-(10, 3, '2017-06-06 11:20:54', 2, 1, 0),
-(11, 3, '2017-06-06 11:22:31', 2, 1, 0),
-(12, 3, '2017-06-06 11:55:37', 2, 1, 0),
-(13, 2, '2017-06-06 11:56:18', 1, 1, 0),
-(14, 2, '2017-06-06 11:57:04', 1, 1, 10),
-(15, 2, '2017-06-06 11:57:28', 1, 1, 10),
-(16, 2, '2017-06-06 11:58:55', 1, 1, 10),
-(17, 2, '2017-06-06 12:01:15', 1, 1, 10),
-(18, 2, '2017-06-06 12:19:59', 1, 2, 16.5),
-(19, 2, '2017-06-06 12:57:53', 1, 2, 16.5),
-(20, 2, '2017-06-06 13:00:38', 1, 2, 16.5),
 (21, 2, '2017-06-06 13:02:05', 1, 2, 16.5),
 (26, 2, '2017-06-06 14:49:42', -1, 2, 16.5),
 (28, 3, '2017-06-06 17:08:07', 2, 1, 10),
-(31, 2, '2017-06-06 17:16:20', 1, 2, 3.5),
-(32, 2, '2017-06-06 17:18:11', 1, 2, 3.5),
 (33, 2, '2017-06-06 20:48:10', 1, 3, 16.5),
 (34, 1, '2017-06-07 13:27:13', 1, 1, 100),
 (35, 2, '2017-06-07 13:28:42', 1, 1, 10),
-(36, 2, '2017-06-07 13:36:45', 1, 1, 10),
-(37, 2, '2017-06-07 14:04:45', 1, 1, 10),
 (38, 2, '2017-06-07 14:17:07', 1, 1, 10),
 (39, 2, '2017-06-07 14:27:35', 1, 1, 10),
 (40, 2, '2017-06-07 14:34:03', 1, 1, 10),
@@ -88,7 +67,12 @@ INSERT INTO `bestellung` (`bid`, `kid`, `datum`, `zid`, `gid`, `gutscheinentwert
 (57, 5, '2017-06-08 09:12:26', 4, NULL, NULL),
 (58, 2, '2017-06-08 16:36:57', 1, 3, 30),
 (59, 2, '2017-06-08 16:41:10', 1, 4, 5.5),
-(60, 2, '2017-06-11 10:48:39', 1, 4, 13);
+(60, 2, '2017-06-11 10:48:39', 1, 4, 13),
+(61, 3, '2017-06-11 15:47:17', 2, NULL, NULL),
+(62, 3, '2017-06-11 22:24:45', 2, NULL, NULL),
+(64, 3, '2017-06-11 22:35:01', -1, 4, 19),
+(65, 3, '2017-06-11 22:38:26', 2, NULL, NULL),
+(66, 3, '2017-06-12 12:01:18', 15, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,7 +91,6 @@ CREATE TABLE `b_has_p` (
 --
 
 INSERT INTO `b_has_p` (`bid`, `pid`, `menge`) VALUES
-(21, 1, 1),
 (21, 2, 2),
 (21, 3, 2),
 (26, 1, 1),
@@ -115,25 +98,11 @@ INSERT INTO `b_has_p` (`bid`, `pid`, `menge`) VALUES
 (26, 3, 2),
 (28, 1, 1),
 (28, 2, 2),
-(28, 3, 2),
-(31, 1, 1),
-(31, 2, 2),
-(31, 3, 2),
-(32, 1, 1),
-(32, 2, 2),
-(32, 3, 2),
 (33, 1, 1),
 (33, 2, 2),
-(33, 3, 2),
 (35, 1, 1),
 (35, 2, 2),
 (35, 3, 2),
-(36, 1, 1),
-(36, 2, 2),
-(36, 3, 2),
-(37, 1, 2),
-(37, 2, 1),
-(37, 3, 7),
 (38, 1, 2),
 (38, 2, 1),
 (38, 3, 7),
@@ -186,13 +155,23 @@ INSERT INTO `b_has_p` (`bid`, `pid`, `menge`) VALUES
 (57, 2, 1),
 (57, 3, 7),
 (58, 1, 2),
-(58, 2, 1),
 (58, 3, 7),
 (59, 1, 2),
 (59, 2, 1),
 (59, 3, 7),
 (60, 13, 1),
-(60, 15, 2);
+(60, 15, 2),
+(61, 13, 3),
+(62, 8, 4),
+(62, 13, 8),
+(62, 16, 11),
+(64, 8, 6),
+(64, 10, 4),
+(64, 17, 1),
+(65, 4, 6),
+(65, 5, 1),
+(65, 6, 8),
+(66, 13, 12);
 
 -- --------------------------------------------------------
 
@@ -216,7 +195,7 @@ INSERT INTO `gutschein` (`gid`, `code`, `ablaufdatum`, `wert`, `valid`) VALUES
 (1, 'AAAAA', '2017-12-25', 10, 0),
 (2, 'BBBBB', '2018-01-01', 20, 0),
 (3, 'CCCCC', '2017-12-25', 30, 1),
-(4, 'DDDDD', '2017-12-25', 27, 1),
+(4, 'DDDDD', '2017-12-25', 8, 1),
 (5, 'EEEEE', '0001-01-18', 50, 1),
 (6, 'FFFFF', '0001-01-18', 60, 1),
 (7, 'GGGGG', '0001-01-19', 70, 1),
@@ -273,12 +252,14 @@ CREATE TABLE `kunde` (
 INSERT INTO `kunde` (`kid`, `uid`, `anrede`, `vorname`, `nachname`, `adresse`, `plz`, `ort`, `land`, `email`, `rabattgruppe`, `priority`) VALUES
 (1, 1, 'Herr', 'Test', 'Test', 'Test 3', '1010', 'Wien', 'Ã–sterreich', 'test@test.at', NULL, NULL),
 (2, 4, 'Herr', 'Max', 'Mustermann', 'Musterweg 5', '1000', 'Wien', 'Ã–sterreich', 'max@mustermann.at', NULL, NULL),
-(3, 5, 'Frau', 'Kim', 'Possible', 'Fairyroad 6', '3010', 'Fairytown', 'Fairyland', 'kim@possible.at', NULL, NULL),
+(3, 5, 'Frau', 'Kim', 'Possible', 'Fairyroad 60', '3010', 'Fairytown', 'Fairyland', 'kim@possible.at', NULL, NULL),
 (4, 6, 'Herr', 'Daniel', 'Dauer', 'Draufweg 3', '8000', 'Graz', 'Ã–sterreich', 'dr@dr.at', NULL, NULL),
 (5, 7, 'Frau', 'Sabi', 'Sabrina', 'Hagasse  222', '1114', 'Wien', 'Ã–sterreich', 'sbi@sbi.at', NULL, NULL),
 (7, 9, 'Frau', 'Julia', 'Twert', 'Wee 3', '1100', 'Wien', 'Ã–sterreich', 'Julia@Ju.at', NULL, NULL),
 (9, 11, 'Herr', 'mim', 'madame', 'ma 2', '1111', 'hawk', 'Ã–sterreich', 'm@m.at', NULL, NULL),
-(10, 12, 'Herr', 'Merlin', ' der Zauberer', 'Forest 3', '6666', 'shire', 'Ã–sterreich', 'm@z.at', NULL, NULL);
+(10, 12, 'Herr', 'Merlin', ' der Zauberer', 'Forest 3', '6666', 'shire', 'Ã–sterreich', 'm@z.at', NULL, NULL),
+(11, 13, 'Herr', 'Manfreg', 'Mo', 'Friedgasse 3', '2010', 'Gruft', 'Ã–sterreich', 'Man@fr.at', NULL, NULL),
+(12, 14, 'Herr', 'Sabine', 'Schuster', 'Gobgasse 2', '1010', 'Wien', 'Ã–sterreich', 'sbi@schuster.at', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -304,7 +285,7 @@ CREATE TABLE `produkte` (
 
 INSERT INTO `produkte` (`pid`, `bezeichnung`, `beschreibung`, `preis`, `bewertung`, `katid`, `bildref`, `lagerbestand`, `lieferbar`) VALUES
 (1, 'Sauerteigbrot 1kg', NULL, 3.5, 8, 4, '', NULL, NULL),
-(2, 'Apfel', NULL, 3, 8, 1, '', NULL, NULL),
+(2, 'Apfel 1kg', NULL, 3, 8, 1, '', NULL, NULL),
 (3, 'Birnen 1kg', NULL, 3.5, 7, 1, '', NULL, NULL),
 (4, 'Orangen 1kg', NULL, 2, 5, 1, '', NULL, NULL),
 (5, 'Banane 1kg', NULL, 2.5, 4, 1, '', NULL, NULL),
@@ -312,14 +293,37 @@ INSERT INTO `produkte` (`pid`, `bezeichnung`, `beschreibung`, `preis`, `bewertun
 (7, 'Karotten 1kg', NULL, 2, 6, 2, '', NULL, NULL),
 (8, 'Kartoffel 1kg', NULL, 1.5, 5, 2, '', NULL, NULL),
 (9, 'Fenchel 1kg', NULL, 4.5, 4, 2, '', NULL, NULL),
-(10, 'Kraut', NULL, 1, 5, 2, '', NULL, NULL),
+(10, 'Kraut 1kg', NULL, 1, 5, 2, '', NULL, NULL),
 (11, 'Melanzani 1kg', NULL, 2.5, 4, 2, '', NULL, NULL),
 (12, 'Zuchini 1kg', NULL, 4, 9, 2, '', NULL, NULL),
 (13, 'Tofu natur 200g', NULL, 3, 8, 3, '', NULL, NULL),
-(15, 'Tofu RÃ¤uchersticks 200g', NULL, 5, 10, 3, '', NULL, NULL),
-(16, 'Tofu getrocknet 200g', NULL, 3.5, 7, 3, '', NULL, NULL),
-(17, 'Tofu Yuba 200g', NULL, 6, 8, 3, '', NULL, NULL),
-(18, 'Kipferl', NULL, 1.4, 6, 4, '', NULL, NULL);
+(15, 'Tofu RÃ¤uchersticks', NULL, 5, 10, 3, '', NULL, NULL),
+(16, 'Tofu getrocknet', NULL, 3.5, 7, 3, '', NULL, NULL),
+(17, 'Tofu Yuba 200g', NULL, 6, 8, 3, '', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `rechnungsnummer`
+--
+
+CREATE TABLE `rechnungsnummer` (
+  `RN` int(11) NOT NULL,
+  `bid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `rechnungsnummer`
+--
+
+INSERT INTO `rechnungsnummer` (`RN`, `bid`) VALUES
+(3, 28),
+(6, 45),
+(7, 46),
+(1, 47),
+(4, 61),
+(5, 61),
+(2, 62);
 
 -- --------------------------------------------------------
 
@@ -347,7 +351,9 @@ INSERT INTO `user` (`uid`, `username`, `passwort`, `rolle`, `aktiv`) VALUES
 (7, 'sabi', 'ee937e067ebcc8c6ce63929fcd56279b', 'kunde', 1),
 (9, 'Julia', '2344521e389d6897ae7af9abf16e7ccc', 'kunde', 1),
 (11, 'mim', '8e7f86260c88346052cadd7d68514184', 'kunde', 1),
-(12, 'merlin', '12b3638553c1f4a535a047e7003d9ac4', 'kunde', 1);
+(12, 'merlin', '12b3638553c1f4a535a047e7003d9ac4', 'kunde', 1),
+(13, 'man', '39c63ddb96a31b9610cd976b896ad4f0', 'kunde', 1),
+(14, 'sch', 'c340f4803161a481703d1c8bf74156ee', 'kunde', 1);
 
 -- --------------------------------------------------------
 
@@ -374,7 +380,13 @@ INSERT INTO `zahlungsinfo` (`zid`, `kid`, `art`, `nummer`) VALUES
 (4, 5, 'Postversand', 'Ich schicke Galonen'),
 (6, 7, 'Postversand', 'Ich zahle in Erdbeeren'),
 (8, 9, 'Mastercard', '123'),
-(9, 10, 'Postversand', 'ZauberstÃ¤be');
+(9, 10, 'Postversand', 'ZauberstÃ¤be'),
+(11, 3, 'Bankeinzug', 'Slavebank 23234543'),
+(12, 11, 'Postversand', 'GE22233'),
+(13, 11, 'Postversand', 'max StÃ¼cke'),
+(14, 12, 'Visa', '15115115151'),
+(15, 3, 'Visa', '11111111111111111'),
+(16, 3, 'Postversand', 'kimkklk');
 
 --
 -- Indizes der exportierten Tabellen
@@ -423,6 +435,13 @@ ALTER TABLE `produkte`
   ADD KEY `katid-constraint` (`katid`);
 
 --
+-- Indizes für die Tabelle `rechnungsnummer`
+--
+ALTER TABLE `rechnungsnummer`
+  ADD PRIMARY KEY (`RN`),
+  ADD KEY `bid-constraintrechnung` (`bid`);
+
+--
 -- Indizes für die Tabelle `user`
 --
 ALTER TABLE `user`
@@ -444,7 +463,7 @@ ALTER TABLE `zahlungsinfo`
 -- AUTO_INCREMENT für Tabelle `bestellung`
 --
 ALTER TABLE `bestellung`
-  MODIFY `bid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `bid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 --
 -- AUTO_INCREMENT für Tabelle `gutschein`
 --
@@ -459,22 +478,27 @@ ALTER TABLE `kategorie`
 -- AUTO_INCREMENT für Tabelle `kunde`
 --
 ALTER TABLE `kunde`
-  MODIFY `kid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `kid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT für Tabelle `produkte`
 --
 ALTER TABLE `produkte`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT für Tabelle `rechnungsnummer`
+--
+ALTER TABLE `rechnungsnummer`
+  MODIFY `RN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT für Tabelle `zahlungsinfo`
 --
 ALTER TABLE `zahlungsinfo`
-  MODIFY `zid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `zid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- Constraints der exportierten Tabellen
 --
@@ -505,6 +529,12 @@ ALTER TABLE `kunde`
 --
 ALTER TABLE `produkte`
   ADD CONSTRAINT `katid-constraint` FOREIGN KEY (`katid`) REFERENCES `kategorie` (`katid`);
+
+--
+-- Constraints der Tabelle `rechnungsnummer`
+--
+ALTER TABLE `rechnungsnummer`
+  ADD CONSTRAINT `bid-constraintrechnung` FOREIGN KEY (`bid`) REFERENCES `bestellung` (`bid`);
 
 --
 -- Constraints der Tabelle `zahlungsinfo`
