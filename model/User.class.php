@@ -133,9 +133,12 @@ class User {
     function logout(){
         unset($_SESSION['user']);
         unset($_SESSION['gutschein']);
+        setcookie('remember' ,"false", time()-86401,'/');
+        #setcookie('uid' ,"", time()-86401,'/');
+        #setcookie('username' ,"", time()-86401,'/');
+        #setcookie('rolle' ,"", time()-86401,'/');
         echo "<script type='text/javascript'>alert('Sie sind jetzt abgemeldet')</script>";
         #Zum Löschen des Cookie wird er neu initialisiert und die Minimale Lebensdauer vergeben
-        setcookie('user',NULL,1);
         return 1;
     }
 
