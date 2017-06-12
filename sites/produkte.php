@@ -22,8 +22,6 @@
     
 </div>
 
-
-
     <div id="sucheundprodukte" class="col-md-11">
     <div id="suchdiv">
         <form class='navbar-form navbar-left'>
