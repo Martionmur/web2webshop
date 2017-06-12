@@ -32,7 +32,9 @@ class User {
                         $_SESSION['user'] = $user ; ## Wie zuweisen? Richtiges Objekt?  
                 #        echo $_SESSION['user']->rolle;
                         
+                        #set Cookie funktioniert
                         if (!empty($_POST['logRemember'])){
+                             setcookie('remember','true',time()+86400,'/');
                              setcookie('uid' ,$user->uid, time()+86400,'/');
                              setcookie('username' ,$user->username, time()+86400,'/');
                              setcookie('rolle' ,$user->rolle, time()+86400,'/');
