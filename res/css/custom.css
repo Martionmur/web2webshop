@@ -24,3 +24,8 @@ and open the template in the editor.
     height: 180px;
     
 }
+
+body {
+    padding-top: 55 px;
+    margin-top:55px;
+}

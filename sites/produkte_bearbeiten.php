@@ -3,7 +3,11 @@
    <?php
         $db = new newDB();
         $db->doConnect();
-         var_dump($_POST);
+        
+        #Zielordner etc initialisieren
+        $target_dir="res/img/prod";
+
+        
 #Produkt löschen
         if(isset($_POST['deleteprod'])){
             $db-> deleteProdukt($_POST['deleteprod']);
@@ -18,6 +22,9 @@
                 $_POST['changeprod']=-1;
             } else {            
                 $db-> insertupdateProdukt($_POST['PID'], $_POST['bezeichnung'], $_POST['preis'], $_POST['bewertung'], $_POST['kat']);
+                var_dump($_FILES);
+                if(move_uploaded_file($_FILES['Prodbild']['tmp_name'], $target_dir.+$_POST['PID'].".jpg")) echo "Bildupload hat funktioniert";
+                else echo "Bildupload war ein FAIL";
 ##### FIleupload nicht in POST!!!!!!
             }
         }
@@ -67,7 +74,13 @@
         <label for="kat" class="col-sm-4 control-label">Katbezeichung</label>
         <div class="col-sm-8">';
     echo $db->printKatlist($prodinfo->kategorie);
-    echo '</div> 
+    echo '</div>
+      <div class="form-group">
+        <label for="Prodbild" class="col-sm-4 control-label">Produktbild</label>
+        
+          <input type="file" accept="image/*" id="Prodbild" name="Prodbild">
+        
+      </div>   
 
       <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">

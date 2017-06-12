@@ -27,17 +27,15 @@
     
 </div>
 
-
-
-<!--    <div id="sucheundprodukte" class="col-md-11">
-        <div id="suchdiv">
-            <form class='navbar-form navbar-left'>
-                    <div class='form-group'>
-                        <input type='text' class='form-control' placeholder='Search' onkeyup="searchProd(this.value)">
-                    </div>
-                    <button type='submit' class='btn btn-default'>Submit</button>
-                </form>
-     </div>-->
+    <div id="sucheundprodukte" class="col-md-11">
+    <div id="suchdiv">
+        <form class='navbar-form navbar-left'>
+                <div class='form-group'>
+                    <input type='text' class='form-control' placeholder='Search' onkeyup="searchProd(this.value)">
+                </div>
+                <button type='submit' class='btn btn-default'>Submit</button>
+            </form>
+    </div>
     
     <div id="Produktanzeige" class="col-md-10">
         <?php
