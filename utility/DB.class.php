@@ -46,15 +46,15 @@ class newDB {
             
             #neues Div für Kategorie erzeugen
             if ($kat != $produkt->katbezeichnung){
-                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail'>"
-                     . "<h3>".$produkt->katbezeichnung."</h3>" ;
+                echo "</div> <div id='".$produkt->katbezeichnung."' style='float:left' class='thumbnail col-md-11'>"
+                     . "<h4>".$produkt->katbezeichnung."</h4>" ;
             }
             $kat = $produkt->katbezeichnung;
             
             # Tiles         
             echo '  <div class="ProdTile" id="prod'.$tempProd->pid.'" style="width:190px; padding:2px; float:left">';
             echo '    <div class="thumbnail ui-widget-content">';
-            echo '      <img value="'.$tempProd->pid.'" src="res/img/prod'.$tempProd->pid.'.jpg".pid alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
+            echo '      <img value="'.$tempProd->pid.'" src="res/img/prod'.$tempProd->pid.'.jpg" alt="'.$tempProd->bezeichnung.'" style="width: 180px; height: 180px;" class="img-thumbnail">';
             echo '      <div class="caption">';
             echo '        <p><b>'.$tempProd->bezeichnung.'<p></b>';
             echo '        <p>'.number_format($tempProd->preis ,"2",",",".").'€<br>';

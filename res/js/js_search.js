@@ -3,11 +3,14 @@ function searchProd(text){
     var liste = document.getElementsByClassName("img-thumbnail");
     for(i=0, len=liste.length;i<len;i++){
         element = liste[i];
-        if(element.getAttribute("alt").indexOf(text)>-1){
-            element.parentNode.parentNode.setAttribute("display", "");
+        //indexOf returns -1 if text never occurs in "alt" of Thubmnail
+        if((element.getAttribute("alt").indexOf(text))==-1){
+            id=element.getAttribute("value");
+            $( "#prod"+id).hide(200);
         }
         else{
-            element.parentNode.parentNode.style("display", "none");
+            id=element.getAttribute("value");
+            $("#prod"+id).show(200);
         }
     }
 }
