@@ -3,12 +3,14 @@ function searchProd(text){
     var liste = document.getElementsByClassName("img-thumbnail");
     for(i=0, len=liste.length;i<len;i++){
         element = liste[i];
-        //indexOf returns -1 if text never occurs in "alt" of Thubmnail
+        //indexOf gibt -1 zurück, wenn text nicht in Beschreibung ('alt') enthalten ist -> Case sensitive
+        //wird anschließend per $.hide() entfernt.
         if((element.getAttribute("alt").indexOf(text))==-1){
             id=element.getAttribute("value");
             $( "#prod"+id).hide(200);
         }
         else{
+            //wird der Text doch gefunden, wird das Element wieder sichtbar per $.show();
             id=element.getAttribute("value");
             $("#prod"+id).show(200);
         }

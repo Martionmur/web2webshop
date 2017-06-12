@@ -25,6 +25,7 @@ and open the template in the editor.
     
 }
 
+/*padding und margin gesetzt, um Überschneidungen mit Navbar zu vermeiden*/
 body {
     padding-top: 55 px;
     margin-top:55px;
