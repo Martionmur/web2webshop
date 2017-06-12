@@ -1,4 +1,6 @@
 <?php
+# Zeigt Loginstatus mit Optionen in Navbar an
+
 if (isset($_SESSION['user']) && (
         ($_SESSION['user']->rolle == "kunde") || 
         ($_SESSION['user']->rolle == "admin")

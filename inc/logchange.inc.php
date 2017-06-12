@@ -1,5 +1,8 @@
 <?php
+# Bearbeitet Operation die nach Prüfung von Eingaben zu einer anderen Site wechseln
+
 #Login postet logUsername und das wird in User.class.php geprüft
+#var_dump($_POST);
 if(!empty($_POST['logUsername'])){
     $success = $_SESSION['user']->checkLogin();
     # var_dump($success);
@@ -16,7 +19,12 @@ if(!empty($_POST['fromSubmit'])){
     }
 }
 
-# check register
+# check rechnung
+if(!empty($_POST['rechnung'])){
+    $_GET['tab']='rechnung';
+    }
+    
+# logout
 if (isset($_GET['tab']) && $_GET['tab'] == 'logout' ) {
     $success = $_SESSION['user']->logout();
     # var_dump($success);
