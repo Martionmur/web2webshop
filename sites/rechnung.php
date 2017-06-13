@@ -16,9 +16,9 @@
     $sum = $db->printBestellDetails($_POST['rechnung']);
 
     #Abrechnungsdetails
-    echo"<p>  Zwischensumme: ".   number_format($sum,"2",",",".") ."€ </p>"
-    . "<p>    Gutschrift: ".      number_format($abrechnung->gutscheinentwertung ,"2",",",".") . "€ </p>"
-    . "<p><b> Rechnungsbetrag: ". number_format($sum-$abrechnung->gutscheinentwertung,"2",",",".") . "€ </b></p>"
+    echo"<p>  Zwischensumme:      ".   number_format($sum,"2",",",".") ."€ </p>"
+    . "<p>    Gutscheinbezahlung: ".   number_format($abrechnung->gutscheinentwertung ,"2",",",".") . "€ </p>"
+    . "<p><b> Rechnungsbetrag:    ".   number_format($sum-$abrechnung->gutscheinentwertung,"2",",",".") . "€ </b></p>"
     . "<p> Bezahlt mit ".$abrechnung->art."</p>";
 
     ?>

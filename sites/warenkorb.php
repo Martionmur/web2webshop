@@ -142,10 +142,10 @@ $db->doConnect();
           
 <?php
 
-           var_dump($_SESSION['user']);
-          // $testUser = new User;
-          // $testUser= $_COOKIE['user'];
-           var_dump($_COOKIE);
+//           var_dump($_SESSION['user']);
+//           $testUser = new User;
+//           $testUser= $_COOKIE['user'];
+//           var_dump($_COOKIE);
 
            
         

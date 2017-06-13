@@ -524,6 +524,10 @@ function printBestellDetails($bid){
         $query =     "DELETE FROM `b_has_p` WHERE `b_has_p`.`bid` =".$bid;
         $res = mysqli_query($this->con, $query);             
         
+        $query =     "DELETE FROM `rechnungsnummer` WHERE `bid` =".$bid;
+        $res = mysqli_query($this->con, $query);      
+        
+        
         $query =     "DELETE FROM `bestellung` WHERE `bestellung`.`bid` =".$bid;
         $res = mysqli_query($this->con, $query);             
     }

@@ -24,7 +24,7 @@
                 $db-> insertupdateProdukt($_POST['PID'], $_POST['bezeichnung'], $_POST['preis'], $_POST['bewertung'], $_POST['kat']);
                 $pid = $db->getpid($_POST['bezeichnung']);
                 
-                var_dump($_FILES);
+                #var_dump($_FILES);
                 
                 if(move_uploaded_file($_FILES['Prodbild']['tmp_name'], $target_dir.$pid.".jpg")) echo "Bildupload hat funktioniert";
                 else echo "Bildupload war ein FAIL";
